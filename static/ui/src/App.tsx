@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Coverage, Drill, Person } from '../../../src/core/model';
+import type { AssessedItem, Coverage, Drill, Person } from '../../../src/core/model';
 import { api, type Receipt, type Space, type Window } from './api';
 import { Confirm } from './Confirm';
 import { ItemCard, type Pick } from './Items';
@@ -149,6 +149,7 @@ export function App() {
         <main className="result" aria-label={`Drill for ${drill.person.name}`}>
           <div className="stage">
             <Orbit person={drill.person} items={drill.items} focus={focus} onFocus={setFocus} />
+            <FocusReadout item={drill.items.find((i) => i.id === focus)} />
             <ul className="legend">
               {(['stalls', 'thin', 'covered'] as const).map((c) => (
                 <li key={c}>
@@ -270,3 +271,19 @@ export function App() {
     </div>
   );
 }
+
+function FocusReadout({ item }: { item: AssessedItem | undefined }) {
+  return (
+    <p className={`readout ${item ? `readout-${item.coverage}` : ''}`} aria-live="polite">
+      {item ? (
+        <>
+          <span className={`pill pill-${item.coverage}`}>{coverageText[item.coverage].label}</span>
+          <span className="readout-title">{item.key ? `${item.key} ` : ''}{item.title}</span>
+        </>
+      ) : (
+        <span className="readout-hint">Hover a node or a card to see the work behind it</span>
+      )}
+    </p>
+  );
+}
+

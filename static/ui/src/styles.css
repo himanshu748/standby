@@ -193,3 +193,10 @@ button, input, select { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.readout { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: -6px 0 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--ink-2); font-size: 14px; transition: border-color 0.3s var(--ease); }
+.readout-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
+.readout-hint { color: var(--muted); }
+.readout-stalls { border-color: color-mix(in srgb, var(--stall) 50%, transparent); }
+.readout-thin { border-color: color-mix(in srgb, var(--thin) 50%, transparent); }
+.readout-covered { border-color: color-mix(in srgb, var(--covered) 50%, transparent); }

@@ -93,5 +93,6 @@ describe('teamwork graph', () => {
     expect(r.teammates).toEqual([{ person: { accountId: 'm', name: 'Mitch Davis' }, team: 'Revenue' }]);
     expect(r.errors).toEqual(['scope missing']);
     expect(r.teams).toEqual(['Revenue']);
+    expect(r.counts.work).toBe(r.items.filter((i) => i.kind === 'issue').length);
   });
 });

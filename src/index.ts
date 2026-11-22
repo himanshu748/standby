@@ -49,7 +49,11 @@ export async function drill(p: DrillInput): Promise<Drill> {
           label: 'Teamwork Graph',
           ok: g.value.errors.length === 0,
           count: g.value.items.length,
-          note: [g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'no teams found', ...g.value.errors].join('; '),
+          note: [
+            `${g.value.counts.work} open work items, ${g.value.counts.pages} pages, ${g.value.counts.owned} projects or goals they own`,
+            g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'no teams found',
+            ...g.value.errors,
+          ].join('; '),
         }
       : { source: 'graph', label: 'Teamwork Graph', ok: false, count: 0, note: fail(g.reason) },
   ];

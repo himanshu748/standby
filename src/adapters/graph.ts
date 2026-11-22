@@ -92,11 +92,10 @@ export async function graphSignals(graph: Graph, outId: string) {
       if (p && p.accountId !== outId && !teammates.some((t) => t.person.accountId === p.accountId)) teammates.push({ person: p, team: teamNodes[i].displayName });
     }
   });
-  const items = [
-    ...(assigned.ok ? parseAssigned(assigned.v, outId) : []),
-    ...(content.ok ? parseContent(content.v, outId) : []),
-    ...(owns.ok ? parseOwns(owns.v) : []),
-  ];
+  const work = assigned.ok ? parseAssigned(assigned.v, outId) : [];
+  const pages = content.ok ? parseContent(content.v, outId) : [];
+  const owned = owns.ok ? parseOwns(owns.v) : [];
+  const items = [...work, ...pages, ...owned];
   const errors = [teams, assigned, content, owns].filter((r) => !r.ok).map((r) => (r.ok ? '' : r.e));
-  return { items, teammates, teams: teamNodes.map((t) => t.displayName as string), errors };
+  return { items, teammates, teams: teamNodes.map((t) => t.displayName as string), errors, counts: { work: work.length, pages: pages.length, owned: owned.length } };
 }
