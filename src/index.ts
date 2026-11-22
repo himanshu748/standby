@@ -2,9 +2,9 @@ import api, { assumeTrustedRoute } from '@forge/api';
 import Resolver from '@forge/resolver';
 import { mergeItems, runDrill } from './core/drill';
 import { handoverStorage, handoverTitle } from './core/handover';
-import type { Drill, Person, SourceStatus } from './core/model';
+import type { Drill, Person, Signals, SourceStatus, WorkItem } from './core/model';
 import { confluenceSignals, createDraft, listSpaces, lookupPeople } from './adapters/confluence';
-import { graphSignals } from './adapters/graph';
+import { graphCoverage, graphSignals } from './adapters/graph';
 import type { Graph, Rest } from './adapters/http';
 import { jiraSignals, reassign, searchUsers } from './adapters/jira';
 
@@ -37,12 +37,6 @@ export async function drill(p: DrillInput): Promise<Drill> {
     graphSignals(graph, p.accountId),
   ]);
   const sources: SourceStatus[] = [
-    j.status === 'fulfilled'
-      ? { source: 'jira', label: 'Jira', ok: true, count: j.value.items.length, note: `${j.value.issueCount} open issues assigned` }
-      : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
-    c.status === 'fulfilled'
-      ? { source: 'confluence', label: 'Confluence', ok: true, count: c.value.items.length, note: `${c.value.pageCount} recent pages they wrote or edited` }
-      : { source: 'confluence', label: 'Confluence', ok: false, count: 0, note: fail(c.reason) },
     g.status === 'fulfilled'
       ? {
           source: 'graph',
@@ -51,27 +45,56 @@ export async function drill(p: DrillInput): Promise<Drill> {
           count: g.value.items.length,
           note: [
             `${g.value.counts.work} open work items, ${g.value.counts.pages} pages, ${g.value.counts.owned} projects or goals they own`,
-            g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'no teams found',
+            g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'not on any team',
             ...g.value.errors,
           ].join('; '),
         }
       : { source: 'graph', label: 'Teamwork Graph', ok: false, count: 0, note: fail(g.reason) },
+    j.status === 'fulfilled'
+      ? { source: 'jira', label: 'Jira', ok: true, count: j.value.items.length, note: `${j.value.issueCount} open issues assigned` }
+      : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
+    c.status === 'fulfilled'
+      ? { source: 'confluence', label: 'Confluence', ok: true, count: c.value.items.length, note: `${c.value.pageCount} recent pages they wrote or edited` }
+      : { source: 'confluence', label: 'Confluence', ok: false, count: 0, note: fail(c.reason) },
   ];
-  const items = mergeItems([
+  const merged = mergeItems([
     ...(j.status === 'fulfilled' ? j.value.items : []),
     ...(c.status === 'fulfilled' ? c.value.items : []),
     ...(g.status === 'fulfilled' ? g.value.items : []),
   ]);
+  const containerPeers = { ...(j.status === 'fulfilled' ? j.value.peers : {}), ...(c.status === 'fulfilled' ? c.value.peers : {}) };
+  const teammates = g.status === 'fulfilled' ? g.value.teammates : [];
+  const near = g.status === 'fulfilled' ? g.value.neighbourhood : new Set<string>();
+  for (const i of merged) if (near.has(i.id) && !i.sources.includes('graph')) i.sources.push('graph');
+  const pool = candidatePool(p.accountId, merged, containerPeers, teammates);
+  const co = await graphCoverage(graph, merged, pool).catch(() => undefined);
+  const graphSource = sources.find((s) => s.source === 'graph');
+  if (co && graphSource) graphSource.note = `${near.size} objects in their graph, ${co.links} also in ${co.checked} colleagues' graphs; ${graphSource.note ?? ''}`;
   return runDrill(
     {
       person,
-      items,
-      containerPeers: { ...(j.status === 'fulfilled' ? j.value.peers : {}), ...(c.status === 'fulfilled' ? c.value.peers : {}) },
-      teammates: g.status === 'fulfilled' ? g.value.teammates : [],
+      items: co?.items ?? merged,
+      containerPeers,
+      teammates,
       sources,
     },
     { from: p.from, to: p.to },
   );
+}
+
+/** The people most often near the person's work, whose Teamwork Graph neighbourhoods are worth checking. */
+function candidatePool(outId: string, items: WorkItem[], peers: Signals['containerPeers'], teammates: Signals['teammates'], max = 12): Person[] {
+  const seen = new Map<string, { person: Person; n: number }>();
+  const bump = (person: Person, n: number) => {
+    if (person.accountId === outId) return;
+    const e = seen.get(person.accountId) ?? { person, n: 0 };
+    e.n += n;
+    seen.set(person.accountId, e);
+  };
+  for (const i of items) for (const t of i.touchedBy) bump(t, 2);
+  for (const list of Object.values(peers)) for (const { person } of list) bump(person, 1);
+  for (const { person } of teammates) bump(person, 3);
+  return [...seen.values()].sort((a, b) => b.n - a.n).slice(0, max).map((e) => e.person);
 }
 
 const resolver = new Resolver();
@@ -87,6 +110,7 @@ resolver.define('me', async ({ context }) => {
 });
 
 resolver.define('drill', async ({ payload }) => drill(payload as DrillInput));
+
 
 resolver.define('spaces', async () => listSpaces(conf));
 

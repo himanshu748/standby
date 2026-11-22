@@ -93,7 +93,7 @@ export function App() {
           <span className="brand-dot" aria-hidden="true" />
           Standby
         </span>
-        <span className="top-note">Bus-factor fire drill for Jira and Confluence</span>
+        <span className="top-note">Bus-factor fire drill on Teamwork Graph</span>
       </header>
 
       <section className="hero" aria-labelledby="hero-title">

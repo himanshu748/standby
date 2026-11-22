@@ -45,11 +45,11 @@ await f.waitForSelector('[role=option]');
 await sleep(1200);
 await f.click('[role=option]');
 await sleep(1200);
-cue('Standby reads their Jira issues, Confluence pages and Teamwork Graph, as you');
+cue('Standby walks their Teamwork Graph, then the graphs of colleagues around them, as you');
 await f.click('.btn.run');
 await f.waitForSelector('.kpis', { timeout: 60000 });
 await sleep(2500);
-cue('Every item lands on a ring: red means nobody else is on record, amber one other person, green covered');
+cue('Work that also sits in a colleague\'s graph counts as cover: red stalls, amber thin, green covered');
 await sleep(4000);
 await shot('02-drill');
 cue('Hover any node to see the work behind it');
@@ -75,7 +75,7 @@ await shot('05-confirm-reassign');
 await f.click('dialog .btn:not(.hot)');
 if (pick) await pick.uncheck();
 await sleep(800);
-cue('Each source reports its own status, so a gap is never silent');
+cue('Teamwork Graph found the shared-work links; each source reports its own status');
 await f.click('.kpi-stalls');
 await f.evaluate(() => window.scrollTo({ top: 760, behavior: 'smooth' }));
 await sleep(3500);
@@ -104,7 +104,7 @@ if (id) {
   await sleep(3000);
   await shot('09-handover-draft');
 }
-cue('Standby: a bus-factor fire drill for Jira and Confluence');
+cue('Standby: a bus-factor fire drill built on Teamwork Graph');
 await sleep(3500);
 if (ff) { ff.stdin.write('q'); await new Promise((r) => ff.on('close', r)); }
 

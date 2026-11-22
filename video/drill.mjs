@@ -1,0 +1,21 @@
+import { chromium } from 'playwright';
+const APP = 'https://one-atlas-obka.atlassian.net/jira/apps/689d38fb-0df1-46ef-8f81-be74c1ad79c2/ce3579a4-d9f6-4580-b248-0868f35301cb';
+const PERSON = process.argv[2] ?? 'Alana';
+const b = await chromium.connectOverCDP('http://localhost:29229');
+const page = b.contexts()[0].pages()[0];
+await page.goto(APP);
+let f;
+for (let i = 0; i < 60 && !f; i++) { f = page.frames().find((x) => x.url().includes('cdn.prod.atlassian-dev.net')); if (!f) await page.waitForTimeout(500); }
+await f.waitForSelector('.picker-input');
+await f.type('.picker-input', PERSON, { delay: 60 });
+await f.waitForSelector('[role=option]');
+await f.click('[role=option]');
+const t0 = Date.now();
+await f.click('.btn.run');
+await f.waitForSelector('.kpis', { timeout: 90000 });
+console.log('secs', (Date.now() - t0) / 1000); await page.waitForTimeout(4000);
+console.log(await f.evaluate(() => [...document.querySelectorAll('.kpi')].map((k) => k.textContent).join(' | ')));
+console.log(await f.evaluate(() => [...document.querySelectorAll('.sources li')].map((k) => k.textContent).join('\n')));
+console.log(await f.evaluate(() => [...document.querySelectorAll('.bench li, .bench button')].slice(0, 6).map((k) => k.textContent).join(' | ')));
+console.log('graphChips', await f.evaluate(() => document.querySelectorAll('.chip-graph').length));
+await b.close();

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { buildPages, parseSearch } from '../src/adapters/confluence';
-import { graphSignals, parseAssigned, parseContent, parseOwns } from '../src/adapters/graph';
+import { coLinks, graphCoverage, graphSignals, parseAssigned, parseOwns, parseWork } from '../src/adapters/graph';
 import { parseIssues, parseLeads, parsePeers } from '../src/adapters/jira';
 import { toPerson } from '../src/adapters/people';
 
@@ -79,8 +79,16 @@ describe('teamwork graph', () => {
       ALANA,
     );
     expect(assigned).toEqual([expect.objectContaining({ id: 'jira:SALES-27', sources: ['graph'], touchedBy: [{ accountId: 'm', name: 'Mitch Davis', how: 'reported SALES-27' }] })]);
-    const content = parseContent({ atlassianUserContent: { edges: [{ node: { __typename: 'ConfluencePage', pageId: '9', title: 'Runbook', webUrl: 'w', space: { key: 'HR', name: 'Human Resources' }, owner: u(ALANA, 'Alana Grant'), lastEditor: u('c', 'Cassi Owens') } }] } }, ALANA);
-    expect(content[0]).toMatchObject({ id: 'conf:9', container: { id: 'conf:HR' }, touchedBy: [{ name: 'Cassi Owens', how: 'last edited "Runbook"' }] });
+    const work = parseWork({ atlassianUserWorkQuery: { edges: [
+      { node: { __typename: 'ConfluencePage', pageId: '9', title: 'Runbook', webUrl: 'w', space: { key: 'HR', name: 'Human Resources' }, owner: u(ALANA, 'Alana Grant'), lastEditor: u('c', 'Cassi Owens') } },
+      { node: { __typename: 'ConfluenceBlogPost', id: 'ari:cloud:confluence:x:blogpost/77', title: 'Payroll update', lastEditor: u(ALANA, 'Alana Grant') } },
+      { node: { __typename: 'ConfluencePage', pageId: '5', title: 'Watched only', owner: u('c', 'Cassi Owens') } },
+      { node: { __typename: 'JiraWorkItem', key: 'LEO-54', summary: 'Launch', status: { name: 'Done', statusCategory: { key: 'done' } } } },
+      null,
+      { node: { __typename: 'ConfluenceComment', id: 'c1' } },
+    ] } }, ALANA);
+    expect(work.map((i) => i.id)).toEqual(['conf:9', 'conf:77']);
+    expect(work[0]).toMatchObject({ container: { id: 'conf:HR' }, roles: ['page owner'], touchedBy: [{ name: 'Cassi Owens', how: 'last edited "Runbook"' }] });
     expect(parseOwns({ atlassianUserGoalsAndProjects: { edges: [{ node: { __typename: 'AtlassianGoal', id: 'g', name: 'Ship v2', url: 'u' } }] } })[0]).toMatchObject({ kind: 'goal', roles: ['goal owner'] });
   });
   it('keeps going when one query fails and reports why', async () => {
@@ -94,5 +102,21 @@ describe('teamwork graph', () => {
     expect(r.errors).toEqual(['scope missing']);
     expect(r.teams).toEqual(['Revenue']);
     expect(r.counts.work).toBe(r.items.filter((i) => i.kind === 'issue').length);
+  });
+  it('turns overlapping Teamwork Graph neighbourhoods into coverage', async () => {
+    const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
+    const mitch = u('m', 'Mitch Davis');
+    const r = coLinks([page], [{ person: mitch, ids: new Set(['conf:9']) }, { person: u('c', 'Cassi Owens'), ids: new Set(['conf:1']) }]);
+    expect(r.links).toBe(1);
+    expect(r.items[0]!.touchedBy).toEqual([{ ...mitch, how: 'works on it too, per Teamwork Graph' }]);
+    const pages: string[] = [];
+    const g = await graphCoverage(async (_q, v) => {
+      pages.push(String(v.after ?? 'first'));
+      return v.after
+        ? { data: { atlassianUserWorkQuery: { pageInfo: { hasNextPage: false }, edges: [{ node: { __typename: 'ConfluencePage', pageId: '9' } }] } } }
+        : { data: { atlassianUserWorkQuery: { pageInfo: { hasNextPage: true, endCursor: 'c2' }, edges: [{ node: { __typename: 'ConfluencePage', pageId: '3' } }] } } };
+    }, [page], [mitch]);
+    expect(pages).toEqual(['first', 'c2']);
+    expect(g).toMatchObject({ links: 1, checked: 1 });
   });
 });

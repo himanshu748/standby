@@ -1,6 +1,7 @@
 import type { Person, Touch, WorkItem } from '../core/model';
 import type { Graph, Json } from './http';
 import { toPerson } from './people';
+import { mergeItems as mergeLinked } from '../core/drill';
 
 const user = (accountId: string) => `ari:cloud:identity::user/${accountId}`;
 const U = '... on AtlassianUser { accountId name }';
@@ -9,17 +10,28 @@ export const QUERIES = {
   teams: `query standby_teams($u: ID!) { atlassianUserInTeams(userId: $u, first: 5) { edges { node { ... on AtlassianTeam { id displayName } } } } }`,
   members: `query standby_members($t: ID!) { atlassianTeamMembers(teamAri: $t, first: 25) { edges { node { ${U} } } } }`,
   assigned: `query standby_assigned($u: ID!) { atlassianUserAssignedJiraWorkItems(userId: $u, first: 25) { edges { node { ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } reporter { ${U} } } } } } }`,
-  content: `query standby_content($u: ID!) { atlassianUserContent(userId: $u, roles: [CREATED], since: "P365D", first: 25) { edges { node { __typename ... on ConfluencePage { pageId title webUrl lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } } } } }`,
+  work: `query standby_work($u: ID!, $after: String) { atlassianUserWorkQuery(userId: $u, first: 25, after: $after) { pageInfo { hasNextPage endCursor } edges { node { __typename ... on ConfluencePage { pageId title webUrl lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } ... on ConfluenceBlogPost { id title lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } assignee { ${U} } reporter { ${U} } } } } } }`,
   owns: `query standby_owns($u: ID!) { atlassianUserGoalsAndProjects(userId: $u, roles: [OWNS], first: 25) { edges { node { __typename ... on AtlassianProject { id key name url state dueDateEndedAt } ... on AtlassianGoal { id key name url dueDateEndedAt } } } } }`,
 };
 
-const nodes = (data: Json, field: string): Json[] => (data?.[field]?.edges ?? []).map((e: Json) => e.node).filter(Boolean);
+const nodes = (data: Json, field: string): Json[] => (data?.[field]?.edges ?? []).map((e: Json) => e?.node).filter(Boolean);
+
+const done = (n: Json) => /done/i.test(n.status?.statusCategory?.key ?? '');
+const tail = (ari: string | undefined) => ari?.split('/').pop();
+
+/** The id an object from atlassianUserWorkQuery gets in the merged model, so Graph, Jira and Confluence copies line up. */
+export function workId(n: Json): string | undefined {
+  if (n.__typename === 'JiraWorkItem' && n.key) return `jira:${n.key}`;
+  if (n.__typename === 'ConfluencePage' && n.pageId) return `conf:${n.pageId}`;
+  if (n.__typename === 'ConfluenceBlogPost' && tail(n.id)) return `conf:${tail(n.id)}`;
+  return undefined;
+}
 
 const graphPerson = (u: Json): Person | undefined => (u?.accountId && u?.name ? toPerson({ accountId: u.accountId, displayName: u.name }) : undefined);
 
 export function parseAssigned(data: Json, outId: string): WorkItem[] {
   return nodes(data, 'atlassianUserAssignedJiraWorkItems')
-    .filter((n) => n.key && !/done/i.test(n.status?.statusCategory?.key ?? ''))
+    .filter((n) => n.key && !done(n))
     .map((n): WorkItem => {
       const reporter = graphPerson(n.reporter);
       const touchedBy: Touch[] = reporter && reporter.accountId !== outId ? [{ ...reporter, how: `reported ${n.key}` }] : [];
@@ -30,20 +42,33 @@ export function parseAssigned(data: Json, outId: string): WorkItem[] {
     });
 }
 
-export function parseContent(data: Json, outId: string): WorkItem[] {
-  return nodes(data, 'atlassianUserContent')
-    .filter((n) => n.__typename === 'ConfluencePage' && n.pageId)
-    .map((n): WorkItem => {
-      const touchedBy: Touch[] = [];
-      for (const [u, how] of [[n.owner, 'owns'], [n.lastEditor, 'last edited']] as const) {
-        const p = graphPerson(u);
-        if (p && p.accountId !== outId && !touchedBy.some((t) => t.accountId === p.accountId)) touchedBy.push({ ...p, how: `${how} "${n.title}"` });
-      }
-      const item: WorkItem = { id: `conf:${n.pageId}`, kind: 'page', title: n.title, url: n.webUrl, roles: ['page creator'], sources: ['graph'], touchedBy };
-      if (n.space?.key) item.container = { id: `conf:${n.space.key}`, name: n.space.name ?? n.space.key };
-      if (n.lastUpdatedAt) item.updatedAt = n.lastUpdatedAt;
-      return item;
-    });
+/** Everything Teamwork Graph links to the person: pages and posts they created, edit, watch or are mentioned in, and Jira work. */
+export function parseWork(data: Json, outId: string): WorkItem[] {
+  const out: WorkItem[] = [];
+  for (const n of nodes(data, 'atlassianUserWorkQuery')) {
+    const id = workId(n);
+    if (!id || out.some((i) => i.id === id)) continue;
+    const issue = n.__typename === 'JiraWorkItem';
+    if (issue && done(n)) continue;
+    const title = (issue ? n.summary : n.title) ?? n.key ?? 'Untitled';
+    const touchedBy: Touch[] = [];
+    const pairs = issue ? ([[n.assignee, 'is assigned'], [n.reporter, 'reported']] as const) : ([[n.owner, 'owns'], [n.lastEditor, 'last edited']] as const);
+    for (const [u, how] of pairs) {
+      const p = graphPerson(u);
+      if (p && p.accountId !== outId && !touchedBy.some((t) => t.accountId === p.accountId)) touchedBy.push({ ...p, how: `${how} ${issue ? n.key : `"${title}"`}` });
+    }
+    // A page they only watch or were mentioned on is context, not their work: keep pages they own or last edited.
+    const roles = issue ? ['linked issue'] : [...(n.owner?.accountId === outId ? ['page owner'] : []), ...(n.lastEditor?.accountId === outId ? ['last editor'] : [])];
+    if (!roles.length) continue;
+    const item: WorkItem = { id, kind: issue ? 'issue' : 'page', title, url: n.webUrl ?? '', roles, sources: ['graph'], touchedBy };
+    if (issue) item.key = n.key;
+    if (n.space?.key) item.container = { id: `conf:${n.space.key}`, name: n.space.name ?? n.space.key };
+    if (n.dueAt) item.dueAt = n.dueAt;
+    if (n.status?.name) item.status = n.status.name;
+    if (n.lastUpdatedAt) item.updatedAt = n.lastUpdatedAt;
+    out.push(item);
+  }
+  return out;
 }
 
 export function parseOwns(data: Json): WorkItem[] {
@@ -68,18 +93,56 @@ export function parseOwns(data: Json): WorkItem[] {
 
 async function run(graph: Graph, query: string, vars: Record<string, unknown>): Promise<Json> {
   const res = await graph(query, vars);
-  if (res.errors?.length) throw new Error(res.errors.map((e) => e.message).join('; '));
+  // A null node inside a connection only drops that edge; keep the rest of the page.
+  if (res.errors?.length && !res.data) throw new Error(res.errors.map((e) => e.message).join('; '));
   return res.data ?? {};
+}
+
+/** Pages through atlassianUserWorkQuery, merging every page into one connection. */
+async function workOf(graph: Graph, u: string, pages: number): Promise<Json> {
+  const edges: Json[] = [];
+  let after: string | undefined;
+  for (let i = 0; i < pages; i++) {
+    const conn = (await run(graph, QUERIES.work, after ? { u, after } : { u })).atlassianUserWorkQuery;
+    edges.push(...(conn?.edges ?? []));
+    if (!conn?.pageInfo?.hasNextPage || !conn.pageInfo.endCursor) break;
+    after = conn.pageInfo.endCursor;
+  }
+  return { atlassianUserWorkQuery: { edges } };
+}
+
+/** Adds a touch for every candidate whose own Teamwork Graph neighbourhood contains the item. */
+export function coLinks(items: WorkItem[], neighbourhoods: { person: Person; ids: Set<string> }[]): { items: WorkItem[]; links: number } {
+  let links = 0;
+  const next = items.map((item) => {
+    const extra: Touch[] = [];
+    for (const { person, ids } of neighbourhoods) {
+      if (!ids.has(item.id) || item.touchedBy.some((t) => t.accountId === person.accountId)) continue;
+      extra.push({ ...person, how: 'works on it too, per Teamwork Graph' });
+      links++;
+    }
+    return extra.length ? { ...item, touchedBy: [...item.touchedBy, ...extra] } : item;
+  });
+  return { items: next, links };
+}
+
+/** Second pass: whose Teamwork Graph work overlaps the person's, turning shared objects into coverage. */
+export async function graphCoverage(graph: Graph, items: WorkItem[], candidates: Person[]) {
+  const results = await Promise.allSettled(candidates.map((p) => workOf(graph, user(p.accountId), 2)));
+  const neighbourhoods = results.flatMap((r, i) =>
+    r.status === 'fulfilled' ? [{ person: candidates[i]!, ids: new Set(nodes(r.value, 'atlassianUserWorkQuery').map(workId).filter((x): x is string => !!x)) }] : [],
+  );
+  return { ...coLinks(items, neighbourhoods), checked: neighbourhoods.length };
 }
 
 /** Each query is independent: one failing (a missing scope, a preview change) must not hide the others. */
 export async function graphSignals(graph: Graph, outId: string) {
   const u = user(outId);
   const settle = <T>(p: Promise<T>) => p.then((v) => ({ ok: true as const, v }), (e: Error) => ({ ok: false as const, e: e.message }));
-  const [teams, assigned, content, owns] = await Promise.all([
+  const [teams, assigned, work, owns] = await Promise.all([
     settle(run(graph, QUERIES.teams, { u })),
     settle(run(graph, QUERIES.assigned, { u })),
-    settle(run(graph, QUERIES.content, { u })),
+    settle(workOf(graph, u, 4)),
     settle(run(graph, QUERIES.owns, { u })),
   ]);
   const teamNodes = teams.ok ? nodes(teams.v, 'atlassianUserInTeams') : [];
@@ -92,10 +155,10 @@ export async function graphSignals(graph: Graph, outId: string) {
       if (p && p.accountId !== outId && !teammates.some((t) => t.person.accountId === p.accountId)) teammates.push({ person: p, team: teamNodes[i].displayName });
     }
   });
-  const work = assigned.ok ? parseAssigned(assigned.v, outId) : [];
-  const pages = content.ok ? parseContent(content.v, outId) : [];
+  const linked = mergeLinked([...(assigned.ok ? parseAssigned(assigned.v, outId) : []), ...(work.ok ? parseWork(work.v, outId) : [])]);
   const owned = owns.ok ? parseOwns(owns.v) : [];
-  const items = [...work, ...pages, ...owned];
-  const errors = [teams, assigned, content, owns].filter((r) => !r.ok).map((r) => (r.ok ? '' : r.e));
-  return { items, teammates, teams: teamNodes.map((t) => t.displayName as string), errors, counts: { work: work.length, pages: pages.length, owned: owned.length } };
+  const items = [...linked, ...owned];
+  const neighbourhood = new Set(work.ok ? nodes(work.v, 'atlassianUserWorkQuery').map(workId).filter((x): x is string => !!x) : []);
+  const errors = [teams, assigned, work, owns].filter((r) => !r.ok).map((r) => (r.ok ? '' : r.e));
+  return { items, neighbourhood, teammates, teams: teamNodes.map((t) => t.displayName as string), errors, counts: { work: linked.filter((i) => i.kind === 'issue').length, pages: linked.filter((i) => i.kind === 'page').length, owned: owned.length } };
 }

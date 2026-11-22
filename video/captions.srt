@@ -1,51 +1,51 @@
 1
-00:00:00,000 --> 00:00:03,809
+00:00:00,000 --> 00:00:03,843
 Standby: if this person is out, what stalls?
 
 2
-00:00:03,809 --> 00:00:08,351
+00:00:03,843 --> 00:00:09,025
 Pick any real teammate on the site and the days they will be away
 
 3
-00:00:08,351 --> 00:00:13,400
-Standby reads their Jira issues, Confluence pages and Teamwork Graph, as you
+00:00:09,025 --> 00:00:16,458
+Standby walks their Teamwork Graph, then the graphs of colleagues around them, as you
 
 4
-00:00:13,400 --> 00:00:17,817
-Every item lands on a ring: red means nobody else is on record, amber one other person, green covered
+00:00:16,458 --> 00:00:20,876
+Work that also sits in a colleague's graph counts as cover: red stalls, amber thin, green covered
 
 5
-00:00:17,817 --> 00:00:23,364
+00:00:20,876 --> 00:00:26,638
 Hover any node to see the work behind it
 
 6
-00:00:23,364 --> 00:00:27,046
+00:00:26,638 --> 00:00:30,258
 Backups come from people who already work in the same projects, spaces and teams
 
 7
-00:00:27,046 --> 00:00:29,706
+00:00:30,258 --> 00:00:32,837
 Click a count to focus on what stalls
 
 8
-00:00:29,706 --> 00:00:35,557
+00:00:32,837 --> 00:00:38,350
 Each card says why it is urgent and who can pick it up
 
 9
-00:00:35,557 --> 00:00:40,636
+00:00:38,350 --> 00:00:43,062
 Reassigning is opt-in per issue, and nothing changes without a confirmation
 
 10
-00:00:40,636 --> 00:00:45,259
-Each source reports its own status, so a gap is never silent
+00:00:43,062 --> 00:00:47,780
+Teamwork Graph found the shared-work links; each source reports its own status
 
 11
-00:00:45,259 --> 00:00:54,499
+00:00:47,780 --> 00:00:59,785
 One confirmation drafts the handover page in Confluence
 
 12
-00:00:54,499 --> 00:01:11,207
+00:00:59,785 --> 00:01:16,532
 The draft lists every item with its suggested backup, ready to edit and publish
 
 13
-00:01:11,207 --> 00:01:14,849
-Standby: a bus-factor fire drill for Jira and Confluence
+00:01:16,532 --> 00:01:20,077
+Standby: a bus-factor fire drill built on Teamwork Graph
