@@ -162,8 +162,8 @@ button, input, select { font: inherit; color: inherit; }
 .toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .toggle input { accent-color: var(--stall); width: 16px; height: 16px; }
 .empty { padding: 24px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); }
-.receipts { display: grid; gap: 6px; }
-.receipts p { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--ink-2); }
+.receipts { position: fixed; z-index: 5; left: 50%; bottom: 96px; transform: translateX(-50%); display: grid; gap: 6px; width: min(560px, calc(100vw - 24px)); max-height: 40vh; overflow: auto; animation: dock 0.5s var(--ease) both; }
+.receipts p { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--ink-2); border: 1px solid var(--line); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45); }
 .receipts .ok { border-left: 3px solid var(--covered); } .receipts .warn { border-left: 3px solid var(--stall); }
 
 .dock { position: fixed; z-index: 4; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: end; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 20px; background: rgba(18, 21, 29, 0.88); backdrop-filter: blur(14px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: dock 0.7s 0.4s var(--ease) both; max-width: calc(100vw - 24px); }
@@ -179,6 +179,7 @@ button, input, select { font: inherit; color: inherit; }
 .confirm-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
 
 @media (max-width: 900px) {
+  .receipts { bottom: 180px; }
   .ask { grid-template-columns: 1fr; }
   .dates { display: grid; grid-template-columns: 1fr 1fr; }
   .result { grid-template-columns: 1fr; }
