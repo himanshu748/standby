@@ -1,0 +1,95 @@
+{
+ "values": [
+  {
+   "id": "10019",
+   "key": "CLSD",
+   "name": "Commercial Legal Service Desk",
+   "lead": {
+    "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+    "accountId": "60ad2d2a06bf0c006a42fa84",
+    "accountType": "atlassian",
+    "avatarUrls": {
+     "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+     "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+     "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+     "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+    },
+    "displayName": "Alana Grant",
+    "active": true
+   }
+  },
+  {
+   "id": "10124",
+   "key": "CX",
+   "name": "Core Experience",
+   "lead": {
+    "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=712020:a0f15078-5742-4217-927c-fb785ca7e19c",
+    "accountId": "712020:a0f15078-5742-4217-927c-fb785ca7e19c",
+    "accountType": "atlassian",
+    "avatarUrls": {
+     "48x48": "https://secure.gravatar.com/avatar/e5be4284a7e80e619c7e06c275dc498f?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FC-5.png",
+     "24x24": "https://secure.gravatar.com/avatar/e5be4284a7e80e619c7e06c275dc498f?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FC-5.png",
+     "16x16": "https://secure.gravatar.com/avatar/e5be4284a7e80e619c7e06c275dc498f?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FC-5.png",
+     "32x32": "https://secure.gravatar.com/avatar/e5be4284a7e80e619c7e06c275dc498f?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FC-5.png"
+    },
+    "displayName": "config-fy26-bot",
+    "active": true
+   }
+  },
+  {
+   "id": "10016",
+   "key": "DESIGN",
+   "name": "Design",
+   "lead": {
+    "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+    "accountId": "60ad2d2a06bf0c006a42fa84",
+    "accountType": "atlassian",
+    "avatarUrls": {
+     "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+     "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+     "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+     "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+    },
+    "displayName": "Alana Grant",
+    "active": true
+   }
+  },
+  {
+   "id": "10018",
+   "key": "ENGS",
+   "name": "Engineering Support",
+   "lead": {
+    "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+    "accountId": "60ad2d2a06bf0c006a42fa84",
+    "accountType": "atlassian",
+    "avatarUrls": {
+     "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+     "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+     "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+     "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+    },
+    "displayName": "Alana Grant",
+    "active": true
+   }
+  },
+  {
+   "id": "10022",
+   "key": "EO",
+   "name": "Employee Onboarding",
+   "lead": {
+    "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+    "accountId": "60ad2d2a06bf0c006a42fa84",
+    "accountType": "atlassian",
+    "avatarUrls": {
+     "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+     "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+     "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+     "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+    },
+    "displayName": "Alana Grant",
+    "active": true
+   }
+  }
+ ],
+ "isLast": true
+}

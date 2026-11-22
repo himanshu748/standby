@@ -1,0 +1,2171 @@
+{
+ "issues": [
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10129",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10129",
+   "key": "MS-1",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 17,
+    "total": 17,
+    "histories": [
+     {
+      "id": "55740",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-04-06T12:19:25.945-0400"
+     },
+     {
+      "id": "242633",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5cb4ae0e4b97ab11a18e00c7",
+       "accountId": "5cb4ae0e4b97ab11a18e00c7",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5cb4ae0e4b97ab11a18e00c7/0c3fec9a-029d-422f-8586-89bc4ac2fe7e/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5cb4ae0e4b97ab11a18e00c7/0c3fec9a-029d-422f-8586-89bc4ac2fe7e/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5cb4ae0e4b97ab11a18e00c7/0c3fec9a-029d-422f-8586-89bc4ac2fe7e/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5cb4ae0e4b97ab11a18e00c7/0c3fec9a-029d-422f-8586-89bc4ac2fe7e/32"
+       },
+       "displayName": "Atlassian Assist",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2022-04-06T12:19:25.933-0400"
+     },
+     {
+      "id": "10522",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:18:59.959-0400"
+     },
+     {
+      "id": "10521",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:13:47.479-0400"
+     },
+     {
+      "id": "10519",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:13:11.884-0400"
+     },
+     {
+      "id": "10516",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:12:52.631-0400"
+     },
+     {
+      "id": "10513",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:12:33.923-0400"
+     },
+     {
+      "id": "10511",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:12:16.791-0400"
+     },
+     {
+      "id": "10508",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:11:52.680-0400"
+     },
+     {
+      "id": "10505",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:11:31.358-0400"
+     },
+     {
+      "id": "10502",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:11:13.547-0400"
+     },
+     {
+      "id": "10499",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:11:00.682-0400"
+     },
+     {
+      "id": "10496",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:10:48.058-0400"
+     },
+     {
+      "id": "10493",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:10:32.359-0400"
+     },
+     {
+      "id": "10490",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:10:16.615-0400"
+     },
+     {
+      "id": "10487",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:09:58.923-0400"
+     },
+     {
+      "id": "10484",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-28T01:09:18.772-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "New Launch",
+    "duedate": "2021-09-06",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10012",
+     "id": "10012",
+     "key": "MS",
+     "name": "Marketing Services",
+     "projectTypeKey": "service_desk",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10406",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10406?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10406?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10406?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10129/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2022-04-06T12:19:25.933-0400",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10000",
+     "description": "",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "To Do",
+     "id": "10000",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/2",
+      "id": 2,
+      "key": "new",
+      "colorName": "blue-gray",
+      "name": "To Do"
+     }
+    }
+   }
+  },
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10164",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10164",
+   "key": "MOBL-12",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 34,
+    "total": 34,
+    "histories": [
+     {
+      "id": "124074",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T23:14:57.328-0400"
+     },
+     {
+      "id": "124073",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T23:09:26.370-0400"
+     },
+     {
+      "id": "124020",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T21:04:19.180-0400"
+     },
+     {
+      "id": "124017",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:50.339-0400"
+     },
+     {
+      "id": "124016",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:50.298-0400"
+     },
+     {
+      "id": "124015",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:36.788-0400"
+     },
+     {
+      "id": "124013",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:34.508-0400"
+     },
+     {
+      "id": "124010",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:31.692-0400"
+     },
+     {
+      "id": "124009",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:35:21.805-0400"
+     },
+     {
+      "id": "124007",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:33:56.128-0400"
+     },
+     {
+      "id": "124004",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-04-13T20:32:48.547-0400"
+     },
+     {
+      "id": "121366",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T19:48:32.914-0400"
+     },
+     {
+      "id": "121223",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:36:41.079-0400"
+     },
+     {
+      "id": "121220",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:36:40.840-0400"
+     },
+     {
+      "id": "121207",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:18:57.992-0400"
+     },
+     {
+      "id": "43292",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-01-24T15:37:12.360-0500"
+     },
+     {
+      "id": "28782",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-11-02T13:13:21.843-0400"
+     },
+     {
+      "id": "22402",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-28T12:18:01.849-0400"
+     },
+     {
+      "id": "22396",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-28T12:17:46.867-0400"
+     },
+     {
+      "id": "22389",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-28T12:17:31.983-0400"
+     },
+     {
+      "id": "16514",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-01T15:00:56.241-0400"
+     },
+     {
+      "id": "16508",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-01T15:00:37.588-0400"
+     },
+     {
+      "id": "16502",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-09-01T15:00:24.038-0400"
+     },
+     {
+      "id": "11299",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-08-04T16:32:57.531-0400"
+     },
+     {
+      "id": "11296",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-08-04T16:32:38.609-0400"
+     },
+     {
+      "id": "11293",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-08-04T16:32:17.707-0400"
+     },
+     {
+      "id": "11290",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2021-08-04T16:31:10.392-0400"
+     },
+     {
+      "id": "10748",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:20:19.904-0400"
+     },
+     {
+      "id": "10719",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:12:29.055-0400"
+     },
+     {
+      "id": "10718",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:12:25.922-0400"
+     },
+     {
+      "id": "10688",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:04:27.991-0400"
+     },
+     {
+      "id": "10687",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:04:27.932-0400"
+     },
+     {
+      "id": "10621",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:01:01.687-0400"
+     },
+     {
+      "id": "10613",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T16:59:59.653-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "Read handwriting on signature screen",
+    "duedate": "2023-04-03",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10010",
+     "id": "10010",
+     "key": "MOBL",
+     "name": "Mobile Dev",
+     "projectTypeKey": "software",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10164/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2023-04-13T23:14:57.318-0400",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10027",
+     "description": "This status is managed internally by Jira Software",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "Architecture Review",
+     "id": "10027",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/4",
+      "id": 4,
+      "key": "indeterminate",
+      "colorName": "yellow",
+      "name": "In Progress"
+     }
+    }
+   }
+  },
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10173",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10173",
+   "key": "MOBL-21",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 7,
+    "total": 7,
+    "histories": [
+     {
+      "id": "121206",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:18:57.646-0400"
+     },
+     {
+      "id": "28794",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-11-02T13:14:53.491-0400"
+     },
+     {
+      "id": "10737",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:15:11.715-0400"
+     },
+     {
+      "id": "10735",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:14:56.274-0400"
+     },
+     {
+      "id": "10655",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:03:21.232-0400"
+     },
+     {
+      "id": "10654",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:03:21.150-0400"
+     },
+     {
+      "id": "10633",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:02:31.649-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "Firefox performance improvement",
+    "duedate": "2023-04-29",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10010",
+     "id": "10010",
+     "key": "MOBL",
+     "name": "Mobile Dev",
+     "projectTypeKey": "software",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10173/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2023-03-30T00:18:57.639-0400",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10000",
+     "description": "",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "To Do",
+     "id": "10000",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/2",
+      "id": 2,
+      "key": "new",
+      "colorName": "blue-gray",
+      "name": "To Do"
+     }
+    }
+   }
+  },
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10176",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10176",
+   "key": "MOBL-24",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 9,
+    "total": 9,
+    "histories": [
+     {
+      "id": "193210",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2024-04-24T12:27:29.126-0400"
+     },
+     {
+      "id": "121210",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:18:59.378-0400"
+     },
+     {
+      "id": "28797",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-11-02T13:15:10.482-0400"
+     },
+     {
+      "id": "10742",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:15:45.428-0400"
+     },
+     {
+      "id": "10741",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:15:42.506-0400"
+     },
+     {
+      "id": "10649",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:03:10.202-0400"
+     },
+     {
+      "id": "10648",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:03:10.083-0400"
+     },
+     {
+      "id": "10636",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:02:38.471-0400"
+     },
+     {
+      "id": "10635",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:02:38.278-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "After logo on home screen",
+    "duedate": "2023-05-01",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10010",
+     "id": "10010",
+     "key": "MOBL",
+     "name": "Mobile Dev",
+     "projectTypeKey": "software",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10176/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2024-04-24T12:27:29.048-0400",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10000",
+     "description": "",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "To Do",
+     "id": "10000",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/2",
+      "id": 2,
+      "key": "new",
+      "colorName": "blue-gray",
+      "name": "To Do"
+     }
+    }
+   }
+  },
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10168",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10168",
+   "key": "MOBL-16",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 12,
+    "total": 12,
+    "histories": [
+     {
+      "id": "242995",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2026-02-06T08:20:53.973-0500"
+     },
+     {
+      "id": "121208",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-30T00:18:58.356-0400"
+     },
+     {
+      "id": "43294",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-01-24T15:37:12.895-0500"
+     },
+     {
+      "id": "28790",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-11-02T13:14:13.905-0400"
+     },
+     {
+      "id": "10755",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:20:51.202-0400"
+     },
+     {
+      "id": "10750",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:20:23.206-0400"
+     },
+     {
+      "id": "10725",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:13:26.121-0400"
+     },
+     {
+      "id": "10724",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:13:24.018-0400"
+     },
+     {
+      "id": "10676",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:04:04.877-0400"
+     },
+     {
+      "id": "10675",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:04:04.733-0400"
+     },
+     {
+      "id": "10625",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:01:13.133-0400"
+     },
+     {
+      "id": "10604",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T16:59:59.373-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "Alter logo on Home screen",
+    "duedate": "2023-06-05",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10010",
+     "id": "10010",
+     "key": "MOBL",
+     "name": "Mobile Dev",
+     "projectTypeKey": "software",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10168/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2026-02-06T08:20:53.973-0500",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10028",
+     "description": "This status is managed internally by Jira Software",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "Testing",
+     "id": "10028",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/4",
+      "id": 4,
+      "key": "indeterminate",
+      "colorName": "yellow",
+      "name": "In Progress"
+     }
+    }
+   }
+  },
+  {
+   "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+   "id": "10180",
+   "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10180",
+   "key": "MOBL-28",
+   "changelog": {
+    "startAt": 0,
+    "maxResults": 15,
+    "total": 15,
+    "histories": [
+     {
+      "id": "117827",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=5f51c0c59a0131004155b56e",
+       "accountId": "5f51c0c59a0131004155b56e",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/F-6.png"
+       },
+       "displayName": "field-demo-bot",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2023-03-13T12:53:36.736-0400"
+     },
+     {
+      "id": "101541",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2022-12-13T18:30:23.869-0500"
+     },
+     {
+      "id": "101537",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2022-12-13T18:30:18.341-0500"
+     },
+     {
+      "id": "101514",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2022-12-13T18:26:25.598-0500"
+     },
+     {
+      "id": "101487",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=557058%3Af58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "accountId": "557058:f58131cb-b67d-43c7-b30d-6b58d40bd077",
+       "avatarUrls": {
+        "48x48": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "24x24": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "16x16": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png",
+        "32x32": "https://secure.gravatar.com/avatar/600529a9c8bfef89daa848e6db28ed2d?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAJ-0.png"
+       },
+       "displayName": "Automation for Jira",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "app"
+      },
+      "created": "2022-12-13T18:14:50.776-0500"
+     },
+     {
+      "id": "98515",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-12-06T10:19:30.304-0500"
+     },
+     {
+      "id": "98514",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-12-06T10:18:42.733-0500"
+     },
+     {
+      "id": "98508",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2022-12-06T10:16:01.824-0500"
+     },
+     {
+      "id": "28778",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-11-02T13:12:49.547-0400"
+     },
+     {
+      "id": "10736",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:15:01.002-0400"
+     },
+     {
+      "id": "10714",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:11:53.559-0400"
+     },
+     {
+      "id": "10706",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:06:19.369-0400"
+     },
+     {
+      "id": "10705",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:06:19.303-0400"
+     },
+     {
+      "id": "10617",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:00:11.960-0400"
+     },
+     {
+      "id": "10616",
+      "author": {
+       "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+       "accountId": "60ad2d2a06bf0c006a42fa84",
+       "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+        "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+        "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+        "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+       },
+       "displayName": "Alana Grant",
+       "active": true,
+       "timeZone": "America/New_York",
+       "accountType": "atlassian"
+      },
+      "created": "2021-07-30T17:00:11.861-0400"
+     }
+    ]
+   },
+   "fields": {
+    "summary": "Investigate scalability issue when user volume exceeds 20k",
+    "duedate": "2023-08-31",
+    "project": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/project/10010",
+     "id": "10010",
+     "key": "MOBL",
+     "name": "Mobile Dev",
+     "projectTypeKey": "software",
+     "simplified": false,
+     "avatarUrls": {
+      "48x48": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410",
+      "24x24": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=small",
+      "16x16": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=xsmall",
+      "32x32": "https://one-atlas-obka.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10410?size=medium"
+     },
+     "projectCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/projectCategory/10000",
+      "id": "10000",
+      "description": "One Atlassian configured demo data project",
+      "name": "One Atlassian"
+     }
+    },
+    "comment": {
+     "comments": [],
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/issue/10180/comment",
+     "maxResults": 0,
+     "total": 0,
+     "startAt": 0
+    },
+    "reporter": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/user?accountId=60ad2d2a06bf0c006a42fa84",
+     "accountId": "60ad2d2a06bf0c006a42fa84",
+     "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/48",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/24",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/16",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60ad2d2a06bf0c006a42fa84/ba9d8450-e9ea-49a8-a66d-0f84c6331291/32"
+     },
+     "displayName": "Alana Grant",
+     "active": true,
+     "timeZone": "America/New_York",
+     "accountType": "atlassian"
+    },
+    "priority": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/priority/3",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/images/icons/priorities/medium_new.svg",
+     "name": "Medium",
+     "id": "3"
+    },
+    "updated": "2023-03-13T12:53:36.725-0400",
+    "status": {
+     "self": "https://one-atlas-obka.atlassian.net/rest/api/3/status/10000",
+     "description": "",
+     "iconUrl": "https://one-atlas-obka.atlassian.net/",
+     "name": "To Do",
+     "id": "10000",
+     "statusCategory": {
+      "self": "https://one-atlas-obka.atlassian.net/rest/api/3/statuscategory/2",
+      "id": 2,
+      "key": "new",
+      "colorName": "blue-gray",
+      "name": "To Do"
+     }
+    }
+   }
+  }
+ ],
+ "isLast": true
+}
