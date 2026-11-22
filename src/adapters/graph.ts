@@ -8,7 +8,7 @@ const U = '... on AtlassianUser { accountId name }';
 export const QUERIES = {
   teams: `query standby_teams($u: ID!) { atlassianUserInTeams(userId: $u, first: 5) { edges { node { ... on AtlassianTeam { id displayName } } } } }`,
   members: `query standby_members($t: ID!) { atlassianTeamMembers(teamAri: $t, first: 25) { edges { node { ${U} } } } }`,
-  assigned: `query standby_assigned($u: ID!) { atlassianUserAssignedJiraWorkItems(userId: $u, first: 25) { edges { node { ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory } reporter { ${U} } } } } } }`,
+  assigned: `query standby_assigned($u: ID!) { atlassianUserAssignedJiraWorkItems(userId: $u, first: 25) { edges { node { ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } reporter { ${U} } } } } } }`,
   content: `query standby_content($u: ID!) { atlassianUserContent(userId: $u, roles: [CREATED], since: "P365D", first: 25) { edges { node { __typename ... on ConfluencePage { pageId title webUrl lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } } } } }`,
   owns: `query standby_owns($u: ID!) { atlassianUserGoalsAndProjects(userId: $u, roles: [OWNS], first: 25) { edges { node { __typename ... on AtlassianProject { id key name url state dueDateEndedAt } ... on AtlassianGoal { id key name url dueDateEndedAt } } } } }`,
 };
@@ -19,7 +19,7 @@ const graphPerson = (u: Json): Person | undefined => (u?.accountId && u?.name ? 
 
 export function parseAssigned(data: Json, outId: string): WorkItem[] {
   return nodes(data, 'atlassianUserAssignedJiraWorkItems')
-    .filter((n) => n.key && n.status?.statusCategory !== 'DONE' && !/done/i.test(n.status?.statusCategory ?? ''))
+    .filter((n) => n.key && !/done/i.test(n.status?.statusCategory?.key ?? ''))
     .map((n): WorkItem => {
       const reporter = graphPerson(n.reporter);
       const touchedBy: Touch[] = reporter && reporter.accountId !== outId ? [{ ...reporter, how: `reported ${n.key}` }] : [];

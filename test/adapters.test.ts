@@ -73,8 +73,8 @@ describe('teamwork graph', () => {
   it('parses curated query results', () => {
     const assigned = parseAssigned(
       { atlassianUserAssignedJiraWorkItems: { edges: [
-        { node: { key: 'SALES-27', summary: 'Quote', webUrl: 'w', status: { name: 'To Do', statusCategory: 'NEW' }, reporter: u('m', 'Mitch Davis') } },
-        { node: { key: 'SALES-1', summary: 'Old', webUrl: 'w', status: { name: 'Done', statusCategory: 'DONE' } } },
+        { node: { key: 'SALES-27', summary: 'Quote', webUrl: 'w', status: { name: 'To Do', statusCategory: { key: 'new' } }, reporter: u('m', 'Mitch Davis') } },
+        { node: { key: 'SALES-1', summary: 'Old', webUrl: 'w', status: { name: 'Done', statusCategory: { key: 'done' } } } },
       ] } },
       ALANA,
     );
