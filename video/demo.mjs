@@ -90,8 +90,10 @@ await sleep(2500);
 await shot('08-draft-created');
 
 const auth = 'Basic ' + Buffer.from(`${process.env.FORGE_EMAIL}:${process.env.FORGE_API_TOKEN}`).toString('base64');
-const found = await (await fetch(`${SITE}/wiki/api/v2/pages?status=draft&sort=-created-date&limit=25`, { headers: { Authorization: auth } })).json();
-const id = found.results?.find((r) => r.title.startsWith('Handover:'))?.id;
+const [name, from, to] = await f.evaluate(() => [document.querySelector('.chosen')?.getAttribute('aria-label')?.replace(', change person', ''), ...[...document.querySelectorAll('input[type=date]')].map((i) => i.value)]);
+const title = `Handover: ${name}, ${from} to ${to}`;
+const found = await (await fetch(`${SITE}/wiki/rest/api/content?status=draft&type=page&limit=50&title=${encodeURIComponent(title)}`, { headers: { Authorization: auth } })).json();
+const id = found.results?.map((r) => r.id).sort((a, b) => b - a)[0];
 if (id) {
   cue('The draft lists every item with its suggested backup, ready to edit and publish');
   await page.goto(`${SITE}/wiki/pages/resumedraft.action?draftId=${id}`);
@@ -109,5 +111,5 @@ if (ff) { ff.stdin.write('q'); await new Promise((r) => ff.on('close', r)); }
 const ts = (s) => new Date(s * 1000).toISOString().slice(11, 23).replace('.', ',');
 const end = (Date.now() - (t0 ?? Date.now())) / 1000;
 fs.writeFileSync('captions.srt', cues.map((c, i) => `${i + 1}\n${ts(c.at)} --> ${ts(cues[i + 1]?.at ?? end)}\n${c.text}\n`).join('\n'));
-console.log('draft', id);
+console.log('draft', id, title);
 await b.close();
