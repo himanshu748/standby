@@ -17,7 +17,7 @@ export function urgencyOf(item: WorkItem, window: { from: string; to: string }):
     const to = Date.parse(window.to);
     if (due < from) {
       score += 4;
-      notes.push('overdue before the absence starts');
+      notes.push('already overdue');
     } else if (due <= to + DAY) {
       score += 3;
       notes.push('due while they are out');

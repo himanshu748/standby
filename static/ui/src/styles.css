@@ -82,7 +82,7 @@ button, input, select { font: inherit; color: inherit; }
 .scan-step { margin: 0; color: var(--muted); animation: rise 0.5s var(--ease); }
 
 .result { max-width: 1180px; margin: 28px auto 0; display: grid; grid-template-columns: minmax(300px, 520px) 1fr; gap: 28px; align-items: start; }
-.stage { position: sticky; top: 16px; display: grid; gap: 14px; }
+.stage { display: grid; gap: 14px; }
 .orbit { width: 100%; height: auto; overflow: visible; }
 .ring { fill: none; stroke: var(--line); stroke-dasharray: 2 6; animation: draw 1s var(--ease) both; transform-origin: center; }
 .ring-stalls { stroke: rgba(255, 90, 78, 0.35); }

@@ -15,13 +15,14 @@ export function orbit(items: AssessedItem[], size: number): Placed[] {
   (['covered', 'thin', 'stalls'] as const).forEach((coverage, ringIndex) => {
     const ring = items.filter((i) => i.coverage === coverage);
     const radius = ringOf[coverage] * (half - 18);
+    const room = ring.length ? (Math.PI * radius) / ring.length - 1.5 : 14;
     ring.forEach((item, i) => {
       const angle = -Math.PI / 2 + ringIndex * 0.35 + (2 * Math.PI * i) / ring.length;
       out.push({
         id: item.id,
         x: half + radius * Math.cos(angle),
         y: half + radius * Math.sin(angle),
-        r: Math.max(5, Math.min(14, 6 + item.urgency * 1.4)),
+        r: Math.max(2.5, Math.min(room, 14, 6 + item.urgency * 1.4)),
         coverage,
       });
     });

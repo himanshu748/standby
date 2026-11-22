@@ -44,7 +44,7 @@ describe('coverageOf', () => {
 
 describe('urgencyOf', () => {
   it('scores due dates relative to the absence and explains each point', () => {
-    expect(urgencyOf(issue({ dueAt: '2026-11-20' }), window)).toEqual({ score: 4, notes: ['overdue before the absence starts'] });
+    expect(urgencyOf(issue({ dueAt: '2026-11-20' }), window)).toEqual({ score: 4, notes: ['already overdue'] });
     expect(urgencyOf(issue({ dueAt: '2026-12-05' }), window).score).toBe(3);
     expect(urgencyOf(issue({ dueAt: '2026-12-18' }), window).score).toBe(1);
     expect(urgencyOf(issue({ dueAt: '2027-02-01' }), window).score).toBe(0);
@@ -125,5 +125,12 @@ describe('orbit', () => {
     const [s, c] = [placed.find((p) => p.id === 'x')!, placed.find((p) => p.id === 'y')!];
     expect(dist(s)).toBeGreaterThan(dist(c));
     for (const p of placed) expect(dist(p) + p.r).toBeLessThanOrEqual(200);
+  });
+
+  it('shrinks nodes on a crowded ring so they never overlap', () => {
+    const many = Array.from({ length: 60 }, (_, i) => issue({ id: `n${i}`, priority: 'Highest' }));
+    const placed = orbit(runDrill(signals(many), window).items, 400);
+    const [a, b] = [placed[0]!, placed[1]!];
+    expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(a.r + b.r);
   });
 });
