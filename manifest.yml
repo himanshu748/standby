@@ -35,6 +35,13 @@ modules:
       resource: ui
       resolver:
         function: resolver
+  jira:issuePanel:
+    - key: standby-issue
+      title: Standby
+      icon: resource:ui;icon.svg
+      resource: ui
+      resolver:
+        function: resolver
   confluence:globalPage:
     - key: standby-confluence
       title: Standby

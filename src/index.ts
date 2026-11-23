@@ -2,11 +2,12 @@ import api, { assumeTrustedRoute } from '@forge/api';
 import Resolver from '@forge/resolver';
 import { mergeItems, runDrill } from './core/drill';
 import { handoverStorage, handoverTitle } from './core/handover';
-import type { Drill, Person, Signals, SourceStatus, WorkItem } from './core/model';
+import type { Drill, IssueCover, Person, Signals, SourceStatus, WorkItem } from './core/model';
 import { confluenceSignals, createDraft, listSpaces, lookupPeople } from './adapters/confluence';
 import { graphCoverage, graphSignals } from './adapters/graph';
-import type { Graph, Rest } from './adapters/http';
-import { jiraSignals, reassign, searchUsers } from './adapters/jira';
+import { getJson, q, type Graph, type Rest } from './adapters/http';
+import { FIELDS, jiraSignals, parseIssues, parsePeers, reassign, searchUsers } from './adapters/jira';
+import { toPerson } from './adapters/people';
 
 const init = (i?: { method?: string; body?: string }) =>
   i ? { method: i.method ?? 'GET', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, ...(i.body ? { body: i.body } : {}) } : { headers: { Accept: 'application/json' } };
@@ -82,6 +83,45 @@ export async function drill(p: DrillInput): Promise<Drill> {
   );
 }
 
+/** The drill for one issue: what happens to it if its assignee is out, and who could pick it up. */
+export async function issueCover(p: { issueKey: string; from: string; to: string; siteUrl: string }): Promise<IssueCover> {
+  if (!/^[A-Z][A-Z0-9_]+-\d+$/.test(p.issueKey ?? '')) throw new Error('Not an issue key');
+  check({ ...p, accountId: 'issue-panel' });
+  const issue = await getJson(jira, `/rest/api/3/issue/${p.issueKey}?${q({ fields: `${FIELDS},assignee`, expand: 'changelog' })}`);
+  const a = issue.fields?.assignee;
+  // A deactivated assignee is the clearest case of someone being out, so keep them.
+  const person: Person | null = toPerson(a) ??
+    (a?.active === false && (a.accountType ?? 'atlassian') === 'atlassian' && a.accountId && a.displayName ? { accountId: a.accountId, name: a.displayName } : null);
+  if (!person) return { person, item: null, sources: [] };
+  if (issue.fields?.status?.statusCategory?.key === 'done') return { person, item: null, sources: [], done: true };
+  const [item] = parseIssues({ issues: [issue] }, p.siteUrl, person.accountId);
+  const project = String(issue.fields?.project?.key ?? '').replace(/"/g, '');
+  const peersJql = `project = "${project}" AND statusCategory != Done AND assignee is not EMPTY`;
+  const [peersRes, g] = await Promise.allSettled([
+    getJson(jira, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`),
+    graphSignals(graph, person.accountId, p.siteUrl),
+  ]);
+  const containerPeers = peersRes.status === 'fulfilled' ? parsePeers(peersRes.value) : {};
+  const teammates = g.status === 'fulfilled' ? g.value.teammates : [];
+  if (g.status === 'fulfilled' && g.value.neighbourhood.has(item!.id)) item!.sources.push('graph');
+  const pool = candidatePool(person.accountId, [item!], containerPeers, teammates);
+  const co = g.status === 'fulfilled' ? await graphCoverage(graph, [item!], pool).catch(() => undefined) : undefined;
+  const graphNote =
+    g.status === 'rejected'
+      ? fail(g.reason)
+      : [
+          co ? `checked ${co.checked} colleagues' graphs, ${co.links} also hold this issue` : "colleagues' graphs not checked",
+          g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'not on any team',
+          ...g.value.errors,
+        ].join('; ');
+  const sources: SourceStatus[] = [
+    { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled', count: 1, note: peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates` : fail(peersRes.reason) },
+    { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && !!co, count: co?.links ?? 0, note: graphNote },
+  ];
+  const d = runDrill({ person, items: co?.items ?? [item!], containerPeers, teammates, sources }, { from: p.from, to: p.to });
+  return { person, item: d.items[0] ?? null, sources };
+}
+
 /** The people most often near the person's work, whose Teamwork Graph neighbourhoods are worth checking. */
 function candidatePool(outId: string, items: WorkItem[], peers: Signals['containerPeers'], teammates: Signals['teammates'], max = 12): Person[] {
   const seen = new Map<string, { person: Person; n: number }>();
@@ -110,6 +150,9 @@ resolver.define('me', async ({ context }) => {
 });
 
 resolver.define('drill', async ({ payload }) => drill(payload as DrillInput));
+resolver.define('issue', async ({ payload, context }) =>
+  issueCover({ ...(payload as { from: string; to: string; siteUrl: string }), issueKey: String((context.extension as { issue?: { key?: string } })?.issue?.key ?? '') }),
+);
 
 
 resolver.define('spaces', async () => listSpaces(conf));

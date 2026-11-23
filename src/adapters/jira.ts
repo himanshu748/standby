@@ -2,7 +2,7 @@ import type { Person, Touch, WorkItem } from '../core/model';
 import { getJson, q, type Json, type Rest } from './http';
 import { toPerson } from './people';
 
-const FIELDS = 'summary,status,priority,duedate,project,reporter,updated,comment';
+export const FIELDS = 'summary,status,priority,duedate,project,reporter,updated,comment';
 
 export function parseIssues(json: Json, siteUrl: string, outId: string): WorkItem[] {
   return (json.issues ?? []).map((issue: Json): WorkItem => {
