@@ -206,3 +206,26 @@ button, input, select { font: inherit; color: inherit; }
 .readout-stalls { border-color: color-mix(in srgb, var(--stall) 50%, transparent); }
 .readout-thin { border-color: color-mix(in srgb, var(--thin) 50%, transparent); }
 .readout-covered { border-color: color-mix(in srgb, var(--covered) 50%, transparent); }
+
+.panel { display: grid; gap: 10px; padding: 14px 16px 16px; border-radius: 14px; background: radial-gradient(420px 220px at 100% 0, rgba(255, 90, 78, 0.12), transparent 70%), var(--ink); font-size: 14px; animation: rise 0.5s var(--ease) both; }
+.panel-wait { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--muted); }
+.panel-kicker { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); }
+.panel-kicker strong { color: var(--text); }
+.panel-verdict { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--ink-2); font-weight: 600; }
+.panel-verdict::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; }
+.panel-h { margin: 6px 0 0; font: 700 12px/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.panel-people { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.panel-people li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.panel-how { color: var(--muted); font-size: 13px; }
+.panel-backups { display: grid; gap: 6px; margin: 0; padding: 0; border: 0; }
+.panel-backups label { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--ink-2); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.panel-backups label.on { border-color: var(--thin); background: var(--ink-3); }
+.panel-backups label > span { display: grid; }
+.panel-backups input { accent-color: var(--thin); }
+.panel-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.panel-actions .btn { height: 40px; flex: 1 1 auto; }
+.panel-done { margin: 0; color: var(--covered); }
+.panel-sources { display: grid; gap: 4px; margin: 4px 0 0; padding: 10px 0 0; border-top: 1px dashed var(--line); list-style: none; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.panel-sources strong { color: var(--text); }
+.panel-sources .ok strong::before { content: '● '; color: var(--covered); }
+.panel-sources .warn strong::before { content: '● '; color: var(--thin); }

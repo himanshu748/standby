@@ -138,3 +138,35 @@ describe('writes', () => {
     expect(out).toEqual({ id: '42', url: 'https://x/wiki/e/42' });
   });
 });
+
+describe('issue panel', () => {
+  const ms1 = () => fx('jira-assigned').issues[0];
+  const ctx = (key: string) => ({ extension: { type: 'jira:issuePanel', issue: { key } } });
+  const assignee = { accountId: ALANA, accountType: 'atlassian', displayName: 'Alana Grant' };
+  const panel = (key: string, issue: unknown) => {
+    route = (c) => (c.path.startsWith(`/rest/api/3/issue/${key}?`) ? { status: 200, body: issue } : c.path.startsWith('/rest/api/3/search/jql') ? { status: 200, body: { issues: [] } } : { status: 404 });
+    return handlers['issue']!({ payload: { from: input.from, to: input.to, siteUrl: SITE, issueKey: 'EVIL-1' }, context: ctx(key) });
+  };
+
+  it('drills the issue in view, taken from the Forge context rather than the payload', async () => {
+    const issue = ms1();
+    issue.fields.assignee = assignee;
+    const out = (await panel(issue.key, issue)) as { person: { name: string }; item: { key: string; coverage: string; backups: unknown[] } };
+    expect(out.person.name).toBe('Alana Grant');
+    expect(out.item.key).toBe(issue.key);
+    expect(['stalls', 'thin', 'covered']).toContain(out.item.coverage);
+    expect(calls.some((c) => c.path.includes('EVIL-1'))).toBe(false);
+    expect(calls.every((c) => c.method === 'GET')).toBe(true);
+  });
+
+  it('says so for an unassigned issue', async () => {
+    const issue = ms1();
+    issue.fields.assignee = null;
+    expect(await panel(issue.key, issue)).toEqual({ person: null, item: null, sources: [] });
+  });
+
+  it('rejects a context without an issue key', async () => {
+    await expect(handlers['issue']!({ payload: { from: input.from, to: input.to, siteUrl: SITE }, context: {} })).rejects.toThrow('Not an issue key');
+    expect(calls).toHaveLength(0);
+  });
+});

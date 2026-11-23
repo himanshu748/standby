@@ -63,3 +63,6 @@ export type Drill = {
   counts: Record<Coverage, number>;
   sources: SourceStatus[];
 };
+
+/** What happens to one issue if its assignee is out. `person` is null for unassigned issues. */
+export type IssueCover = { person: Person | null; item: AssessedItem | null; sources: SourceStatus[] };
