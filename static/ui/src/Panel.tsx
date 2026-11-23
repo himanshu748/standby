@@ -47,7 +47,7 @@ export function Panel() {
 
   if (error)
     return (
-      <div className="panel">
+      <div className="ipanel">
         <p className="error" role="alert">
           {error}
         </p>
@@ -55,7 +55,7 @@ export function Panel() {
     );
   if (!data)
     return (
-      <div className="panel" aria-busy="true">
+      <div className="ipanel" aria-busy="true">
         <p className="panel-wait">
           <span className="brand-dot" aria-hidden="true" /> Checking who else knows this issue…
         </p>
@@ -64,13 +64,13 @@ export function Panel() {
   const { person, item } = data;
   if (data.done)
     return (
-      <div className="panel">
+      <div className="ipanel">
         <p className="panel-wait">Done: nothing left to stall if {person?.name ?? 'the assignee'} is out.</p>
       </div>
     );
   if (!person || !item)
     return (
-      <div className="panel">
+      <div className="ipanel">
         <p className="panel-wait">Unassigned: there is nobody whose absence would stall it.</p>
       </div>
     );
@@ -78,7 +78,7 @@ export function Panel() {
   const others = item.touchedBy;
   const pick = item.backups.find((b) => b.person.accountId === to?.accountId);
   return (
-    <div className="panel">
+    <div className="ipanel">
       <p className="panel-kicker">
         <Avatar person={person} size={22} />
         <span>
@@ -86,8 +86,13 @@ export function Panel() {
         </span>
       </p>
       <div className={`panel-verdict card-${item.coverage}`}>
-        <span className={`pill pill-${item.coverage}`}>{coverageText[item.coverage].label}</span>
-        <span>{coverageText[item.coverage].long}</span>
+        <span className={`verdict-word verdict-${item.coverage}`}>{coverageText[item.coverage].label}</span>
+        <span className="verdict-sub">
+          {coverageText[item.coverage].long}
+          <span className="verdict-n">
+            {others.length} on record · {item.backups.length} {item.backups.length === 1 ? 'backup' : 'backups'}
+          </span>
+        </span>
       </div>
       {item.urgencyNotes.length > 0 && (
         <div className="chips">
