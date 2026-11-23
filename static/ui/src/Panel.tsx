@@ -122,7 +122,7 @@ export function Panel() {
             <label key={b.person.accountId} className={to?.accountId === b.person.accountId ? 'on' : ''}>
               <input type="radio" name="backup" checked={to?.accountId === b.person.accountId} onChange={() => {
                   setTo(b.person);
-                  setReceipt(null);
+                  setReceipt((r) => (r?.ok ? r : null));
                 }} />
               <Avatar person={b.person} size={22} />
               <span>

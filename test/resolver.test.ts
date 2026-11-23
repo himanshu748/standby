@@ -167,6 +167,12 @@ describe('issue panel', () => {
     expect(out.item.key).toBe(issue.key);
   });
 
+  it('treats an issue assigned to an app as unassigned', async () => {
+    const issue = ms1();
+    issue.fields.assignee = { accountId: '557058:bot', accountType: 'app', displayName: 'Automation for Jira', active: true };
+    expect(await panel(issue.key, issue)).toEqual({ person: null, item: null, sources: [] });
+  });
+
   it('does not flag a done issue', async () => {
     const issue = ms1();
     issue.fields.assignee = assignee;

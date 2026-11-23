@@ -90,7 +90,8 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
   const issue = await getJson(jira, `/rest/api/3/issue/${p.issueKey}?${q({ fields: `${FIELDS},assignee`, expand: 'changelog' })}`);
   const a = issue.fields?.assignee;
   // A deactivated assignee is the clearest case of someone being out, so keep them.
-  const person: Person | null = toPerson(a) ?? (a?.accountId && a.displayName ? { accountId: a.accountId, name: a.displayName } : null);
+  const person: Person | null = toPerson(a) ??
+    (a?.active === false && (a.accountType ?? 'atlassian') === 'atlassian' && a.accountId && a.displayName ? { accountId: a.accountId, name: a.displayName } : null);
   if (!person) return { person, item: null, sources: [] };
   if (issue.fields?.status?.statusCategory?.key === 'done') return { person, item: null, sources: [], done: true };
   const [item] = parseIssues({ issues: [issue] }, p.siteUrl, person.accountId);
