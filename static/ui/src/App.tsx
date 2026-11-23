@@ -21,6 +21,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
   const [filter, setFilter] = useState<Coverage | 'all'>('all');
+  const [query, setQuery] = useState('');
   const [picks, setPicks] = useState<Pick>({});
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [spaceId, setSpaceId] = useState('');
@@ -55,7 +56,12 @@ export function App() {
     }
   };
 
-  const shown = useMemo(() => (drill ? drill.items.filter((i) => filter === 'all' || i.coverage === filter) : []), [drill, filter]);
+  const shown = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return (drill?.items ?? []).filter(
+      (i) => (filter === 'all' || i.coverage === filter) && (!q || [i.key, i.title, i.container?.name].some((t) => t?.toLowerCase().includes(q))),
+    );
+  }, [drill, filter, query]);
   const chosen = drill ? drill.items.filter((i) => picks[i.id]?.on && i.key).map((i) => ({ key: i.key!, title: i.title, to: picks[i.id]!.to })) : [];
 
   const doReassign = async () => {
@@ -132,6 +138,8 @@ export function App() {
         )}
       </section>
 
+      {!drill && !loading && <Primer />}
+
       {loading && (
         <section className="scan" aria-live="polite">
           <div className="scan-orb" aria-hidden="true">
@@ -188,7 +196,7 @@ export function App() {
                 <h2 id="bench-title">Who can pick it up</h2>
                 <ol>
                   {drill.bench.slice(0, 5).map((b, i) => (
-                    <li key={b.person.accountId} style={{ animationDelay: `${200 + i * 70}ms` }}>
+                    <li key={b.person.accountId} style={{ animationDelay: `${200 + i * 70}ms`, ['--w' as string]: b.items.length / drill.bench[0]!.items.length }}>
                       <Avatar person={b.person} size={36} />
                       <span className="bench-name">{b.person.name}</span>
                       <span className="bench-n">{b.items.length} items</span>
@@ -204,11 +212,25 @@ export function App() {
             {drill.items.length === 0 ? (
               <p className="empty">Standby found no open work, owned pages or projects for {drill.person.name} that you can see.</p>
             ) : (
+              <>
+                <div className="cards-bar">
+                  <input type="search" className="cards-search" placeholder="Filter by key, title or project" aria-label="Filter work" value={query} onChange={(e) => setQuery(e.target.value)} />
+                  <span className="cards-count" aria-live="polite">
+                    {shown.length} of {drill.items.length}
+                    {filter !== 'all' && (
+                      <button type="button" className="link" onClick={() => setFilter('all')}>
+                        {coverageText[filter].label} only · show all
+                      </button>
+                    )}
+                  </span>
+                </div>
+                {shown.length === 0 && <p className="empty">Nothing matches "{query}".</p>}
               <ul className="cards">
                 {shown.map((item, i) => (
                   <ItemCard key={item.id} item={item} index={i} focused={focus === item.id} pick={picks[item.id]} onFocus={setFocus} onPick={(id, v) => setPicks((p) => ({ ...p, [id]: v }))} />
                 ))}
               </ul>
+              </>
             )}
 
             {(receipts.length > 0 || page) && (
@@ -290,3 +312,34 @@ function FocusReadout({ item }: { item: AssessedItem | undefined }) {
   );
 }
 
+
+const READS = [
+  { src: 'jira', name: 'Jira', what: 'Open issues assigned to them, with history, comments and due dates in the absence window' },
+  { src: 'confluence', name: 'Confluence', what: 'Recent pages they created or edited, and who else edits pages in those spaces' },
+  { src: 'graph', name: 'Teamwork Graph', what: "Their work, teams, projects and goals, then up to 12 colleagues' graphs for shared work" },
+] as const;
+
+function Primer() {
+  return (
+    <section className="primer" aria-label="How the drill works">
+      <ol className="reads">
+        {READS.map((r, i) => (
+          <li key={r.src} className={`read read-${r.src}`} style={{ animationDelay: `${250 + i * 90}ms` }}>
+            <span className="read-n">0{i + 1}</span>
+            <strong>{r.name}</strong>
+            <span>{r.what}</span>
+          </li>
+        ))}
+      </ol>
+      <ul className="tiers">
+        {(['stalls', 'thin', 'covered'] as const).map((c, i) => (
+          <li key={c} style={{ animationDelay: `${520 + i * 90}ms` }}>
+            <span className={`pill pill-${c}`}>{coverageText[c].label}</span>
+            {coverageText[c].long}
+          </li>
+        ))}
+      </ul>
+      <p className="primer-note">Reads run as you and see only what you can see. Nothing changes in Jira or Confluence until you confirm it.</p>
+    </section>
+  );
+}

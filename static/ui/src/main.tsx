@@ -13,5 +13,6 @@ void view
   .catch(() => ({}))
   .then((c) => {
     const panel = (c as { extension?: { type?: string } }).extension?.type === 'jira:issuePanel';
+    if (panel) void view.theme.enable().catch(() => undefined);
     root.render(<StrictMode>{panel ? <Panel /> : <App />}</StrictMode>);
   });
