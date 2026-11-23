@@ -64,5 +64,5 @@ export type Drill = {
   sources: SourceStatus[];
 };
 
-/** What happens to one issue if its assignee is out. `person` is null for unassigned issues. */
-export type IssueCover = { person: Person | null; item: AssessedItem | null; sources: SourceStatus[] };
+/** What happens to one issue if its assignee is out. `person` is null for unassigned issues; `done` issues have nothing to stall. */
+export type IssueCover = { person: Person | null; item: AssessedItem | null; sources: SourceStatus[]; done?: boolean };

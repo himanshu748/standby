@@ -62,6 +62,12 @@ export function Panel() {
       </div>
     );
   const { person, item } = data;
+  if (data.done)
+    return (
+      <div className="panel">
+        <p className="panel-wait">Done: nothing left to stall if {person?.name ?? 'the assignee'} is out.</p>
+      </div>
+    );
   if (!person || !item)
     return (
       <div className="panel">
@@ -114,7 +120,10 @@ export function Panel() {
           <legend className="sr">Backup for {item.key}</legend>
           {item.backups.map((b) => (
             <label key={b.person.accountId} className={to?.accountId === b.person.accountId ? 'on' : ''}>
-              <input type="radio" name="backup" checked={to?.accountId === b.person.accountId} onChange={() => setTo(b.person)} />
+              <input type="radio" name="backup" checked={to?.accountId === b.person.accountId} onChange={() => {
+                  setTo(b.person);
+                  setReceipt(null);
+                }} />
               <Avatar person={b.person} size={22} />
               <span>
                 <strong>{b.person.name}</strong>
@@ -128,7 +137,7 @@ export function Panel() {
       )}
 
       <div className="panel-actions">
-        {pick && !receipt && (
+        {pick && !receipt?.ok && (
           <button type="button" className="btn hot" onClick={() => setAsk(true)}>
             Reassign to {pick.person.name}
           </button>

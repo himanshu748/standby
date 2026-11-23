@@ -159,6 +159,21 @@ describe('issue panel', () => {
     expect(calls.every((c) => c.method === 'GET')).toBe(true);
   });
 
+  it('still drills an issue whose assignee has been deactivated', async () => {
+    const issue = ms1();
+    issue.fields.assignee = { ...assignee, active: false };
+    const out = (await panel(issue.key, issue)) as { person: { name: string }; item: { key: string } };
+    expect(out.person.name).toBe('Alana Grant');
+    expect(out.item.key).toBe(issue.key);
+  });
+
+  it('does not flag a done issue', async () => {
+    const issue = ms1();
+    issue.fields.assignee = assignee;
+    issue.fields.status = { name: 'Done', statusCategory: { key: 'done' } };
+    expect(await panel(issue.key, issue)).toMatchObject({ item: null, done: true });
+  });
+
   it('says so for an unassigned issue', async () => {
     const issue = ms1();
     issue.fields.assignee = null;

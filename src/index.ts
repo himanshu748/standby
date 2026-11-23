@@ -88,8 +88,11 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
   if (!/^[A-Z][A-Z0-9_]+-\d+$/.test(p.issueKey ?? '')) throw new Error('Not an issue key');
   check({ ...p, accountId: 'issue-panel' });
   const issue = await getJson(jira, `/rest/api/3/issue/${p.issueKey}?${q({ fields: `${FIELDS},assignee`, expand: 'changelog' })}`);
-  const person = toPerson(issue.fields?.assignee) ?? null;
+  const a = issue.fields?.assignee;
+  // A deactivated assignee is the clearest case of someone being out, so keep them.
+  const person: Person | null = toPerson(a) ?? (a?.accountId && a.displayName ? { accountId: a.accountId, name: a.displayName } : null);
   if (!person) return { person, item: null, sources: [] };
+  if (issue.fields?.status?.statusCategory?.key === 'done') return { person, item: null, sources: [], done: true };
   const [item] = parseIssues({ issues: [issue] }, p.siteUrl, person.accountId);
   const project = String(issue.fields?.project?.key ?? '').replace(/"/g, '');
   const peersJql = `project = "${project}" AND statusCategory != Done AND assignee is not EMPTY`;
