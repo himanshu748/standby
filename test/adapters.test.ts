@@ -86,8 +86,11 @@ describe('teamwork graph', () => {
       { node: { __typename: 'JiraWorkItem', key: 'LEO-54', summary: 'Launch', status: { name: 'Done', statusCategory: { key: 'done' } } } },
       null,
       { node: { __typename: 'ConfluenceComment', id: 'c1' } },
-    ] } }, ALANA);
-    expect(work.map((i) => i.id)).toEqual(['conf:9', 'conf:77']);
+      { node: { __typename: 'JiraWorkItem', key: 'SALES-9', summary: 'Quote', assignee: u(ALANA, 'Alana Grant'), status: { name: 'To Do', statusCategory: { key: 'new' } } } },
+    ] } }, ALANA, 'https://s');
+    expect(work.map((i) => i.id)).toEqual(['conf:9', 'conf:77', 'jira:SALES-9']);
+    expect(work[1]?.url).toBe('https://s/wiki/pages/viewpage.action?pageId=77');
+    expect(work[2]).toMatchObject({ roles: ['assignee'], url: 'https://s/browse/SALES-9' });
     expect(work[0]).toMatchObject({ container: { id: 'conf:HR' }, roles: ['page owner'], touchedBy: [{ name: 'Cassi Owens', how: 'last edited "Runbook"' }] });
     expect(parseOwns({ atlassianUserGoalsAndProjects: { edges: [{ node: { __typename: 'AtlassianGoal', id: 'g', name: 'Ship v2', url: 'u' } }] } })[0]).toMatchObject({ kind: 'goal', roles: ['goal owner'] });
   });
