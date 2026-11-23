@@ -190,7 +190,7 @@ button, input, select { font: inherit; color: inherit; }
   .dock-space select { max-width: none; width: 100%; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
   .receipts { bottom: 180px; }
   .app.has-drill { padding-bottom: 200px; }
   .dock-space { flex-basis: 100%; }
