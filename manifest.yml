@@ -1,0 +1,52 @@
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 512
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/689d38fb-0df1-46ef-8f81-be74c1ad79c2
+
+permissions:
+  scopes:
+    - read:jira-work
+    - read:jira-user
+    - write:jira-work
+    - search:confluence
+    - read:confluence-content.summary
+    - read:page:confluence
+    - read:space:confluence
+    - write:page:confluence
+    - read:graph:user:atlassian
+    - read:graph:team:atlassian
+    - read:graph:issue:jira
+    - read:graph:issue-status:jira
+    - read:graph:page:confluence
+    - read:graph:space:confluence
+    - read:graph:project:atlassian
+    - read:graph:goal:atlassian
+  content:
+    styles:
+      - unsafe-inline
+
+modules:
+  jira:globalPage:
+    - key: standby-jira
+      title: Standby
+      icon: resource:ui;icon.svg
+      resource: ui
+      resolver:
+        function: resolver
+  confluence:globalPage:
+    - key: standby-confluence
+      title: Standby
+      route: standby
+      icon: resource:ui;icon.svg
+      resource: ui
+      resolver:
+        function: resolver
+  function:
+    - key: resolver
+      handler: index.handler
+
+resources:
+  - key: ui
+    path: static/ui/dist

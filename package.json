@@ -1,0 +1,40 @@
+{
+  "name": "standby",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge app for Jira and Confluence: a bus-factor fire drill that shows what stalls if a person is out, suggests backups and drafts the handover.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p static/ui/tsconfig.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "build:ui": "vite build --config static/ui/vite.config.ts",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build:ui"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@forge/api": "^8.5.0",
+    "@forge/bridge": "^7.3.0",
+    "@forge/resolver": "^2.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.3.0",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.73.0",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}
