@@ -88,7 +88,7 @@ export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const peersJson = keys.length
     ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`)
     : { issues: [] };
-  return { items, peers: parsePeers(peersJson), issueCount: (issuesJson.issues ?? []).length };
+  return { items, peers: parsePeers(peersJson), issueCount: (issuesJson.issues ?? []).length, more: !!issuesJson.nextPageToken };
 }
 
 export async function reassign(rest: Rest, issueKey: string, accountId: string): Promise<void> {

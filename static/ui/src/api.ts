@@ -15,8 +15,8 @@ export const api = {
   people: (query: string) => invoke<Person[]>('people', { query }),
   drill: async (accountId: string, w: Window) => invoke<Drill>('drill', { accountId, ...w, siteUrl: await siteUrl() }),
   spaces: () => invoke<Space[]>('spaces'),
-  handover: async (accountId: string, w: Window, spaceId: string) =>
-    invoke<{ id: string; url: string }>('handover', { accountId, ...w, siteUrl: await siteUrl(), spaceId, confirmed: true }),
+  handover: async (accountId: string, w: Window, spaceId: string, picks: Record<string, string>) =>
+    invoke<{ id: string; url: string }>('handover', { accountId, ...w, siteUrl: await siteUrl(), spaceId, picks, confirmed: true }),
   reassign: (changes: { key: string; to: Person }[]) => invoke<Receipt[]>('reassign', { changes, confirmed: true }),
   open: (url: string) => router.open(url),
 };

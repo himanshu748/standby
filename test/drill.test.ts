@@ -46,6 +46,7 @@ describe('urgencyOf', () => {
   it('scores due dates relative to the absence and explains each point', () => {
     expect(urgencyOf(issue({ dueAt: '2026-11-20' }), window)).toEqual({ score: 4, notes: ['already overdue'] });
     expect(urgencyOf(issue({ dueAt: '2026-12-05' }), window).score).toBe(3);
+    expect(urgencyOf(issue({ dueAt: '2026-12-12' }), window)).toEqual({ score: 1, notes: ['due the week they return'] });
     expect(urgencyOf(issue({ dueAt: '2026-12-18' }), window).score).toBe(1);
     expect(urgencyOf(issue({ dueAt: '2027-02-01' }), window).score).toBe(0);
   });
@@ -114,6 +115,7 @@ describe('handover', () => {
     expect(body).not.toContain('<h2>Covered');
     expect(body).toContain('Mitch Davis (4 open in Sales)');
     expect(escapeXml(`a'b`)).toBe('a&#39;b');
+    expect(handoverStorage(d, { [d.items[0]!.id]: 'not-a-backup' })).toContain('Mitch Davis (4 open in Sales)');
   });
 });
 

@@ -23,7 +23,7 @@ export function ItemCard({
 }) {
   const chosen = pick?.to ?? item.backups[0]?.person;
   const candidate = item.backups.find((b) => b.person.accountId === chosen?.accountId);
-  const canReassign = item.kind === 'issue' && !!chosen;
+  const canReassign = item.kind === 'issue' && item.roles.includes('assignee') && !!chosen;
   return (
     <li
       className={`card card-${item.coverage} ${focused ? 'on' : ''}`}

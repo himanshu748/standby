@@ -10,8 +10,8 @@ export function handoverTitle(drill: Drill): string {
 
 const label = { stalls: 'Stalls without them', thin: 'One other person', covered: 'Covered' } as const;
 
-function row(item: AssessedItem): string {
-  const top = item.backups[0];
+function row(item: AssessedItem, picked?: string): string {
+  const top = item.backups.find((b) => b.person.accountId === picked) ?? item.backups[0];
   const backup = top ? `${escapeXml(top.person.name)} (${escapeXml(top.reasons.map((r) => r.text).join('; '))})` : 'Nobody found yet';
   const name = `<a href="${escapeXml(item.url)}">${escapeXml(item.key ? `${item.key} ${item.title}` : item.title)}</a>`;
   const why = item.urgencyNotes.length ? escapeXml(item.urgencyNotes.join(', ')) : '';
@@ -19,7 +19,7 @@ function row(item: AssessedItem): string {
 }
 
 /** Confluence storage-format body for the handover page. The last column is left for the backup to fill in. */
-export function handoverStorage(drill: Drill): string {
+export function handoverStorage(drill: Drill, picks: Record<string, string> = {}): string {
   const { person, counts } = drill;
   const parts: string[] = [];
   parts.push(
@@ -37,7 +37,7 @@ export function handoverStorage(drill: Drill): string {
     if (!items.length) continue;
     parts.push(`<h2>${label[coverage]} (${items.length})</h2>`);
     parts.push('<table><tbody><tr><th>Work</th><th>Their role</th><th>Why it matters</th><th>Suggested backup</th><th>Notes from the backup</th></tr>');
-    parts.push(...items.map(row));
+    parts.push(...items.map((i) => row(i, picks[i.id])));
     parts.push('</tbody></table>');
   }
   parts.push('<h2>Before they leave</h2><ul><li>Walk each backup through the items above.</li><li>Share access the backup does not have yet.</li><li>Agree who decides if something new comes up.</li></ul>');

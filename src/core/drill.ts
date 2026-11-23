@@ -18,7 +18,7 @@ export function urgencyOf(item: WorkItem, window: { from: string; to: string }):
     if (due < from) {
       score += 4;
       notes.push('already overdue');
-    } else if (due <= to + DAY) {
+    } else if (due < to) {
       score += 3;
       notes.push('due while they are out');
     } else if (due <= to + 7 * DAY) {

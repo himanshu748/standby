@@ -43,7 +43,7 @@ export function parseAssigned(data: Json, outId: string): WorkItem[] {
 }
 
 /** Everything Teamwork Graph links to the person: pages and posts they created, edit, watch or are mentioned in, and Jira work. */
-export function parseWork(data: Json, outId: string): WorkItem[] {
+export function parseWork(data: Json, outId: string, siteUrl = ''): WorkItem[] {
   const out: WorkItem[] = [];
   for (const n of nodes(data, 'atlassianUserWorkQuery')) {
     const id = workId(n);
@@ -60,7 +60,7 @@ export function parseWork(data: Json, outId: string): WorkItem[] {
     // A page they only watch or were mentioned on is context, not their work: keep pages they own or last edited.
     const roles = issue ? ['linked issue'] : [...(n.owner?.accountId === outId ? ['page owner'] : []), ...(n.lastEditor?.accountId === outId ? ['last editor'] : [])];
     if (!roles.length) continue;
-    const item: WorkItem = { id, kind: issue ? 'issue' : 'page', title, url: n.webUrl ?? '', roles, sources: ['graph'], touchedBy };
+    const item: WorkItem = { id, kind: issue ? 'issue' : 'page', title, url: n.webUrl ?? (siteUrl && `${siteUrl}/wiki/pages/viewpage.action?pageId=${id.slice(5)}`), roles, sources: ['graph'], touchedBy };
     if (issue) item.key = n.key;
     if (n.space?.key) item.container = { id: `conf:${n.space.key}`, name: n.space.name ?? n.space.key };
     if (n.dueAt) item.dueAt = n.dueAt;
@@ -136,7 +136,7 @@ export async function graphCoverage(graph: Graph, items: WorkItem[], candidates:
 }
 
 /** Each query is independent: one failing (a missing scope, a preview change) must not hide the others. */
-export async function graphSignals(graph: Graph, outId: string) {
+export async function graphSignals(graph: Graph, outId: string, siteUrl = '') {
   const u = user(outId);
   const settle = <T>(p: Promise<T>) => p.then((v) => ({ ok: true as const, v }), (e: Error) => ({ ok: false as const, e: e.message }));
   const [teams, assigned, work, owns] = await Promise.all([
@@ -155,7 +155,7 @@ export async function graphSignals(graph: Graph, outId: string) {
       if (p && p.accountId !== outId && !teammates.some((t) => t.person.accountId === p.accountId)) teammates.push({ person: p, team: teamNodes[i].displayName });
     }
   });
-  const linked = mergeLinked([...(assigned.ok ? parseAssigned(assigned.v, outId) : []), ...(work.ok ? parseWork(work.v, outId) : [])]);
+  const linked = mergeLinked([...(assigned.ok ? parseAssigned(assigned.v, outId) : []), ...(work.ok ? parseWork(work.v, outId, siteUrl) : [])]);
   const owned = owns.ok ? parseOwns(owns.v) : [];
   const items = [...linked, ...owned];
   const neighbourhood = new Set(work.ok ? nodes(work.v, 'atlassianUserWorkQuery').map(workId).filter((x): x is string => !!x) : []);

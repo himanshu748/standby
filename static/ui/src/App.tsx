@@ -76,7 +76,7 @@ export function App() {
     if (!drill) return;
     setBusy(true);
     try {
-      const r = await api.handover(drill.person.accountId, drill.window, spaceId);
+      const r = await api.handover(drill.person.accountId, drill.window, spaceId, Object.fromEntries(Object.entries(picks).map(([id, v]) => [id, v.to.accountId])));
       setPage(r.url);
     } catch (e) {
       setError(errText(e));

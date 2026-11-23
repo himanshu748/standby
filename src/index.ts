@@ -34,7 +34,7 @@ export async function drill(p: DrillInput): Promise<Drill> {
   const [j, c, g] = await Promise.allSettled([
     jiraSignals(jira, p.siteUrl, p.accountId),
     confluenceSignals(conf, jira, p.siteUrl, p.accountId),
-    graphSignals(graph, p.accountId),
+    graphSignals(graph, p.accountId, p.siteUrl),
   ]);
   const sources: SourceStatus[] = [
     g.status === 'fulfilled'
@@ -51,7 +51,7 @@ export async function drill(p: DrillInput): Promise<Drill> {
         }
       : { source: 'graph', label: 'Teamwork Graph', ok: false, count: 0, note: fail(g.reason) },
     j.status === 'fulfilled'
-      ? { source: 'jira', label: 'Jira', ok: true, count: j.value.items.length, note: `${j.value.issueCount} open issues assigned` }
+      ? { source: 'jira', label: 'Jira', ok: true, count: j.value.items.length, note: `${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned` }
       : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
     c.status === 'fulfilled'
       ? { source: 'confluence', label: 'Confluence', ok: true, count: c.value.items.length, note: `${c.value.pageCount} recent pages they wrote or edited` }
@@ -115,17 +115,18 @@ resolver.define('drill', async ({ payload }) => drill(payload as DrillInput));
 resolver.define('spaces', async () => listSpaces(conf));
 
 resolver.define('handover', async ({ payload }) => {
-  const p = payload as DrillInput & { spaceId: string; confirmed: boolean };
+  const p = payload as DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> };
   if (p.confirmed !== true) throw new Error('Confirm before creating the page');
   if (!/^\d+$/.test(String(p.spaceId))) throw new Error('Pick a space');
   const d = await drill(p);
-  return createDraft(conf, String(p.spaceId), handoverTitle(d), handoverStorage(d));
+  return createDraft(conf, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
 });
 
 resolver.define('reassign', async ({ payload }) => {
   const p = payload as { changes: { key: string; to: Person }[]; confirmed: boolean };
   if (p.confirmed !== true) throw new Error('Confirm before reassigning');
-  const changes = (p.changes ?? []).slice(0, 25);
+  const changes = p.changes ?? [];
+  if (changes.length > 50) throw new Error('Reassign at most 50 issues at a time');
   const results = await Promise.allSettled(changes.map((c) => reassign(jira, c.key, c.to.accountId)));
   return changes.map((c, i) => {
     const r = results[i];
