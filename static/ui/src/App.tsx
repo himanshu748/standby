@@ -197,6 +197,9 @@ export function App() {
                 </ol>
               </section>
             )}
+            {drill.items.length > 0 && drill.items.every((i) => i.backups.length === 0) && (
+              <p className="empty">No backups found: nobody else on this site shares this work, its projects or spaces, or a team with {drill.person.name}. Every item rests on them alone.</p>
+            )}
 
             {drill.items.length === 0 ? (
               <p className="empty">Standby found no open work, owned pages or projects for {drill.person.name} that you can see.</p>
