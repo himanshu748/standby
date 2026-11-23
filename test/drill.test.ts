@@ -116,6 +116,7 @@ describe('handover', () => {
     expect(body).toContain('Mitch Davis (4 open in Sales)');
     expect(escapeXml(`a'b`)).toBe('a&#39;b');
     expect(handoverStorage(d, { [d.items[0]!.id]: 'not-a-backup' })).toContain('Mitch Davis (4 open in Sales)');
+    expect(body).toContain('<li><strong>Mitch Davis</strong>: 1 item(s)</li>');
   });
 });
 
