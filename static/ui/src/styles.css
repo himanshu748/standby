@@ -83,13 +83,13 @@ button, input, select { font: inherit; color: inherit; }
 
 .result { max-width: 1180px; margin: 28px auto 0; display: grid; grid-template-columns: minmax(300px, 520px) 1fr; gap: 28px; align-items: start; }
 .stage { display: grid; gap: 14px; }
-.orbit { width: 100%; height: auto; overflow: visible; }
+.orbit { width: 100%; height: auto; overflow: visible; --half: 260px; }
 .ring { fill: none; stroke: var(--line); stroke-dasharray: 2 6; animation: draw 1s var(--ease) both; transform-origin: center; }
 .ring-stalls { stroke: rgba(255, 90, 78, 0.35); }
 .ring-thin { stroke: rgba(255, 181, 71, 0.3); }
 .ring-covered { stroke: rgba(79, 209, 165, 0.3); }
 @keyframes draw { from { opacity: 0; transform: scale(0.6); } }
-.sweep { transform-origin: 260px 260px; animation: sweep 6s linear infinite; }
+.sweep { transform-origin: var(--half) var(--half); animation: sweep 6s linear infinite; }
 .sweep line { stroke: url(#core); stroke: rgba(255, 181, 71, 0.18); stroke-width: 2; }
 @keyframes sweep { to { transform: rotate(360deg); } }
 .spoke { stroke-width: 1; opacity: 0.18; animation: fadein 0.8s var(--ease) both; transition: opacity 0.2s, stroke-width 0.2s; }
@@ -99,7 +99,7 @@ button, input, select { font: inherit; color: inherit; }
 .spoke.on { opacity: 0.9; stroke-width: 2; }
 @keyframes fadein { from { opacity: 0; } }
 .node { animation: land 0.9s var(--ease) both; transform-box: fill-box; cursor: pointer; }
-@keyframes land { from { opacity: 0; transform: translate(calc(260px - var(--x)), calc(260px - var(--y))) scale(0.2); } }
+@keyframes land { from { opacity: 0; transform: translate(calc(var(--half) - var(--x)), calc(var(--half) - var(--y))) scale(0.2); } }
 .dot { transition: r 0.2s var(--ease); }
 .node-stalls .dot { fill: var(--stall); }
 .node-thin .dot { fill: var(--thin); }
@@ -109,7 +109,19 @@ button, input, select { font: inherit; color: inherit; }
 .node.on .halo { fill: rgba(255, 255, 255, 0.16); }
 @keyframes throb { 50% { transform: scale(1.35); opacity: 0.4; } }
 .core { filter: drop-shadow(0 0 24px rgba(255, 122, 69, 0.55)); }
-.core-text { font: 800 26px var(--display); fill: #1a0b05; }
+.core-text { font: 800 26px var(--display); fill: #1a0b05; pointer-events: none; }
+.ring-label { font: 600 12px var(--body); letter-spacing: 0.04em; }
+.ring-label-stalls { fill: var(--stall); }
+.ring-label-thin { fill: var(--thin); }
+.ring-label-covered { fill: var(--covered); }
+.node-key { font: 600 11px var(--body); fill: var(--text); pointer-events: none; }
+.node:focus { outline: none; }
+.node:focus-visible .dot { stroke: var(--text); stroke-width: 2; }
+.callout-bg { fill: var(--ink-2); stroke: var(--line); }
+.callout-text { font: 600 12px var(--body); fill: var(--text); pointer-events: none; }
+.callout-stalls .callout-bg { stroke: var(--stall); }
+.callout-thin .callout-bg { stroke: var(--thin); }
+.callout-covered .callout-bg { stroke: var(--covered); }
 
 .legend, .sources { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--muted); }
 .dot-key { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; }
