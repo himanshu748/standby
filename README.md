@@ -1,14 +1,12 @@
 # Standby
 
-**If this person is out, what stalls?** Standby is a Forge app for Jira and Confluence. Pick a teammate and the days they are away. It sorts their work into three rings, names a backup for each item, and on confirmation creates a Confluence handover draft.
+**When a teammate takes leave, nobody knows which work will stall.**
 
-| Ring | Meaning |
-| --- | --- |
-| Stalls | Nobody else is on record for that item. |
-| Thin | One other person is. |
-| Covered | Two or more other people are. |
+<img src="docs/screenshots/02-drill.png" width="640" alt="Standby drill showing stalled, thinly covered, and covered work">
 
-Teamwork Graph decides the rings. An object that also sits in a colleague's graph counts as cover, even when the Jira changelog never mentions them. Jira and Confluence REST add due dates, priority, and edit history. Every read and write runs as the signed-in user. Nothing is written until you confirm it, and the handover page is created as a draft.
+Pick a teammate and their dates away. Standby shows who can cover each item,
+suggests backups with reasons, and can draft a Confluence handover or reassign
+selected Jira issues after confirmation.
 
 ## Prerequisites
 
@@ -55,46 +53,26 @@ Paste that URL in both of these places:
 
 Until the placeholder is replaced, judges cannot install Standby.
 
-## What to try
+## How it uses Atlassian
 
-1. In Jira or Confluence, open **Apps → Standby**.
-2. Pick someone who owns work other people have not touched, and set the days they are away.
-3. Read the orbit. Stalls sit on the outer ring. Hover or tab to a dot to name the item.
-4. Tick backups on the items that should move, choose a space, and confirm **Draft handover page**.
-5. Open the draft in Confluence. It is not published.
-6. On a Jira issue, the Standby panel answers the same question for that one issue.
+Forge hosts the Jira and Confluence app. Teamwork Graph finds the teammate's work
+and colleagues who share it. Jira and Confluence REST add status, due dates, and
+edit history. Queries run with the signed-in user's permissions.
 
-## Proof without a site
+## Quickstart
 
-`npm run proof` replays a six-person checkout team from [test/fixtures/seed-team.json](test/fixtures/seed-team.json). Priya Shah is out 8–19 December 2026. The run prints every ring, including the wallet issue that only moves off "stalls" because it sits in a colleague's Teamwork Graph, and it writes the draft handover to [proof/handover-page.html](proof/handover-page.html). No Atlassian site is contacted.
+From a fresh clone with Node 22 or newer:
 
-```bash
-npm ci
-npm run proof
-```
+~~~sh
+npm ci && npm run check
+~~~
 
-Node 22 or newer. `npm run check` is typecheck, lint, tests, and the UI build.
+This builds the UI and runs the checks. `npm run proof` replays a six-person
+drill and writes the handover draft to [proof/handover-page.html](proof/handover-page.html)
+without contacting a site.
 
-## Develop from source
+A live drill needs a Forge development install on Jira or Confluence. That path
+is for contributors, not judges. See [development and setup](docs/development.md).
 
-This path is for contributors. It is not the judge install.
-
-```bash
-npm ci
-npm run check
-npx @forge/cli deploy -e development
-npx @forge/cli install --site <site>.atlassian.net --product jira -e development
-npx @forge/cli install --site <site>.atlassian.net --product confluence -e development
-```
-
-Open **Apps → Standby** in Jira or Confluence.
-
-| Path | What it is |
-| --- | --- |
-| `src/core` | Scoring: coverage, urgency, backups, the handover page, the orbit layout. No Forge imports. |
-| `src/adapters` | Jira REST, Confluence REST, and Teamwork Graph queries. |
-| `src/index.ts` | Forge resolvers: `people`, `drill`, `issue`, `spaces`, `handover`, `reassign`. |
-| `static/ui` | React Custom UI. |
-| `test` | Vitest. `test/fixtures/seed-team.json` is the multi-user drill. |
-
-License: [MIT](LICENSE). Privacy: [PRIVACY.md](PRIVACY.md).
+[Video](https://youtu.be/7HAcyNG6KVs) · [Devpost](https://devpost.com/software/standby-ng4uxi) ·
+[Privacy](PRIVACY.md) · [License](LICENSE)
