@@ -33,7 +33,9 @@ It runs on a real site's data: for one teammate it walked 100 objects in their T
 Bus factor is not a headcount; it is per item. The useful question is not "who can cover for Alana?" but "who can pick up MOBL-12?".
 
 ## What's next
-Scheduled drills before planned leave, a Rovo action to run a drill from chat, and team-level heat maps.
+Scheduled drills before planned leave, and team-level heat maps.
+
+Not in this app: a Rovo action. `manifest.yml` has no `rovo` module (`rovo:agent`, `rovo:action`, or `rovo:skill`), and this submission is not for the Best Agents bonus. Coverage comes from the Teamwork Graph API.
 
 ## Built with
 forge, jira, confluence, teamwork-graph, react, typescript, vite, vitest
