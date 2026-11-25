@@ -1,0 +1,116 @@
+{
+  "site": "https://northwind.atlassian.net",
+  "window": { "from": "2026-12-08", "to": "2026-12-19" },
+  "out": "712020:priya-shah",
+  "handoverSpaceId": "88421",
+  "team": { "id": "ari:cloud:identity::team/mobile-checkout", "name": "Mobile checkout" },
+  "teamMemberIds": ["712020:priya-shah", "712020:jonah-ellis", "712020:lina-okonkwo", "712020:omar-haddad"],
+  "people": [
+    { "accountId": "712020:priya-shah", "name": "Priya Shah" },
+    { "accountId": "712020:jonah-ellis", "name": "Jonah Ellis" },
+    { "accountId": "712020:mei-chen", "name": "Mei Chen" },
+    { "accountId": "712020:omar-haddad", "name": "Omar Haddad" },
+    { "accountId": "712020:lina-okonkwo", "name": "Lina Okonkwo" },
+    { "accountId": "712020:samir-patel", "name": "Samir Patel" }
+  ],
+  "project": { "key": "MOBL", "name": "Mobile checkout", "leadId": "712020:priya-shah" },
+  "space": { "key": "MOBL", "name": "Mobile checkout" },
+  "issues": [
+    {
+      "key": "MOBL-12",
+      "summary": "Checkout 3DS retry storms",
+      "status": "In Progress",
+      "statusCategory": "indeterminate",
+      "priority": "High",
+      "due": "2026-12-10",
+      "assigneeId": "712020:priya-shah",
+      "reporterId": "712020:priya-shah",
+      "commentBy": [],
+      "updatedBy": []
+    },
+    {
+      "key": "MOBL-18",
+      "summary": "Release notes for 4.2",
+      "status": "To Do",
+      "statusCategory": "new",
+      "priority": "Medium",
+      "due": "2026-12-22",
+      "assigneeId": "712020:priya-shah",
+      "reporterId": "712020:priya-shah",
+      "commentBy": ["712020:jonah-ellis"],
+      "updatedBy": []
+    },
+    {
+      "key": "MOBL-4",
+      "summary": "Apple Pay sheet drops the postcode",
+      "status": "In Review",
+      "statusCategory": "indeterminate",
+      "priority": "Highest",
+      "due": "2026-11-30",
+      "assigneeId": "712020:priya-shah",
+      "reporterId": "712020:priya-shah",
+      "commentBy": ["712020:samir-patel"],
+      "updatedBy": ["712020:jonah-ellis"]
+    },
+    {
+      "key": "MOBL-31",
+      "summary": "Wallet token refresh",
+      "status": "In Progress",
+      "statusCategory": "indeterminate",
+      "priority": "Medium",
+      "due": "2026-12-14",
+      "assigneeId": "712020:priya-shah",
+      "reporterId": "712020:priya-shah",
+      "commentBy": [],
+      "updatedBy": []
+    }
+  ],
+  "peerIssues": [
+    { "key": "MOBL-40", "assigneeId": "712020:omar-haddad" },
+    { "key": "MOBL-41", "assigneeId": "712020:omar-haddad" },
+    { "key": "MOBL-42", "assigneeId": "712020:omar-haddad" },
+    { "key": "MOBL-50", "assigneeId": "712020:jonah-ellis" }
+  ],
+  "pages": [
+    {
+      "id": "4401",
+      "title": "Checkout on-call runbook",
+      "ownerId": "712020:priya-shah",
+      "creatorId": "712020:priya-shah",
+      "updatedAt": "2026-11-20T15:04:00.000Z",
+      "authorIds": ["712020:priya-shah", "712020:mei-chen"]
+    },
+    {
+      "id": "4402",
+      "title": "Checkout architecture",
+      "ownerId": "712020:priya-shah",
+      "creatorId": "712020:priya-shah",
+      "updatedAt": "2026-10-02T09:12:00.000Z",
+      "authorIds": ["712020:priya-shah"]
+    }
+  ],
+  "owns": [
+    {
+      "type": "goal",
+      "id": "goal-7",
+      "key": "GOAL-7",
+      "name": "Cut checkout failure rate to 0.4%",
+      "due": "2026-12-15"
+    },
+    {
+      "type": "project",
+      "id": "atlas-3",
+      "key": "ATLAS-3",
+      "name": "Checkout reliability",
+      "due": "2027-03-01",
+      "state": "ON_TRACK"
+    }
+  ],
+  "graphHolds": {
+    "712020:jonah-ellis": ["jira:MOBL-18", "jira:MOBL-4", "jira:MOBL-31", "jira:MOBL-50"],
+    "712020:mei-chen": ["conf:4401"],
+    "712020:samir-patel": ["jira:MOBL-4"],
+    "712020:omar-haddad": ["jira:MOBL-40", "jira:MOBL-41", "jira:MOBL-42"],
+    "712020:lina-okonkwo": []
+  }
+}

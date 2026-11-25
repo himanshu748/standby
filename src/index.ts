@@ -15,6 +15,8 @@ const jira: Rest = (path, i) => api.asUser().requestJira(assumeTrustedRoute(path
 const conf: Rest = (path, i) => api.asUser().requestConfluence(assumeTrustedRoute(path), init(i));
 const graph: Graph = async (query, variables) => (await api.asUser().requestTeamworkGraph(query, variables)).json();
 
+export type Clients = { jira: Rest; conf: Rest; graph: Graph };
+
 type DrillInput = { accountId: string; from: string; to: string; siteUrl: string };
 
 const ACCOUNT = /^[A-Za-z0-9:_-]{6,128}$/;
@@ -28,14 +30,14 @@ function check(p: DrillInput): void {
 
 const fail = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
-export async function drill(p: DrillInput): Promise<Drill> {
+export async function drill(p: DrillInput, clients: Clients = { jira, conf, graph }): Promise<Drill> {
   check(p);
-  const [person] = [...(await lookupPeople(jira, [p.accountId])).values()];
+  const [person] = [...(await lookupPeople(clients.jira, [p.accountId])).values()];
   if (!person) throw new Error('That person is not an active user on this site');
   const [j, c, g] = await Promise.allSettled([
-    jiraSignals(jira, p.siteUrl, p.accountId),
-    confluenceSignals(conf, jira, p.siteUrl, p.accountId),
-    graphSignals(graph, p.accountId, p.siteUrl),
+    jiraSignals(clients.jira, p.siteUrl, p.accountId),
+    confluenceSignals(clients.conf, clients.jira, p.siteUrl, p.accountId),
+    graphSignals(clients.graph, p.accountId, p.siteUrl),
   ]);
   const sources: SourceStatus[] = [
     g.status === 'fulfilled'
@@ -68,7 +70,7 @@ export async function drill(p: DrillInput): Promise<Drill> {
   const near = g.status === 'fulfilled' ? g.value.neighbourhood : new Set<string>();
   for (const i of merged) if (near.has(i.id) && !i.sources.includes('graph')) i.sources.push('graph');
   const pool = candidatePool(p.accountId, merged, containerPeers, teammates);
-  const co = await graphCoverage(graph, merged, pool).catch(() => undefined);
+  const co = await graphCoverage(clients.graph, merged, pool).catch(() => undefined);
   const graphSource = sources.find((s) => s.source === 'graph');
   if (co && graphSource) graphSource.note = `${near.size} objects in their graph, ${co.links} also in ${co.checked} colleagues' graphs; ${graphSource.note ?? ''}`;
   return runDrill(
@@ -157,12 +159,20 @@ resolver.define('issue', async ({ payload, context }) =>
 
 resolver.define('spaces', async () => listSpaces(conf));
 
-resolver.define('handover', async ({ payload }) => {
-  const p = payload as DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> };
+export async function createHandover(
+  p: DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> },
+  clients: Clients = { jira, conf, graph },
+): Promise<{ drill: Drill; page: { id: string; url: string } }> {
   if (p.confirmed !== true) throw new Error('Confirm before creating the page');
   if (!/^\d+$/.test(String(p.spaceId))) throw new Error('Pick a space');
-  const d = await drill(p);
-  return createDraft(conf, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
+  const d = await drill(p, clients);
+  const page = await createDraft(clients.conf, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
+  return { drill: d, page };
+}
+
+resolver.define('handover', async ({ payload }) => {
+  const { page } = await createHandover(payload as DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> });
+  return page;
 });
 
 resolver.define('reassign', async ({ payload }) => {

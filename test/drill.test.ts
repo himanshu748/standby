@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { backupsFor, coverageOf, mergeItems, runDrill, urgencyOf } from '../src/core/drill';
 import { escapeXml, handoverStorage, handoverTitle } from '../src/core/handover';
-import { orbit } from '../src/core/layout';
+import { nodeAngle, orbit, ringLabelAngle } from '../src/core/layout';
 import type { Person, Signals, Touch, WorkItem } from '../src/core/model';
 
 // Names are real users on the development site (one-atlas-obka); ids are shortened.
@@ -128,6 +128,18 @@ describe('orbit', () => {
     const [s, c] = [placed.find((p) => p.id === 'x')!, placed.find((p) => p.id === 'y')!];
     expect(dist(s)).toBeGreaterThan(dist(c));
     for (const p of placed) expect(dist(p) + p.r).toBeLessThanOrEqual(200);
+  });
+
+  it('puts each ring label in the gap between nodes', () => {
+    const apart = (a: number, b: number) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+    for (const [count, ring] of [
+      [5, 2],
+      [3, 1],
+      [1, 0],
+    ] as const) {
+      const label = ringLabelAngle(count, ring);
+      for (let i = 0; i < count; i++) expect(apart(label, nodeAngle(ring, i, count))).toBeGreaterThan(0.4);
+    }
   });
 
   it('shrinks nodes on a crowded ring so they never overlap', () => {
