@@ -11,10 +11,13 @@ const server = await createServer({
 let browser;
 try {
   await server.listen();
+  const url = server.resolvedUrls?.local[0];
+  assert.ok(url, 'Vite did not expose a local URL');
+
   browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 
-  await page.goto('http://127.0.0.1:4174/', { waitUntil: 'networkidle' });
+  await page.goto(url, { waitUntil: 'networkidle' });
   await page.getByRole('combobox', { name: 'Who is out?' }).fill('Alana');
   await page.getByRole('option', { name: 'Alana Rivera' }).click();
   await page.getByRole('button', { name: 'Run the drill' }).click();
