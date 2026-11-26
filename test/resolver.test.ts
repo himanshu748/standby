@@ -68,6 +68,8 @@ describe('drill input', () => {
   it.each([
     [{ ...input, accountId: '' }, 'Pick a person first'],
     [{ ...input, from: '2026-12-12', to: '2026-12-01' }, 'Pick a valid absence window'],
+    [{ ...input, from: '2026-11-31' }, 'Pick a valid absence window'],
+    [{ ...input, to: '2026-13-01' }, 'Pick a valid absence window'],
     [{ ...input, siteUrl: 'https://evil.example.com' }, 'Unknown site'],
   ])('rejects %j before calling any product', async (p, message) => {
     await expect(drill(p)).rejects.toThrow(message);

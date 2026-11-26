@@ -20,11 +20,15 @@ export type Clients = { jira: Rest; conf: Rest; graph: Graph };
 type DrillInput = { accountId: string; from: string; to: string; siteUrl: string };
 
 const ACCOUNT = /^[A-Za-z0-9:_-]{6,128}$/;
-const DATE = /^\d{4}-\d{2}-\d{2}$/;
+function isCalendarDay(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const ms = Date.parse(`${value}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === value;
+}
 
 function check(p: DrillInput): void {
   if (!ACCOUNT.test(p.accountId ?? '')) throw new Error('Pick a person first');
-  if (!DATE.test(p.from ?? '') || !DATE.test(p.to ?? '') || p.from > p.to) throw new Error('Pick a valid absence window');
+  if (!isCalendarDay(p.from) || !isCalendarDay(p.to) || p.from > p.to) throw new Error('Pick a valid absence window');
   if (!/^https:\/\/[a-z0-9-]+\.(atlassian\.net|jira\.com)$/.test(p.siteUrl ?? '')) throw new Error('Unknown site');
 }
 
