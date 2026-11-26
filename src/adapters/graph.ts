@@ -153,20 +153,22 @@ async function run(
   graph: Graph,
   query: string,
   vars: Record<string, unknown>,
+  warnings: string[],
 ): Promise<Json> {
   const res = await graph(query, vars);
-  // A null node inside a connection only drops that edge; keep the rest of the page.
-  if (res.errors?.length && !res.data)
-    throw new Error(res.errors.map((e) => e.message).join("; "));
+  const errors = res.errors?.map((e) => e.message) ?? [];
+  // Keep usable data, but report any missing part of the response.
+  if (errors.length && !res.data) throw new Error(errors.join("; "));
+  warnings.push(...errors);
   return res.data ?? {};
 }
 
 /** Pages through atlassianUserWorkQuery, merging every page into one connection. */
-async function workOf(graph: Graph, u: string, pages: number): Promise<Json> {
+async function workOf(graph: Graph, u: string, pages: number, warnings: string[]): Promise<Json> {
   const edges: Json[] = [];
   let after: string | undefined;
   for (let i = 0; i < pages; i++) {
-    const conn = (await run(graph, QUERIES.work, after ? { u, after } : { u }))
+    const conn = (await run(graph, QUERIES.work, after ? { u, after } : { u }, warnings))
       .atlassianUserWorkQuery;
     edges.push(...(conn?.edges ?? []));
     if (!conn?.pageInfo?.hasNextPage || !conn.pageInfo.endCursor) break;
@@ -206,7 +208,11 @@ export async function graphCoverage(
   candidates: Person[],
 ) {
   const results = await Promise.allSettled(
-    candidates.map((p) => workOf(graph, user(p.accountId), 2)),
+    candidates.map(async (p) => {
+      const warnings: string[] = [];
+      const data = await workOf(graph, user(p.accountId), 2, warnings);
+      return { data, partial: warnings.length > 0 };
+    }),
   );
   const neighbourhoods = results.flatMap((r, i) =>
     r.status === "fulfilled"
@@ -214,7 +220,7 @@ export async function graphCoverage(
           {
             person: candidates[i]!,
             ids: new Set(
-              nodes(r.value, "atlassianUserWorkQuery")
+              nodes(r.value.data, "atlassianUserWorkQuery")
                 .map(workId)
                 .filter((x): x is string => !!x),
             ),
@@ -222,28 +228,30 @@ export async function graphCoverage(
         ]
       : [],
   );
-  return { ...coLinks(items, neighbourhoods), checked: neighbourhoods.length };
+  const partial = results.filter((r) => r.status === "fulfilled" && r.value.partial).length;
+  return { ...coLinks(items, neighbourhoods), checked: neighbourhoods.length, partial };
 }
 
 /** Each query is independent: one failing (a missing scope, a preview change) must not hide the others. */
 export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
   const u = user(outId);
+  const warnings: string[] = [];
   const settle = <T>(p: Promise<T>) =>
     p.then(
       (v) => ({ ok: true as const, v }),
       (e: Error) => ({ ok: false as const, e: e.message }),
     );
   const [teams, assigned, work, owns] = await Promise.all([
-    settle(run(graph, QUERIES.teams, { u })),
-    settle(run(graph, QUERIES.assigned, { u })),
-    settle(workOf(graph, u, 4)),
-    settle(run(graph, QUERIES.owns, { u })),
+    settle(run(graph, QUERIES.teams, { u }, warnings)),
+    settle(run(graph, QUERIES.assigned, { u }, warnings)),
+    settle(workOf(graph, u, 4, warnings)),
+    settle(run(graph, QUERIES.owns, { u }, warnings)),
   ]);
   const teamNodes = teams.ok ? nodes(teams.v, "atlassianUserInTeams") : [];
   const memberLists = await Promise.all(
     teamNodes
       .slice(0, 3)
-      .map((t) => settle(run(graph, QUERIES.members, { t: t.id }))),
+      .map((t) => settle(run(graph, QUERIES.members, { t: t.id }, warnings))),
   );
   const teammates: { person: Person; team: string }[] = [];
   memberLists.forEach((m, i) => {
@@ -271,9 +279,9 @@ export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
           .filter((x): x is string => !!x)
       : [],
   );
-  const errors = [teams, assigned, work, owns]
-    .filter((r) => !r.ok)
-    .map((r) => (r.ok ? "" : r.e));
+  const failures = [teams, assigned, work, owns, ...memberLists]
+    .flatMap((r) => (r.ok ? [] : [r.e]));
+  const errors = [...new Set([...failures, ...warnings])].sort();
   return {
     items,
     neighbourhood,
