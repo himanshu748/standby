@@ -94,6 +94,29 @@ describe('drill sources', () => {
     expect(d.items.every((i) => !i.sources.includes('confluence'))).toBe(true);
     expect(calls.every((c) => c.method === 'GET')).toBe(true);
   });
+
+  it('reports incomplete colleague graph coverage even when the primary graph succeeds', async () => {
+    const graph = vi.fn(async (query: string, vars: Record<string, unknown>) => {
+      if (query.includes('standby_teams')) {
+        return { data: { atlassianUserInTeams: { edges: [{ node: { id: 'code-team', displayName: 'Code' } }] } } };
+      }
+      if (query.includes('standby_members')) {
+        return { data: { atlassianTeamMembers: { edges: [{ node: { accountId: 'peer-123', name: 'Peer' } }] } } };
+      }
+      if (query.includes('standby_work') && vars['u'] !== `ari:cloud:identity::user/${ALANA}`) {
+        throw new Error('Colleague work inaccessible');
+      }
+      return { data: {} };
+    });
+    const rest = async (path: string) => res(jiraOnly({ product: 'jira', path, method: 'GET' }));
+    const result = await drill(input, { jira: rest, conf: async () => res({ status: 503 }), graph });
+    expect(result.sources.find((s) => s.source === 'graph')).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('colleague graph lookups failed'),
+    });
+    expect(result.sources.find((s) => s.source === 'jira')).toMatchObject({ ok: true });
+    expect(result.items.length).toBeGreaterThan(0);
+  });
 });
 
 describe('writes', () => {
