@@ -133,6 +133,30 @@ describe('teamwork graph', () => {
     expect(graph).toMatchObject({ checked: 1, partial: 1, links: 1 });
   });
 
+  it('keeps work from earlier pages when a later Graph page fails', async () => {
+    const graph = await graphSignals(async (query, vars) => {
+      if (!query.includes('standby_work')) return { data: {} };
+      if (vars.after) return { errors: [{ message: 'cursor expired' }] };
+      return { data: { atlassianUserWorkQuery: {
+        edges: [{ node: { __typename: 'JiraWorkItem', key: 'SALES-27' } }],
+        pageInfo: { hasNextPage: true, endCursor: 'second' },
+      } } };
+    }, ALANA);
+    expect(graph.items.map((item) => item.id)).toEqual(['jira:SALES-27']);
+    expect(graph.errors).toEqual(['Teamwork Graph work pagination stopped: cursor expired']);
+  });
+
+  it('reports a capped colleague search as partial while retaining overlap', async () => {
+    const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
+    const graph = await graphCoverage(async (_query, vars) => ({
+      data: { atlassianUserWorkQuery: {
+        edges: [{ node: { __typename: 'ConfluencePage', pageId: '9' } }],
+        pageInfo: { hasNextPage: true, endCursor: vars.after ? 'third' : 'second' },
+      } },
+    }), [page], [u('m', 'Mitch Davis')]);
+    expect(graph).toMatchObject({ checked: 1, partial: 1, links: 1 });
+  });
+
   it('turns overlapping Teamwork Graph neighbourhoods into coverage', async () => {
     const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
     const mitch = u('m', 'Mitch Davis');
