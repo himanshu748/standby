@@ -78,10 +78,12 @@ export async function drill(p: DrillInput, clients: Clients = { jira, conf, grap
   const graphSource = sources.find((s) => s.source === 'graph');
   if (graphSource) {
     const checked = co?.checked ?? 0;
-    graphSource.ok = graphSource.ok && checked === pool.length;
+    const partial = co?.partial ?? 0;
+    graphSource.ok = graphSource.ok && checked === pool.length && partial === 0;
     const details = [
       co ? `${near.size} objects in their graph, ${co.links} also in ${checked} colleagues' graphs` : '',
       checked < pool.length ? `${pool.length - checked} colleague graph lookups failed` : '',
+      partial > 0 ? `${partial} colleague graph responses were partial` : '',
       graphSource.note,
     ];
     graphSource.note = details.filter(Boolean).join('; ');
@@ -127,12 +129,13 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
       : [
           co ? `checked ${co.checked} colleagues' graphs, ${co.links} also hold this issue` : "colleagues' graphs not checked",
           ...(co && co.checked < pool.length ? [`${pool.length - co.checked} colleague graph lookups failed`] : []),
+          ...(co && co.partial > 0 ? [`${co.partial} colleague graph responses were partial`] : []),
           g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'not on any team',
           ...g.value.errors,
         ].join('; ');
   const sources: SourceStatus[] = [
     { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled', count: 1, note: peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates` : fail(peersRes.reason) },
-    { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === pool.length, count: co?.links ?? 0, note: graphNote },
+    { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === pool.length && co.partial === 0, count: co?.links ?? 0, note: graphNote },
   ];
   const d = runDrill({ person, items: co?.items ?? [item!], containerPeers, teammates, sources }, { from: p.from, to: p.to });
   return { person, item: d.items[0] ?? null, sources };

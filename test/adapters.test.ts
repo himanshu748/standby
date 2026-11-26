@@ -106,6 +106,33 @@ describe('teamwork graph', () => {
     expect(r.teams).toEqual(['Revenue']);
     expect(r.counts.work).toBe(r.items.filter((i) => i.kind === 'issue').length);
   });
+  it('keeps usable graph items and reports partial responses and failed team lookups', async () => {
+    const r = await graphSignals(async (query) => {
+      if (query.includes('standby_teams')) {
+        return { data: { atlassianUserInTeams: { edges: [{ node: { id: 'ari:team/1', displayName: 'Sales' } }] } } };
+      }
+      if (query.includes('standby_members')) return { errors: [{ message: 'team read denied' }] };
+      if (query.includes('standby_assigned')) {
+        return {
+          data: { atlassianUserAssignedJiraWorkItems: { edges: [{ node: { key: 'SALES-27' } }] } },
+          errors: [{ message: 'some assignments unavailable' }],
+        };
+      }
+      return { data: {} };
+    }, ALANA);
+    expect(r.items.map((item) => item.id)).toEqual(['jira:SALES-27']);
+    expect(r.errors).toEqual(['some assignments unavailable', 'team read denied']);
+  });
+
+  it('keeps overlap from a partial colleague graph', async () => {
+    const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
+    const graph = await graphCoverage(async () => ({
+      data: { atlassianUserWorkQuery: { edges: [{ node: { __typename: 'ConfluencePage', pageId: '9' } }] } },
+      errors: [{ message: 'other work omitted' }],
+    }), [page], [u('m', 'Mitch Davis')]);
+    expect(graph).toMatchObject({ checked: 1, partial: 1, links: 1 });
+  });
+
   it('turns overlapping Teamwork Graph neighbourhoods into coverage', async () => {
     const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
     const mitch = u('m', 'Mitch Davis');
