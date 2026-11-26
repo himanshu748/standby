@@ -168,11 +168,23 @@ async function workOf(graph: Graph, u: string, pages: number, warnings: string[]
   const edges: Json[] = [];
   let after: string | undefined;
   for (let i = 0; i < pages; i++) {
-    const conn = (await run(graph, QUERIES.work, after ? { u, after } : { u }, warnings))
-      .atlassianUserWorkQuery;
+    let conn: Json;
+    try {
+      conn = (await run(graph, QUERIES.work, after ? { u, after } : { u }, warnings)).atlassianUserWorkQuery;
+    } catch (error) {
+      if (i === 0) throw error;
+      warnings.push(`Teamwork Graph work pagination stopped: ${error instanceof Error ? error.message : String(error)}`);
+      break;
+    }
     edges.push(...(conn?.edges ?? []));
-    if (!conn?.pageInfo?.hasNextPage || !conn.pageInfo.endCursor) break;
-    after = conn.pageInfo.endCursor;
+    if (!conn?.pageInfo?.hasNextPage) break;
+    const next = conn.pageInfo.endCursor;
+    if (typeof next !== "string" || !next || next === after) {
+      warnings.push("Teamwork Graph work pagination did not advance");
+      break;
+    }
+    if (i + 1 === pages) warnings.push("Teamwork Graph work reached its page limit");
+    after = next;
   }
   return { atlassianUserWorkQuery: { edges } };
 }
