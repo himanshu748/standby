@@ -13,7 +13,11 @@ export function PersonPicker({ value, onChange }: { value: Person | null; onChan
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (query.trim().length < 2) return setResults([]);
+    if (query.trim().length < 2) {
+      setResults([]);
+      setBusy(false);
+      return;
+    }
     let live = true;
     setBusy(true);
     const t = setTimeout(() => {
@@ -57,7 +61,11 @@ export function PersonPicker({ value, onChange }: { value: Person | null; onChan
         aria-label="Who is out?"
         placeholder="Type a teammate's name"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setResults([]);
+          setOpen(false);
+        }}
         onFocus={() => results.length && setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
         onKeyDown={(e) => {

@@ -18,8 +18,18 @@ try {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 
   await page.goto(url, { waitUntil: 'networkidle' });
-  await page.getByRole('combobox', { name: 'Who is out?' }).fill('Alana');
-  await page.getByRole('option', { name: 'Alana Rivera' }).click();
+  const picker = page.getByRole('combobox', { name: 'Who is out?' });
+  const alana = page.getByRole('option', { name: 'Alana Rivera' });
+  await picker.fill('Alana');
+  await alana.waitFor();
+  await picker.fill('No match');
+  assert.equal(await alana.count(), 0, 'the previous query must not leave a selectable result');
+  await picker.press('Enter');
+  assert.equal(await picker.inputValue(), 'No match');
+  await picker.fill('A');
+  await page.locator('.picker-spin').waitFor({ state: 'hidden' });
+  await picker.fill('Alana');
+  await alana.click();
   await page.getByRole('button', { name: 'Run the drill' }).click();
 
   await page.getByRole('main', { name: 'Drill for Alana Rivera' }).waitFor({ timeout: 10_000 });
