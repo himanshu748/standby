@@ -86,9 +86,15 @@ export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const keys = [...new Set(items.map((i) => i.container?.id.slice(5)).filter(Boolean))];
   const peersJql = `project in (${keys.map((k) => `"${k}"`).join(',')}) AND statusCategory != Done AND assignee is not EMPTY`;
   const peersJson = keys.length
-    ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`)
+    ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`).catch(() => null)
     : { issues: [] };
-  return { items, peers: parsePeers(peersJson), issueCount: (issuesJson.issues ?? []).length, more: !!issuesJson.nextPageToken };
+  return {
+    items,
+    peers: peersJson === null ? {} : parsePeers(peersJson),
+    peerLookupFailed: peersJson === null,
+    issueCount: (issuesJson.issues ?? []).length,
+    more: !!issuesJson.nextPageToken,
+  };
 }
 
 export async function reassign(rest: Rest, issueKey: string, accountId: string): Promise<void> {

@@ -58,7 +58,13 @@ export async function drill(p: DrillInput, clients: Clients = { jira, conf, grap
         }
       : { source: 'graph', label: 'Teamwork Graph', ok: false, count: 0, note: fail(g.reason) },
     j.status === 'fulfilled'
-      ? { source: 'jira', label: 'Jira', ok: true, count: j.value.items.length, note: `${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned` }
+      ? {
+          source: 'jira',
+          label: 'Jira',
+          ok: !j.value.peerLookupFailed,
+          count: j.value.items.length,
+          note: `${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned${j.value.peerLookupFailed ? '; project colleague lookup unavailable' : ''}`,
+        }
       : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
     c.status === 'fulfilled'
       ? { source: 'confluence', label: 'Confluence', ok: true, count: c.value.items.length, note: `${c.value.pageCount} recent pages they wrote or edited` }

@@ -97,6 +97,17 @@ describe('drill sources', () => {
     expect(calls.every((c) => c.method === 'GET')).toBe(true);
   });
 
+  it('keeps confirmed Jira work when the project colleague lookup fails', async () => {
+    route = (c) => c.path.includes('assignee%20is%20not%20EMPTY') ? { status: 503 } : jiraOnly(c);
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'jira:MS-1')).toBe(true);
+    expect(d.sources.find((s) => s.source === 'jira')).toMatchObject({
+      ok: false,
+      count: expect.any(Number),
+      note: expect.stringContaining('project colleague lookup unavailable'),
+    });
+  });
+
   it('reports incomplete colleague graph coverage even when the primary graph succeeds', async () => {
     const graph = vi.fn(async (query: string, vars: Record<string, unknown>) => {
       if (query.includes('standby_teams')) {
