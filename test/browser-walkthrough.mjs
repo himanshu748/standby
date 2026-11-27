@@ -100,6 +100,28 @@ try {
   await (await reply).finished();
   await page.getByRole('region', { name: 'How the drill works' }).waitFor();
   assert.equal(await page.getByRole('main', { name: 'Drill for Priya Shah' }).count(), 0, 'a late response must not restore a retired drill');
+  await page.unroute('**/__standby_demo');
+  await page.route('**/__standby_demo', async (route) => {
+    if (route.request().postDataJSON().name !== 'drill') return route.continue();
+    const response = await route.fetch();
+    const drill = await response.json();
+    assert.ok(drill.items.length > 0);
+    await route.fulfill({
+      response,
+      json: {
+        ...drill,
+        items: drill.items.map((item) => ({ ...item, backups: [] })),
+        bench: [],
+        sources: drill.sources.map((source) => source.source === 'graph' ? { ...source, ok: false, note: 'Graph unavailable' } : source),
+      },
+    });
+  });
+  await page.getByRole('combobox', { name: 'Who is out?' }).fill('Priya');
+  await page.getByRole('option', { name: 'Priya Shah' }).click();
+  await page.getByRole('button', { name: 'Run the drill' }).click();
+  await page.getByText(/Source coverage is incomplete\. No backups were found/).waitFor();
+  assert.equal(await page.getByText(/nobody else on this site/).count(), 0);
+
   assert.deepEqual(offsite, []);
 } finally {
   await browser?.close();
