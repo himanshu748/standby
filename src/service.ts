@@ -77,17 +77,18 @@ export async function drill(p: DrillInput, clients: Clients): Promise<Drill> {
   const teammates = g.status === 'fulfilled' ? g.value.teammates : [];
   const near = g.status === 'fulfilled' ? g.value.neighbourhood : new Set<string>();
   for (const i of merged) if (near.has(i.id) && !i.sources.includes('graph')) i.sources.push('graph');
-  const pool = candidatePool(p.accountId, merged, containerPeers, teammates);
-  const co = await graphCoverage(clients.graph, merged, pool).catch(() => undefined);
+  const { people, omitted } = candidatePool(p.accountId, merged, containerPeers, teammates);
+  const co = await graphCoverage(clients.graph, merged, people).catch(() => undefined);
   const graphSource = sources.find((s) => s.source === 'graph');
   if (graphSource) {
     const checked = co?.checked ?? 0;
     const partial = co?.partial ?? 0;
-    graphSource.ok = graphSource.ok && checked === pool.length && partial === 0;
+    graphSource.ok = graphSource.ok && checked === people.length && partial === 0 && omitted === 0;
     const details = [
       co ? `${near.size} objects in their graph, ${co.links} also in ${checked} colleagues' graphs` : '',
-      checked < pool.length ? `${pool.length - checked} colleague graph lookups failed` : '',
+      checked < people.length ? `${people.length - checked} colleague graph lookups failed` : '',
       partial > 0 ? `${partial} colleague graph responses were partial` : '',
+      omitted > 0 ? `${omitted} additional colleague graph lookups were not run` : '',
       graphSource.note,
     ];
     graphSource.note = details.filter(Boolean).join('; ');
@@ -126,15 +127,16 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
   const morePeers = peersRes.status === 'fulfilled' && hasMoreJiraResults(peersRes.value);
   const teammates = g.status === 'fulfilled' ? g.value.teammates : [];
   if (g.status === 'fulfilled' && g.value.neighbourhood.has(item!.id)) item!.sources.push('graph');
-  const pool = candidatePool(person.accountId, [item!], containerPeers, teammates);
-  const co = g.status === 'fulfilled' ? await graphCoverage(graph, [item!], pool).catch(() => undefined) : undefined;
+  const { people, omitted } = candidatePool(person.accountId, [item!], containerPeers, teammates);
+  const co = g.status === 'fulfilled' ? await graphCoverage(graph, [item!], people).catch(() => undefined) : undefined;
   const graphNote =
     g.status === 'rejected'
       ? fail(g.reason)
       : [
           co ? `checked ${co.checked} colleagues' graphs, ${co.links} also hold this issue` : "colleagues' graphs not checked",
-          ...(co && co.checked < pool.length ? [`${pool.length - co.checked} colleague graph lookups failed`] : []),
+          ...(co && co.checked < people.length ? [`${people.length - co.checked} colleague graph lookups failed`] : []),
           ...(co && co.partial > 0 ? [`${co.partial} colleague graph responses were partial`] : []),
+          ...(omitted > 0 ? [`${omitted} additional colleague graph lookups were not run`] : []),
           g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'not on any team',
           ...g.value.errors,
         ].join('; ');
@@ -144,14 +146,14 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
   if (partialEvidence) jiraNotes.push('additional issue evidence was not read');
   const sources: SourceStatus[] = [
     { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled' && !morePeers && !partialEvidence, count: 1, note: jiraNotes.join('; ') },
-    { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === pool.length && co.partial === 0, count: co?.links ?? 0, note: graphNote },
+    { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === people.length && co.partial === 0 && omitted === 0, count: co?.links ?? 0, note: graphNote },
   ];
   const d = runDrill({ person, items: co?.items ?? [item!], containerPeers, teammates, sources }, { from: p.from, to: p.to });
   return { person, item: d.items[0] ?? null, sources };
 }
 
 /** The people most often near the person's work, whose Teamwork Graph neighbourhoods are worth checking. */
-function candidatePool(outId: string, items: WorkItem[], peers: Signals['containerPeers'], teammates: Signals['teammates'], max = 12): Person[] {
+function candidatePool(outId: string, items: WorkItem[], peers: Signals['containerPeers'], teammates: Signals['teammates']) {
   const seen = new Map<string, { person: Person; n: number }>();
   const bump = (person: Person, n: number) => {
     if (person.accountId === outId) return;
@@ -162,7 +164,8 @@ function candidatePool(outId: string, items: WorkItem[], peers: Signals['contain
   for (const i of items) for (const t of i.touchedBy) bump(t, 2);
   for (const list of Object.values(peers)) for (const { person } of list) bump(person, 1);
   for (const { person } of teammates) bump(person, 3);
-  return [...seen.values()].sort((a, b) => b.n - a.n).slice(0, max).map((e) => e.person);
+  const people = [...seen.values()].sort((a, b) => b.n - a.n).slice(0, 12).map((entry) => entry.person);
+  return { people, omitted: seen.size - people.length };
 }
 
 export async function createHandover(

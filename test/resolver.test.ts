@@ -44,6 +44,7 @@ vi.mock('@forge/resolver', () => ({
 }));
 
 const { drill } = await import('../src/index');
+const { issueCover } = await import('../src/service');
 
 const fx = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const SITE = 'https://one-atlas-obka.atlassian.net';
@@ -204,6 +205,43 @@ describe('drill sources', () => {
     });
     expect(result.sources.find((s) => s.source === 'jira')).toMatchObject({ ok: true });
     expect(result.items.length).toBeGreaterThan(0);
+  });
+
+  it.each(['full drill', 'issue panel'])('reports the unqueried graph candidates in the %s', async (kind) => {
+    const issue = { key: 'MS-1', fields: { summary: 'Open work', assignee: { accountId: ALANA, displayName: 'Alana Grant' } } };
+    const jira = async (path: string) => {
+      if (path.startsWith('/rest/api/3/issue/')) return res({ status: 200, body: issue });
+      if (path.startsWith('/rest/api/3/search/jql')) return res({ status: 200, body: { issues: [] } });
+      return res(jiraOnly({ product: 'jira', path, method: 'GET' }));
+    };
+    const graph = vi.fn(async (query: string, variables: Record<string, unknown>) => {
+      if (query.includes('standby_teams')) {
+        return { data: { atlassianUserInTeams: { edges: [{ node: { id: 'code-team', displayName: 'Code' } }] } } };
+      }
+      if (query.includes('standby_members')) {
+        const edges = Array.from({ length: 14 }, (_, i) => ({ node: { accountId: `peer-${i}`, name: `Peer ${i}` } }));
+        return { data: { atlassianTeamMembers: { edges } } };
+      }
+      if (query.includes('standby_assigned')) {
+        return { data: { atlassianUserAssignedJiraWorkItems: { edges: [{ node: { key: issue.key } }] } } };
+      }
+      if (query.includes('standby_work') && variables.u === 'ari:cloud:identity::user/peer-0') {
+        return { data: { atlassianUserWorkQuery: { edges: [{ node: { key: issue.key, __typename: 'JiraWorkItem' } }] } } };
+      }
+      return { data: {} };
+    });
+    const clients = { jira, conf: async () => res({ status: 503 }), graph };
+    const result = kind === 'full drill'
+      ? await drill(input, clients)
+      : await issueCover({ ...input, issueKey: issue.key }, clients);
+
+    const item = 'items' in result ? result.items.find((entry) => entry.key === issue.key) : result.item;
+    expect(item?.touchedBy).toEqual(expect.arrayContaining([expect.objectContaining({ accountId: 'peer-0' })]));
+    expect(graph.mock.calls.filter(([query, vars]) => query.includes('standby_work') && String(vars.u).includes('/peer-'))).toHaveLength(12);
+    expect(result.sources.find((source) => source.source === 'graph')).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('2 additional colleague graph lookups were not run'),
+    });
   });
 });
 
