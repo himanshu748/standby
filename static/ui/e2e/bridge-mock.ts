@@ -113,8 +113,13 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
     return { id: 'pg-1', url: '#handover-draft' };
   }
   if (name === 'reassign') {
-    if (new URLSearchParams(window.location.search).has('retryPanel') && ++panelWrites === 1) throw new Error('Could not reassign the issue');
-    return (payload?.['changes'] as { key: string; to: Person }[] ?? []).map((c) => ({ ...c, ok: true }));
+    const changes = (payload?.['changes'] as { key: string; to: Person }[] | undefined) ?? [];
+    if (new URLSearchParams(window.location.search).has('retryPanel')) {
+      panelWrites++;
+      if (panelWrites === 1) return changes.map((c) => ({ ...c, ok: false, error: 'Jira rejected the reassignment' }));
+      if (panelWrites === 2) throw new Error('Could not reassign the issue');
+    }
+    return changes.map((c) => ({ ...c, ok: true }));
   }
   if (name === 'issue') {
     // The initial dev render requests twice under StrictMode.

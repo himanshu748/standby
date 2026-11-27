@@ -44,6 +44,7 @@ export function Panel() {
   const reassign = async () => {
     if (!data?.item?.key || !to) return;
     setActionError(null);
+    setReceipt(null);
     setBusy(true);
     try {
       const [r] = await api.reassign([{ key: data.item.key, to }]);

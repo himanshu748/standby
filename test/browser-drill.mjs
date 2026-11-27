@@ -89,7 +89,12 @@ try {
   const confirmReassign = page.getByRole('dialog').getByRole('button', { name: 'Reassign', exact: true });
   await reassign.click();
   await confirmReassign.click();
+  const oldReceipt = page.getByRole('status').filter({ hasText: 'Jira rejected the reassignment' });
+  await oldReceipt.waitFor({ timeout: 3000 });
+  await reassign.click();
+  await confirmReassign.click();
   await page.getByRole('alert').filter({ hasText: 'Could not reassign the issue' }).waitFor({ timeout: 3000 });
+  assert.equal(await oldReceipt.count(), 0);
   await reassign.click();
   await confirmReassign.click();
   await page.getByRole('status').filter({ hasText: /Reassigned SAL-91 to Celia Osei/ }).waitFor({ timeout: 3000 });
