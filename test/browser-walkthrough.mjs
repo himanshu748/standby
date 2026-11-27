@@ -67,6 +67,28 @@ try {
   await preview.getByRole('heading', { name: 'Handover: Priya Shah, 2026-12-08 to 2026-12-19' }).waitFor();
   assert.ok((await preview.getByRole('row').filter({ hasText: 'MOBL-31' }).textContent()).includes(nextBackup));
   assert.equal(await preview.locator('a[href]').count(), 0, 'fixture sources must stay local');
+  await page.getByLabel('Back on').fill('2026-12-20');
+  assert.equal(await page.getByRole('main', { name: 'Drill for Priya Shah' }).count(), 0, 'changing the dates must retire the previous drill');
+  assert.equal(await page.getByRole('button', { name: 'Draft handover page' }).count(), 0, 'cannot create a draft for the previous dates');
+
+  let markStarted;
+  let releaseDrill;
+  const started = new Promise((resolve) => { markStarted = resolve; });
+  const release = new Promise((resolve) => { releaseDrill = resolve; });
+  await page.route('**/__standby_demo', async (route) => {
+    if (route.request().postDataJSON().name !== 'drill') return route.continue();
+    markStarted();
+    await release;
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'Run the drill' }).click();
+  await started;
+  await page.getByRole('button', { name: 'Priya Shah, change person' }).click();
+  const reply = page.waitForResponse((response) => response.url().endsWith('/__standby_demo') && response.request().postDataJSON().name === 'drill');
+  releaseDrill();
+  await (await reply).finished();
+  await page.getByRole('region', { name: 'How the drill works' }).waitFor();
+  assert.equal(await page.getByRole('main', { name: 'Drill for Priya Shah' }).count(), 0, 'a late response must not restore a retired drill');
   assert.deepEqual(offsite, []);
 } finally {
   await browser?.close();
