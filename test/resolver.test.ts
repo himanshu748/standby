@@ -108,6 +108,37 @@ describe('drill sources', () => {
     });
   });
 
+  it('retains results and reports Jira pagination limits as partial coverage', async () => {
+    route = (c) => {
+      if (c.path.startsWith('/rest/api/3/project/search')) return { status: 200, body: { ...fx('projects'), isLast: false } };
+      if (c.path.includes('assignee%20is%20not%20EMPTY')) return { status: 200, body: { issues: [], isLast: false } };
+      if (c.path.startsWith('/rest/api/3/search/jql')) return { status: 200, body: { ...fx('jira-assigned'), nextPageToken: 'more' } };
+      return jiraOnly(c);
+    };
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'jira:MS-1')).toBe(true);
+    const jira = d.sources.find((s) => s.source === 'jira');
+    expect(jira).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('additional projects were not read'),
+    });
+    expect(jira?.note).toContain('additional colleague results were not read');
+  });
+
+  it('retains verified Confluence pages and marks a capped search as partial', async () => {
+    route = (c) => {
+      if (c.path.startsWith('/wiki/rest/api/search')) return { status: 200, body: { results: fx('cql').results.slice(0, 1), _links: { next: '/wiki/rest/api/search?cursor=more' } } };
+      if (c.path.startsWith('/wiki/api/v2/pages')) return { status: 200, body: { results: [] } };
+      return jiraOnly(c);
+    };
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'conf:2293814')).toBe(true);
+    expect(d.sources.find((s) => s.source === 'confluence')).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('additional matching pages were not read'),
+    });
+  });
+
   it.each(['ownership', 'history', 'author lookup'])('keeps confirmed Confluence pages when %s is unavailable', async (unavailable) => {
     const search = { results: fx('cql').results.slice(0, 1) };
     route = (c) => {
