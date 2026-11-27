@@ -79,6 +79,8 @@ const drillData = {
 };
 
 const peopleList = [alana, bench1, bench2, bench3, { accountId: 'a-elena', name: 'Elena Marchetti' }];
+let panelReads = 0;
+let panelWrites = 0;
 
 export async function invoke(name: string, payload?: Record<string, unknown>): Promise<unknown> {
   await new Promise((r) => setTimeout(r, 60));
@@ -111,16 +113,21 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
     return { id: 'pg-1', url: '#handover-draft' };
   }
   if (name === 'reassign') {
-    return (payload?.['changes'] as { key: string }[] ?? []).map((c) => ({ key: c.key, ok: true }));
+    if (new URLSearchParams(window.location.search).has('retryPanel') && ++panelWrites === 1) throw new Error('Could not reassign the issue');
+    return (payload?.['changes'] as { key: string; to: Person }[] ?? []).map((c) => ({ ...c, ok: true }));
   }
   if (name === 'issue') {
-    return { person: alana, item: items[0], sources: drillData.sources };
+    // The initial dev render requests twice under StrictMode.
+    if (new URLSearchParams(window.location.search).has('retryPanel') && ++panelReads <= 2) throw new Error('Could not read the issue');
+    return { person: alana, item: items[1], sources: drillData.sources };
   }
   throw new Error(`unknown ${name}`);
 }
 
 export const view = {
-  getContext: async () => ({ moduleKey: 'standby-global', extension: {} }),
+  getContext: async () => new URLSearchParams(window.location.search).has('retryPanel')
+    ? { moduleKey: 'standby-issue', extension: { type: 'jira:issuePanel' } }
+    : { moduleKey: 'standby-global', extension: {} },
   theme: { enable: async () => undefined },
 };
 

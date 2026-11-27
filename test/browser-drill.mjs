@@ -79,6 +79,21 @@ try {
   await partial.waitFor();
   assert.match(await partial.locator('.empty').textContent(), /Source coverage is incomplete/);
   assert.equal(await partial.getByText(/Standby found no open work/).count(), 0);
+
+  await page.goto(new URL('?retryPanel', url).href);
+  await page.getByRole('alert').filter({ hasText: 'Could not read the issue' }).waitFor({ timeout: 3000 });
+  await page.getByRole('button', { name: 'Retry issue check' }).click({ timeout: 3000 });
+  await page.getByRole('heading', { name: 'Who can pick it up' }).waitFor({ timeout: 3000 });
+  assert.equal(await page.getByRole('alert').count(), 0);
+  const reassign = page.getByRole('button', { name: /Reassign to/ });
+  const confirmReassign = page.getByRole('dialog').getByRole('button', { name: 'Reassign', exact: true });
+  await reassign.click();
+  await confirmReassign.click();
+  await page.getByRole('alert').filter({ hasText: 'Could not reassign the issue' }).waitFor({ timeout: 3000 });
+  await reassign.click();
+  await confirmReassign.click();
+  await page.getByRole('status').filter({ hasText: /Reassigned SAL-91 to Celia Osei/ }).waitFor({ timeout: 3000 });
+  assert.equal(await page.getByRole('alert').count(), 0);
 } finally {
   await browser?.close();
   await server.close();

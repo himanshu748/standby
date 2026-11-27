@@ -15,7 +15,12 @@ export const fullDrillPath = () =>
     return m ? `/jira/apps/${m[1]}/${m[2]}` : null;
   });
 
-export const siteUrl = () => (site ??= view.getContext().then((c) => String((c as { siteUrl?: string }).siteUrl ?? '')));
+export const siteUrl = () => (site ??= view.getContext()
+  .then((c) => String((c as { siteUrl?: string }).siteUrl ?? ''))
+  .catch((error: unknown) => {
+    site = undefined;
+    throw error;
+  }));
 
 export const api = {
   me: () => invoke<Person | null>('me'),
