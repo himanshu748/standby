@@ -53,9 +53,20 @@ try {
   assert.ok(brief.split('\n').some((line, i, lines) => line.startsWith('- MOBL-31 ') && lines[i + 1]?.includes(`Suggested backup: ${nextBackup}`)));
 
   await wallet.getByRole('checkbox', { name: 'Reassign' }).check();
+  await page.route('**/__standby_demo', async (route) => {
+    const { name, payload } = route.request().postDataJSON();
+    if (name !== 'reassign') return route.continue();
+    await route.fulfill({ json: [{ ...payload.changes[0], ok: false, error: 'Jira rejected the assignment' }] });
+  });
+  await page.getByRole('button', { name: 'Reassign 1 issue' }).click();
+  await page.getByRole('button', { name: 'Reassign in Jira' }).click();
+  await page.getByText('MOBL-31: Jira rejected the assignment').waitFor();
+  assert.equal(await wallet.getByRole('checkbox', { name: 'Reassign' }).isChecked(), true, 'a failed assignment stays selected for review');
+  await page.unroute('**/__standby_demo');
   await page.getByRole('button', { name: 'Reassign 1 issue' }).click();
   await page.getByRole('button', { name: 'Reassign in Jira' }).click();
   await page.getByText(`MOBL-31 now assigned to ${nextBackup}`).waitFor();
+  assert.equal(await wallet.getByRole('checkbox', { name: 'Reassign' }).isChecked(), false, 'a confirmed assignment is cleared');
 
   await page.getByRole('button', { name: 'Draft handover page' }).click();
   const confirm = page.getByRole('dialog', { name: 'Create the handover draft?' });

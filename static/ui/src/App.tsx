@@ -77,7 +77,7 @@ export function App() {
       (i) => (filter === 'all' || i.coverage === filter) && (!q || [i.key, i.title, i.container?.name].some((t) => t?.toLowerCase().includes(q))),
     );
   }, [drill, filter, query]);
-  const chosen = drill ? drill.items.filter((i) => picks[i.id]?.on && i.key).map((i) => ({ key: i.key!, title: i.title, to: picks[i.id]!.to })) : [];
+  const chosen = drill ? drill.items.filter((i) => picks[i.id]?.on && i.key).map((i) => ({ id: i.id, key: i.key!, title: i.title, to: picks[i.id]!.to })) : [];
 
   const doReassign = async () => {
     const request = attempt.current;
@@ -86,7 +86,14 @@ export function App() {
       const r = await api.reassign(chosen.map(({ key, to }) => ({ key, to })));
       if (request !== attempt.current) return;
       setReceipts(r);
-      setPicks((p) => Object.fromEntries(Object.entries(p).map(([k, v]) => [k, { ...v, on: false }])));
+      const completed = new Set(r.filter((receipt) => receipt.ok).map((receipt) => receipt.key));
+      setPicks((p) => {
+        const next = { ...p };
+        for (const { id, key } of chosen) {
+          if (completed.has(key) && next[id]) next[id] = { ...next[id], on: false };
+        }
+        return next;
+      });
     } catch (e) {
       if (request === attempt.current) setError(errText(e));
     } finally {
