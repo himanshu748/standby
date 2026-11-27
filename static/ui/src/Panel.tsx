@@ -93,6 +93,8 @@ export function Panel() {
 
   const others = item.touchedBy;
   const pick = item.backups.find((b) => b.person.accountId === to?.accountId);
+  const partialCoverage = data.sources.some((source) => !source.ok);
+  const unknownCoverage = partialCoverage && !others.length;
   return (
     <div className="ipanel">
       <p className="panel-kicker">
@@ -102,14 +104,15 @@ export function Panel() {
         </span>
       </p>
       <div className={`panel-verdict card-${item.coverage}`}>
-        <span className={`verdict-word verdict-${item.coverage}`}>{coverageText[item.coverage].label}</span>
+        <span className={`verdict-word verdict-${item.coverage}`}>{unknownCoverage ? 'Coverage unclear' : coverageText[item.coverage].label}</span>
         <span className="verdict-sub">
-          {coverageText[item.coverage].long}
+          {unknownCoverage ? 'No other contributors found in the data checked' : coverageText[item.coverage].long}
           <span className="verdict-n">
             {others.length} on record · {item.backups.length} {item.backups.length === 1 ? 'backup' : 'backups'}
           </span>
         </span>
       </div>
+      {partialCoverage && <p className="panel-how" role="status">Source coverage is incomplete. Check the source details before relying on this result.</p>}
       {item.urgencyNotes.length > 0 && (
         <div className="chips">
           {item.urgencyNotes.map((n) => (
@@ -132,7 +135,7 @@ export function Panel() {
           ))}
         </ul>
       ) : (
-        <p className="panel-how">Nobody else has touched it in Jira or Teamwork Graph.</p>
+        <p className="panel-how">{partialCoverage ? 'No other contributors found in the available Jira and Teamwork Graph data.' : 'Nobody else has touched it in Jira or Teamwork Graph.'}</p>
       )}
 
       <h3 className="panel-h">Who can pick it up</h3>
@@ -154,7 +157,9 @@ export function Panel() {
           ))}
         </fieldset>
       ) : (
-        <p className="panel-how">No backup found: nobody else in {item.container?.name ?? 'this project'} or their teams is on record.</p>
+        <p className="panel-how">{partialCoverage
+          ? 'No backup found in the available data.'
+          : `No backup found: nobody else in ${item.container?.name ?? 'this project'} or their teams is on record.`}</p>
       )}
 
       <div className="panel-actions">

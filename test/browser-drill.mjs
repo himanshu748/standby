@@ -80,6 +80,13 @@ try {
   assert.match(await partial.locator('.empty').textContent(), /Source coverage is incomplete/);
   assert.equal(await partial.getByText(/Standby found no open work/).count(), 0);
 
+  await page.goto(new URL('?partialPanel', url).href);
+  await page.getByRole('status').filter({ hasText: 'Source coverage is incomplete' }).waitFor({ timeout: 3000 });
+  assert.equal(await page.locator('.verdict-word').textContent(), 'Coverage unclear');
+  await page.getByText('No backup found in the available data.').waitFor();
+  assert.equal(await page.getByText('Nobody else has touched it in Jira or Teamwork Graph.').count(), 0);
+  assert.match(await page.getByRole('list', { name: 'Where this came from' }).textContent(), /Graph unavailable/);
+
   await page.goto(new URL('?retryPanel', url).href);
   await page.getByRole('alert').filter({ hasText: 'Could not read the issue' }).waitFor({ timeout: 3000 });
   await page.getByRole('button', { name: 'Retry issue check' }).click({ timeout: 3000 });
