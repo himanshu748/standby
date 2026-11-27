@@ -77,6 +77,7 @@ export function App() {
       (i) => (filter === 'all' || i.coverage === filter) && (!q || [i.key, i.title, i.container?.name].some((t) => t?.toLowerCase().includes(q))),
     );
   }, [drill, filter, query]);
+  const partialCoverage = drill?.sources.some((source) => !source.ok) ?? false;
   const chosen = drill ? drill.items.filter((i) => picks[i.id]?.on && i.key).map((i) => ({ id: i.id, key: i.key!, title: i.title, to: picks[i.id]!.to })) : [];
 
   const doReassign = async () => {
@@ -233,12 +234,16 @@ export function App() {
               </section>
             )}
             {drill.items.length > 0 && drill.items.every((i) => i.backups.length === 0) && (
-              <p className="empty">No backups found: nobody else on this site shares this work, its projects or spaces, or a team with {drill.person.name}. Every item rests on them alone.</p>
+              <p className="empty">
+                {partialCoverage
+                  ? 'Source coverage is incomplete. No backups were found in the data this drill could read. Check the source details and rerun before relying on this result.'
+                  : 'Standby found no backups in the work and relationships this drill could read.'}
+              </p>
             )}
 
             {drill.items.length === 0 ? (
               <p className="empty">
-                {drill.sources.some((source) => !source.ok)
+                {partialCoverage
                   ? 'Source coverage is incomplete. No work was found in the data this drill could read. Check the source details and rerun before relying on this result.'
                   : `Standby found no open work, owned pages or projects for ${drill.person.name} that you can see.`}
               </p>
