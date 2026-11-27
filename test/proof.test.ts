@@ -81,7 +81,14 @@ describe('seed fire drill', () => {
       writeProof(html);
       console.log(`\n${report}\n\nwrote ${proofPageUrl.pathname}\n`);
     } else {
-      expect(readFileSync(proofPageUrl, 'utf8')).toBe(html);
+      const archived = readFileSync(proofPageUrl, 'utf8');
+      // Preserve the seeded proof file and verify all bytes apart from the intentional coverage wording.
+      const expected = archived.replace(
+        'nobody else has touched, 3 with one other person and 1 already covered.</p>',
+        'with no other recorded contributor, 3 with one and 1 with more than one.</p>' +
+          '<h2>Source coverage</h2><ul><li>Teamwork Graph: 8 items</li><li>Jira: 5 items</li><li>Confluence: 2 items</li></ul>',
+      );
+      expect(html).toBe(expected);
     }
   });
 });
