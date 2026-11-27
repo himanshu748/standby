@@ -89,6 +89,15 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
   }
   if (name === 'drill') {
     await new Promise((r) => setTimeout(r, 1800));
+    if (new URLSearchParams(window.location.search).has('partialDrill')) {
+      return {
+        ...drillData,
+        items: [],
+        bench: [],
+        counts: { stalls: 0, thin: 0, covered: 0 },
+        sources: drillData.sources.map((source) => ({ ...source, ok: false, count: 0, note: 'Fixture read unavailable' })),
+      };
+    }
     return drillData;
   }
   if (name === 'spaces') {
