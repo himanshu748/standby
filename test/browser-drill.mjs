@@ -15,7 +15,7 @@ try {
   assert.ok(url, 'Vite did not expose a local URL');
 
   browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, permissions: ['clipboard-read', 'clipboard-write'] });
 
   await page.goto(url, { waitUntil: 'networkidle' });
   const picker = page.getByRole('combobox', { name: 'Who is out?' });
@@ -42,6 +42,23 @@ try {
     (await page.getByRole('list', { name: 'Where this came from' }).textContent()) ?? '',
     /Teamwork Graph\s+4 items/,
   );
+
+  await page.getByText('Handover brief', { exact: true }).click();
+  const brief = page.getByRole('textbox', { name: 'Handover brief text' });
+  assert.match(await brief.inputValue(), /Migration runbook v3.*\n {2}Suggested backup: Bharat Kumar/);
+  await page.getByLabel('Backup for Migration runbook v3').selectOption('a-dmitri');
+  assert.match(await brief.inputValue(), /Migration runbook v3.*\n {2}Suggested backup: Dmitri Volkov/);
+  const copy = page.getByRole('button', { name: 'Copy brief' });
+  await copy.click();
+  await page.getByText('Handover brief copied.').waitFor();
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await brief.inputValue());
+
+  await page.evaluate(() => {
+    navigator.clipboard.writeText = () => Promise.reject(new DOMException('Clipboard denied', 'NotAllowedError'));
+  });
+  await copy.click();
+  await page.getByText('Text selected. Copy it with your keyboard or device menu.').waitFor();
+  assert.equal(await brief.evaluate((field) => field.selectionEnd - field.selectionStart), (await brief.inputValue()).length);
 
   await page.getByRole('button', { name: 'Draft handover page' }).click();
   const dialog = page.getByRole('dialog', { name: 'Create the handover draft?' });

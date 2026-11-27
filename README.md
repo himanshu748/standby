@@ -8,6 +8,9 @@ Pick a teammate and their dates away. Standby shows who can cover each item,
 suggests backups with reasons, and can draft a Confluence handover or reassign
 selected Jira issues after confirmation.
 
+Open **Handover brief** after a drill to copy the work at risk, backup choices and
+source coverage into a team update. The brief uses the drill already on screen.
+
 ## Prerequisites
 
 Judges need an Atlassian Cloud site with all three:

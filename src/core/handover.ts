@@ -22,6 +22,30 @@ const label = {
 const chosen = (item: AssessedItem, picked?: string) =>
   item.backups.find((b) => b.person.accountId === picked) ?? item.backups[0];
 
+/** Plain text for sharing the completed drill. */
+export function handoverBrief(drill: Drill, picks: Record<string, string>): string {
+  const parts = [handoverTitle(drill), "", "Source coverage"];
+  for (const source of drill.sources) {
+    const count = `${source.count} ${source.count === 1 ? "item" : "items"}`;
+    const status = source.ok ? count : `partial (${count} found)`;
+    parts.push(`- ${source.label}: ${status}${source.note ? ` (${source.note})` : ""}`);
+  }
+  for (const coverage of ["stalls", "thin", "covered"] as const) {
+    const items = drill.items.filter((item) => item.coverage === coverage);
+    if (!items.length) continue;
+    parts.push("", `${label[coverage]} (${items.length})`);
+    for (const item of items) {
+      const top = chosen(item, picks[item.id]);
+      const name = item.key ? `${item.key} ${item.title}` : item.title;
+      const reason = top?.reasons.map((evidence) => evidence.text).join("; ");
+      const backup = top ? `${top.person.name}${reason ? ` (${reason})` : ""}` : "Nobody found in this drill";
+      parts.push(`- ${name} | ${item.url}`, `  Suggested backup: ${backup}`);
+      if (item.urgencyNotes.length) parts.push(`  ${item.urgencyNotes.join("; ")}`);
+    }
+  }
+  return parts.join("\n");
+}
+
 function row(item: AssessedItem, picked?: string): string {
   const top = chosen(item, picked);
   const backup = top
