@@ -248,6 +248,17 @@ describe('writes', () => {
     expect(JSON.parse(post!.body!)).toMatchObject({ spaceId: '98', status: 'draft', title: expect.stringContaining('Alana Grant') });
     expect(out).toEqual({ id: '42', url: 'https://x/wiki/e/42' });
   });
+
+  it.each([
+    [undefined, '/pages/resumedraft.action?draftId=42'],
+    [{ editui: '/pages/resumedraft.action?draftId=42&src=handover' }, '/pages/resumedraft.action?draftId=42&src=handover'],
+  ])('returns the confirmed draft URL even without a Confluence base link', async (links, path) => {
+    route = (c) => (c.product === 'confluence' && c.method === 'POST' ? { status: 200, body: { id: '42', _links: links } } : jiraOnly(c));
+    const out = await handlers['handover']!({ payload: { ...input, spaceId: '98', confirmed: true } });
+
+    expect(out).toEqual({ id: '42', url: `${SITE}/wiki${path}` });
+    expect(calls.filter((c) => c.method === 'POST' && c.product === 'confluence')).toHaveLength(1);
+  });
 });
 
 describe('issue panel', () => {
