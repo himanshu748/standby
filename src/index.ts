@@ -67,7 +67,13 @@ export async function drill(p: DrillInput, clients: Clients = { jira, conf, grap
         }
       : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
     c.status === 'fulfilled'
-      ? { source: 'confluence', label: 'Confluence', ok: true, count: c.value.items.length, note: `${c.value.pageCount} recent pages they wrote or edited` }
+      ? {
+          source: 'confluence',
+          label: 'Confluence',
+          ok: c.value.warnings.length === 0,
+          count: c.value.items.length,
+          note: [`${c.value.pageCount} recent pages they wrote or edited`, ...c.value.warnings].join('; '),
+        }
       : { source: 'confluence', label: 'Confluence', ok: false, count: 0, note: fail(c.reason) },
   ];
   const merged = mergeItems([

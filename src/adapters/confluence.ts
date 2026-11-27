@@ -90,23 +90,33 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
   const cql = `type=page and (creator="${id}" or contributor="${id}") order by lastmodified desc`;
   const search = await getJson(conf, `/wiki/rest/api/search?${q({ cql, limit: 25, expand: 'content.space,content.version,content.history' })}`);
   const pages = parseSearch(search, siteUrl);
-  if (!pages.length) return { items: [], peers: {}, pageCount: 0 };
-  const [meta, ...versions] = await Promise.all([
+  const warnings: string[] = [];
+  if (!pages.length) return { items: [], peers: {}, pageCount: 0, warnings };
+  const [meta, ...versions] = await Promise.allSettled([
     getJson(conf, `/wiki/api/v2/pages?${q({ id: pages.map((p) => p.id), limit: 25 })}`),
-    ...pages.map((p) => getJson(conf, `/wiki/api/v2/pages/${p.id}/versions?limit=25`).catch(() => ({ results: [] }))),
+    ...pages.map((p) => getJson(conf, `/wiki/api/v2/pages/${p.id}/versions?limit=25`)),
   ]);
-  const owners = new Map<string, string>((meta.results ?? []).map((m: Json) => [String(m.id), m.ownerId]));
+  if (meta.status === 'rejected') warnings.push('page ownership lookup unavailable');
+  const ownership = meta.status === 'fulfilled' ? meta.value.results ?? [] : [];
+  const owners = new Map<string, string>(ownership.map((m: Json) => [String(m.id), m.ownerId]));
   for (const p of pages) {
     const owner = owners.get(p.id);
     if (owner) p.ownerId = owner;
   }
   const authorsByPage: Record<string, string[]> = {};
   pages.forEach((p, i) => {
-    authorsByPage[p.id] = (versions[i]?.results ?? []).map((v: Json) => v.authorId).filter(Boolean);
+    const version = versions[i];
+    if (version?.status === 'fulfilled')
+      authorsByPage[p.id] = (version.value.results ?? []).map((v: Json) => v.authorId).filter(Boolean);
   });
+  const failedHistories = versions.filter((version) => version.status === 'rejected').length;
+  if (failedHistories) warnings.push(`version history unavailable for ${failedHistories} of ${pages.length} pages`);
   const ids = [...new Set(Object.values(authorsByPage).flat())];
-  const people = await lookupPeople(jira, ids);
-  return { ...buildPages(pages, authorsByPage, people, outId), pageCount: pages.length };
+  const people = await lookupPeople(jira, ids).catch(() => {
+    warnings.push('author lookup unavailable');
+    return new Map<string, Person>();
+  });
+  return { ...buildPages(pages, authorsByPage, people, outId), pageCount: pages.length, warnings };
 }
 
 export async function listSpaces(conf: Rest): Promise<{ id: string; key: string; name: string }[]> {
