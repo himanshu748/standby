@@ -74,6 +74,16 @@ describe('jira', () => {
 });
 
 describe('confluence', () => {
+  it('counts distinct pages when explaining a backup’s space experience', () => {
+    const pages = [
+      { id: '1', title: 'Runbook', url: 'https://example.com/1', space: { id: 'conf:OPS', name: 'Operations' }, ownerId: ALANA },
+      { id: '2', title: 'On-call checklist', url: 'https://example.com/2', space: { id: 'conf:OPS', name: 'Operations' }, ownerId: ALANA },
+    ];
+    const editor = { accountId: 'm', name: 'Mitch Davis' };
+    const { peers } = buildPages(pages, { '1': ['m', ALANA, 'm'], '2': ['m'] }, new Map([['m', editor]]), ALANA);
+    expect(peers['conf:OPS']).toEqual([{ person: editor, note: 'edited 2 pages in Operations' }]);
+  });
+
   it('parses search results and marks roles from owner, creator and versions', () => {
     const pages = parseSearch(fx('cql'), SITE);
     expect(pages[0]).toMatchObject({ id: '2293814', title: 'Dashloop Synchronization Architecture', space: { id: 'conf:ENGS', name: 'Engineering Support' }, creatorId: ALANA });
