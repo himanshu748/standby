@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { AssessedItem, Coverage, Drill, Person } from '../../../src/core/model';
 import { api, type Receipt, type Space, type Window } from './api';
 import { Confirm } from './Confirm';
@@ -30,6 +30,7 @@ export function App() {
   const [busy, setBusy] = useState(false);
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [page, setPage] = useState<string | null>(null);
+  const attempt = useRef(0);
 
   useEffect(() => {
     if (!loading) return;
@@ -37,23 +38,36 @@ export function App() {
     return () => clearInterval(t);
   }, [loading]);
 
-  const run = async () => {
-    if (!person) return;
-    setLoading(true);
-    setStep(0);
+  const clearDrill = () => {
+    attempt.current++;
+    setLoading(false);
+    setDrill(null);
     setError(null);
+    setFocus(null);
+    setFilter('all');
+    setQuery('');
     setReceipts([]);
     setPage(null);
     setPicks({});
+    setAsk(null);
+  };
+
+  const run = async () => {
+    if (!person || loading) return;
+    clearDrill();
+    const request = attempt.current;
+    setLoading(true);
+    setStep(0);
     try {
       const [d, s] = await Promise.all([api.drill(person.accountId, win), spaces.length ? Promise.resolve(spaces) : api.spaces().catch(() => [])]);
+      if (request !== attempt.current) return;
       setDrill(d);
       setSpaces(s);
       if (!spaceId && s[0]) setSpaceId(s[0].id);
     } catch (e) {
-      setError(errText(e));
+      if (request === attempt.current) setError(errText(e));
     } finally {
-      setLoading(false);
+      if (request === attempt.current) setLoading(false);
     }
   };
 
@@ -66,30 +80,33 @@ export function App() {
   const chosen = drill ? drill.items.filter((i) => picks[i.id]?.on && i.key).map((i) => ({ key: i.key!, title: i.title, to: picks[i.id]!.to })) : [];
 
   const doReassign = async () => {
+    const request = attempt.current;
     setBusy(true);
     try {
       const r = await api.reassign(chosen.map(({ key, to }) => ({ key, to })));
+      if (request !== attempt.current) return;
       setReceipts(r);
       setPicks((p) => Object.fromEntries(Object.entries(p).map(([k, v]) => [k, { ...v, on: false }])));
     } catch (e) {
-      setError(errText(e));
+      if (request === attempt.current) setError(errText(e));
     } finally {
       setBusy(false);
-      setAsk(null);
+      if (request === attempt.current) setAsk(null);
     }
   };
 
   const doHandover = async () => {
     if (!drill) return;
+    const request = attempt.current;
     setBusy(true);
     try {
       const r = await api.handover(drill.person.accountId, drill.window, spaceId, Object.fromEntries(Object.entries(picks).map(([id, v]) => [id, v.to.accountId])));
-      setPage(r.url);
+      if (request === attempt.current) setPage(r.url);
     } catch (e) {
-      setError(errText(e));
+      if (request === attempt.current) setError(errText(e));
     } finally {
       setBusy(false);
-      setAsk(null);
+      if (request === attempt.current) setAsk(null);
     }
   };
 
@@ -117,15 +134,15 @@ export function App() {
             void run();
           }}
         >
-          <PersonPicker value={person} onChange={setPerson} />
+          <PersonPicker value={person} onChange={(next) => { clearDrill(); setPerson(next); }} />
           <div className="dates">
             <label>
               <span>Out from</span>
-              <input type="date" value={win.from} onChange={(e) => setWin((w) => ({ ...w, from: e.target.value }))} />
+              <input type="date" value={win.from} onChange={(e) => { clearDrill(); setWin({ ...win, from: e.target.value }); }} />
             </label>
             <label>
               <span>Back on</span>
-              <input type="date" value={win.to} min={win.from} onChange={(e) => setWin((w) => ({ ...w, to: e.target.value }))} />
+              <input type="date" value={win.to} min={win.from} onChange={(e) => { clearDrill(); setWin({ ...win, to: e.target.value }); }} />
             </label>
           </div>
           <button className="btn hot run" disabled={!person || loading}>
