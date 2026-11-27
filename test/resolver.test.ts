@@ -109,6 +109,30 @@ describe('drill sources', () => {
     });
   });
 
+  it('keeps assigned issues when the project lead lookup is refused', async () => {
+    route = (c) => c.path.startsWith('/rest/api/3/project/search') ? { status: 403 } : jiraOnly(c);
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'jira:MS-1')).toBe(true);
+    expect(d.sources.find((s) => s.source === 'jira')).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('project lead lookup unavailable'),
+    });
+  });
+
+  it('keeps project leads when assigned issues cannot be read', async () => {
+    route = (c) => c.path.startsWith('/rest/api/3/search/jql') && !c.path.includes('assignee%20is%20not%20EMPTY')
+      ? { status: 403 }
+      : jiraOnly(c);
+    const d = await drill(input);
+    expect(d.items.some((i) => i.kind === 'project-lead')).toBe(true);
+    const jira = d.sources.find((s) => s.source === 'jira');
+    expect(jira).toMatchObject({
+      ok: false,
+      note: expect.stringContaining('assigned issue lookup unavailable'),
+    });
+    expect(jira?.note).not.toContain('0 open issues assigned');
+  });
+
   it('retains results and reports Jira pagination limits as partial coverage', async () => {
     route = (c) => {
       if (c.path.startsWith('/rest/api/3/project/search')) return { status: 200, body: { ...fx('projects'), isLast: false } };

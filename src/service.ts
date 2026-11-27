@@ -55,7 +55,10 @@ export async function drill(p: DrillInput, clients: Clients): Promise<Drill> {
           label: 'Jira',
           ok: !j.value.more && j.value.warnings.length === 0,
           count: j.value.items.length,
-          note: [`${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned`, ...j.value.warnings].join('; '),
+          note: [
+            ...(j.value.issueCount === null ? [] : [`${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned`]),
+            ...j.value.warnings,
+          ].join('; '),
         }
       : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
     c.status === 'fulfilled'

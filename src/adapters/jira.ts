@@ -89,10 +89,13 @@ export function hasTruncatedIssueEvidence(issue: Json): boolean {
 
 export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const jql = `assignee = "${outId.replace(/"/g, '')}" AND statusCategory != Done ORDER BY duedate ASC, priority DESC`;
-  const [issuesJson, projectsJson] = await Promise.all([
+  const [assigned, leads] = await Promise.allSettled([
     getJson(rest, `/rest/api/3/search/jql?${q({ jql, fields: FIELDS, expand: 'changelog', maxResults: 50 })}`),
     getJson(rest, `/rest/api/3/project/search?${q({ expand: 'lead', maxResults: 100 })}`),
   ]);
+  if (assigned.status === 'rejected' && leads.status === 'rejected') throw assigned.reason;
+  const issuesJson = assigned.status === 'fulfilled' ? assigned.value : { issues: [] };
+  const projectsJson = leads.status === 'fulfilled' ? leads.value : { values: [] };
   const items = [...parseIssues(issuesJson, siteUrl, outId), ...parseLeads(projectsJson, siteUrl, outId)];
   const keys = [...new Set(items.map((i) => i.container?.id.slice(5)).filter(Boolean))];
   const peersJql = `project in (${keys.map((k) => `"${k}"`).join(',')}) AND statusCategory != Done AND assignee is not EMPTY`;
@@ -100,15 +103,17 @@ export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
     ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`).catch(() => null)
     : { issues: [] };
   const warnings: string[] = [];
-  if ((issuesJson.issues ?? []).some(hasTruncatedIssueEvidence)) warnings.push('additional issue evidence was not read');
-  if (hasMoreJiraResults(projectsJson)) warnings.push('additional projects were not read');
+  if (assigned.status === 'rejected') warnings.push('assigned issue lookup unavailable');
+  else if ((issuesJson.issues ?? []).some(hasTruncatedIssueEvidence)) warnings.push('additional issue evidence was not read');
+  if (leads.status === 'rejected') warnings.push('project lead lookup unavailable');
+  else if (hasMoreJiraResults(projectsJson)) warnings.push('additional projects were not read');
   if (peersJson === null) warnings.push('project colleague lookup unavailable');
   else if (hasMoreJiraResults(peersJson)) warnings.push('additional colleague results were not read');
   return {
     items,
     peers: peersJson === null ? {} : parsePeers(peersJson),
     warnings,
-    issueCount: (issuesJson.issues ?? []).length,
+    issueCount: assigned.status === 'fulfilled' ? (issuesJson.issues ?? []).length : null,
     more: hasMoreJiraResults(issuesJson),
   };
 }
