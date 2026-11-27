@@ -38,7 +38,7 @@ export function buildPages(
     if (authors[0] === outId) roles.push('last editor');
     if (!roles.length && authors.includes(outId)) roles.push('editor');
     const touched = new Map<string, Touch>();
-    for (const id of authors) {
+    for (const id of new Set(authors)) {
       const p = people.get(id);
       if (p && id !== outId && !touched.has(id)) touched.set(id, { ...p, how: `edited "${page.title}"` });
       const bySpace = edits.get(page.space.id) ?? new Map<string, number>();
