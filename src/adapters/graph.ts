@@ -260,10 +260,12 @@ export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
     settle(run(graph, QUERIES.owns, { u }, warnings)),
   ]);
   const teamNodes = teams.ok ? nodes(teams.v, "atlassianUserInTeams") : [];
+  const teamsToRead = teamNodes.slice(0, 3);
+  if (teamsToRead.length < teamNodes.length) {
+    warnings.push(`Teamwork Graph member lookups limited to ${teamsToRead.length} of ${teamNodes.length} teams`);
+  }
   const memberLists = await Promise.all(
-    teamNodes
-      .slice(0, 3)
-      .map((t) => settle(run(graph, QUERIES.members, { t: t.id }, warnings))),
+    teamsToRead.map((t) => settle(run(graph, QUERIES.members, { t: t.id }, warnings))),
   );
   const teammates: { person: Person; team: string }[] = [];
   memberLists.forEach((m, i) => {
@@ -275,7 +277,7 @@ export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
         p.accountId !== outId &&
         !teammates.some((t) => t.person.accountId === p.accountId)
       )
-        teammates.push({ person: p, team: teamNodes[i].displayName });
+        teammates.push({ person: p, team: teamsToRead[i].displayName });
     }
   });
   const linked = mergeLinked([
