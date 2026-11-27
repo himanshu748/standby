@@ -68,6 +68,10 @@ export function clientsFromSeed(seed: Seed): { jira: Rest; conf: Rest; graph: Gr
   const jira: Rest = async (path, init) => {
     const method = init?.method ?? 'GET';
     note('jira', method, path, init?.body);
+    if (method === 'PUT' && seed.issues.some((spec) => path === `/rest/api/3/issue/${spec.key}/assignee`)) {
+      const { accountId } = JSON.parse(init?.body ?? '{}') as { accountId?: string };
+      if (seed.people.some((p) => p.accountId === accountId)) return ok({});
+    }
     if (path.startsWith('/rest/api/3/user/bulk')) return ok({ values: seed.people.map((p) => jiraUser(p.accountId)) });
     if (path.startsWith('/rest/api/3/project/search')) {
       return ok({ values: [{ key: seed.project.key, name: seed.project.name, lead: jiraUser(seed.project.leadId) }] });
@@ -86,6 +90,7 @@ export function clientsFromSeed(seed: Seed): { jira: Rest; conf: Rest; graph: Gr
   const conf: Rest = async (path, init) => {
     const method = init?.method ?? 'GET';
     note('confluence', method, path, init?.body);
+    if (path.startsWith('/wiki/api/v2/spaces?')) return ok({ results: [{ ...seed.space, id: seed.handoverSpaceId }] });
     if (method === 'POST' && path === '/wiki/api/v2/pages') {
       return ok({ id: DRAFT_ID, _links: { base: `${seed.site}/wiki`, editui: `/pages/resumedraft.action?draftId=${DRAFT_ID}` } });
     }
