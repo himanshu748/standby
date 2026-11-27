@@ -91,6 +91,7 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
   const search = await getJson(conf, `/wiki/rest/api/search?${q({ cql, limit: 25, expand: 'content.space,content.version,content.history' })}`);
   const pages = parseSearch(search, siteUrl);
   const warnings: string[] = [];
+  if (search._links?.next) warnings.push('additional matching pages were not read');
   if (!pages.length) return { items: [], peers: {}, pageCount: 0, warnings };
   const [meta, ...versions] = await Promise.allSettled([
     getJson(conf, `/wiki/api/v2/pages?${q({ id: pages.map((p) => p.id), limit: 25 })}`),

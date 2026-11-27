@@ -76,6 +76,10 @@ export async function searchUsers(rest: Rest, query: string): Promise<Person[]> 
   return (json as Json[]).map(toPerson).filter((p): p is Person => !!p);
 }
 
+export function hasMoreJiraResults(page: Json): boolean {
+  return page.isLast === false || Boolean(page.nextPageToken);
+}
+
 export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const jql = `assignee = "${outId.replace(/"/g, '')}" AND statusCategory != Done ORDER BY duedate ASC, priority DESC`;
   const [issuesJson, projectsJson] = await Promise.all([
@@ -88,12 +92,16 @@ export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const peersJson = keys.length
     ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`).catch(() => null)
     : { issues: [] };
+  const warnings: string[] = [];
+  if (hasMoreJiraResults(projectsJson)) warnings.push('additional projects were not read');
+  if (peersJson === null) warnings.push('project colleague lookup unavailable');
+  else if (hasMoreJiraResults(peersJson)) warnings.push('additional colleague results were not read');
   return {
     items,
     peers: peersJson === null ? {} : parsePeers(peersJson),
-    peerLookupFailed: peersJson === null,
+    warnings,
     issueCount: (issuesJson.issues ?? []).length,
-    more: !!issuesJson.nextPageToken,
+    more: hasMoreJiraResults(issuesJson),
   };
 }
 

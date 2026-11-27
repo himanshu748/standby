@@ -4,7 +4,7 @@ import type { Drill, IssueCover, Person, Signals, SourceStatus, WorkItem } from 
 import { confluenceSignals, createDraft, lookupPeople } from './adapters/confluence';
 import { graphCoverage, graphSignals } from './adapters/graph';
 import { getJson, q, type Graph, type Rest } from './adapters/http';
-import { FIELDS, jiraSignals, parseIssues, parsePeers, reassign } from './adapters/jira';
+import { FIELDS, hasMoreJiraResults, jiraSignals, parseIssues, parsePeers, reassign } from './adapters/jira';
 import { toPerson } from './adapters/people';
 
 export type Clients = { jira: Rest; conf: Rest; graph: Graph };
@@ -53,9 +53,9 @@ export async function drill(p: DrillInput, clients: Clients): Promise<Drill> {
       ? {
           source: 'jira',
           label: 'Jira',
-          ok: !j.value.peerLookupFailed,
+          ok: !j.value.more && j.value.warnings.length === 0,
           count: j.value.items.length,
-          note: `${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned${j.value.peerLookupFailed ? '; project colleague lookup unavailable' : ''}`,
+          note: [`${j.value.more ? 'first ' : ''}${j.value.issueCount} open issues assigned`, ...j.value.warnings].join('; '),
         }
       : { source: 'jira', label: 'Jira', ok: false, count: 0, note: fail(j.reason) },
     c.status === 'fulfilled'
@@ -123,6 +123,7 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
     graphSignals(graph, person.accountId, p.siteUrl),
   ]);
   const containerPeers = peersRes.status === 'fulfilled' ? parsePeers(peersRes.value) : {};
+  const morePeers = peersRes.status === 'fulfilled' && hasMoreJiraResults(peersRes.value);
   const teammates = g.status === 'fulfilled' ? g.value.teammates : [];
   if (g.status === 'fulfilled' && g.value.neighbourhood.has(item!.id)) item!.sources.push('graph');
   const pool = candidatePool(person.accountId, [item!], containerPeers, teammates);
@@ -138,7 +139,7 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
           ...g.value.errors,
         ].join('; ');
   const sources: SourceStatus[] = [
-    { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled', count: 1, note: peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates` : fail(peersRes.reason) },
+    { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled' && !morePeers, count: 1, note: peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates${morePeers ? '; additional colleague results were not read' : ''}` : fail(peersRes.reason) },
     { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === pool.length && co.partial === 0, count: co?.links ?? 0, note: graphNote },
   ];
   const d = runDrill({ person, items: co?.items ?? [item!], containerPeers, teammates, sources }, { from: p.from, to: p.to });
