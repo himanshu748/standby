@@ -15,9 +15,18 @@ try {
   assert.ok(url, 'Vite did not expose a local URL');
 
   browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, permissions: ['clipboard-read', 'clipboard-write'] });
+  const page = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    permissions: ['clipboard-read', 'clipboard-write'],
+    timezoneId: 'America/Los_Angeles',
+    locale: 'en-US',
+  });
+  // Late Saturday in Los Angeles, just before the spring clock change.
+  await page.clock.setFixedTime(new Date('2026-03-08T07:30:00Z'));
 
   await page.goto(url, { waitUntil: 'networkidle' });
+  assert.equal(await page.getByLabel('Out from').inputValue(), '2026-03-08');
+  assert.equal(await page.getByLabel('Back on').inputValue(), '2026-03-19');
   const picker = page.getByRole('combobox', { name: 'Who is out?' });
   const alana = page.getByRole('option', { name: 'Alana Rivera' });
   await picker.fill('Alana');
@@ -82,6 +91,7 @@ try {
 
   await page.goto(new URL('?partialPanel', url).href);
   await page.getByRole('status').filter({ hasText: 'Source coverage is incomplete' }).waitFor({ timeout: 3000 });
+  assert.match(await page.locator('.panel-kicker').textContent(), /Mar 8.*Mar 21/);
   assert.equal(await page.locator('.verdict-word').textContent(), 'Coverage unclear');
   await page.getByText('No backup found in the available data.').waitFor();
   assert.equal(await page.getByText('Nobody else has touched it in Jira or Teamwork Graph.').count(), 0);
