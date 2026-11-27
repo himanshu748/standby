@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
-import { buildPages, parseSearch } from '../src/adapters/confluence';
+import { describe, expect, it, vi } from 'vitest';
+import { buildPages, listSpaces, parseSearch } from '../src/adapters/confluence';
 import { coLinks, graphCoverage, graphSignals, parseAssigned, parseOwns, parseWork } from '../src/adapters/graph';
 import { parseIssues, parseLeads, parsePeers } from '../src/adapters/jira';
 import { toPerson } from '../src/adapters/people';
@@ -9,6 +9,29 @@ import { toPerson } from '../src/adapters/people';
 const fx = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const SITE = 'https://one-atlas-obka.atlassian.net';
 const ALANA = '60ad2d2a06bf0c006a42fa84';
+
+describe('handover spaces', () => {
+  const first = { id: 10, key: 'ENG', name: 'Engineering' };
+  const second = { id: 20, key: 'OPS', name: 'Operations' };
+  const page = (results: object[], next?: string) => ({ ok: true, status: 200, json: async () => ({ results, _links: { next } }) });
+
+  it('keeps current spaces from later pages in the handover picker', async () => {
+    const conf = vi.fn().mockResolvedValueOnce(page([first], '/wiki/api/v2/spaces?cursor=next%2B%3D'))
+      .mockResolvedValueOnce(page([second]));
+
+    expect(await listSpaces(conf)).toEqual([{ ...first, id: '10' }, { ...second, id: '20' }]);
+    expect(conf.mock.calls).toEqual([
+      ['/wiki/api/v2/spaces?limit=100&status=current'],
+      ['/wiki/api/v2/spaces?limit=100&status=current&cursor=next%2B%3D'],
+    ]);
+  });
+
+  it('rejects a repeated space cursor', async () => {
+    const conf = vi.fn().mockResolvedValue(page([first], '/wiki/api/v2/spaces?cursor=repeat'));
+    await expect(listSpaces(conf)).rejects.toThrow('Confluence space pagination did not advance');
+    expect(conf).toHaveBeenCalledTimes(2);
+  });
+});
 
 describe('toPerson', () => {
   it('keeps active humans and drops apps, bots and former users', () => {

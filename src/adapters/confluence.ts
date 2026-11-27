@@ -124,8 +124,21 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
 }
 
 export async function listSpaces(conf: Rest): Promise<{ id: string; key: string; name: string }[]> {
-  const json = await getJson(conf, `/wiki/api/v2/spaces?${q({ limit: 100, status: 'current' })}`);
-  return (json.results ?? []).map((s: Json) => ({ id: String(s.id), key: s.key, name: s.name }));
+  const spaces: { id: string; key: string; name: string }[] = [];
+  const cursors = new Set<string>();
+  let cursor: string | null = null;
+  do {
+    const params = { limit: 100, status: 'current', ...(cursor ? { cursor } : {}) };
+    const page = await getJson(conf, `/wiki/api/v2/spaces?${q(params)}`);
+    for (const space of page.results ?? []) {
+      spaces.push({ id: String(space.id), key: space.key, name: space.name });
+    }
+    const next = page._links?.next;
+    cursor = next ? new URL(next, 'https://confluence.invalid').searchParams.get('cursor') : null;
+    if (next && (!cursor || cursors.has(cursor))) throw new Error('Confluence space pagination did not advance');
+    if (cursor) cursors.add(cursor);
+  } while (cursor);
+  return spaces;
 }
 
 /** Creates the handover as a draft page, so nothing is published until someone reviews it in Confluence. */
