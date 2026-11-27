@@ -6,16 +6,14 @@ import { HandoverBrief } from './HandoverBrief';
 import { ItemCard, type Pick } from './Items';
 import { Orbit } from './Orbit';
 import { PersonPicker } from './PersonPicker';
-import { Avatar, CountUp, coverageText, fmtDate } from './ui';
+import { Avatar, CountUp, coverageText, fmtDate, suggestedAbsenceWindow } from './ui';
 
-const iso = (d: Date) => d.toISOString().slice(0, 10);
-const plus = (days: number) => iso(new Date(Date.now() + days * 86_400_000));
 const STEPS = ['Reading their Jira work', 'Reading their Confluence pages', 'Walking Teamwork Graph', 'Finding who else has touched it'];
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 export function App() {
   const [person, setPerson] = useState<Person | null>(null);
-  const [win, setWin] = useState<Window>({ from: plus(1), to: plus(12) });
+  const [win, setWin] = useState<Window>(() => suggestedAbsenceWindow(12));
   const [drill, setDrill] = useState<Drill | null>(null);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);

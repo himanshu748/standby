@@ -49,3 +49,15 @@ export function CountUp({ value }: { value: number }) {
 
 export const fmtDate = (iso?: string) =>
   iso ? new Date(iso.length === 10 ? `${iso}T00:00:00` : iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '';
+
+/** Date inputs represent local calendar days, even across an offset change. */
+export function suggestedAbsenceWindow(backInDays: number, today = new Date()) {
+  const daysFromToday = (offset: number) => {
+    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset);
+    const month = String(day.getMonth() + 1).padStart(2, '0');
+    const date = String(day.getDate()).padStart(2, '0');
+    return `${day.getFullYear()}-${month}-${date}`;
+  };
+
+  return { from: daysFromToday(1), to: daysFromToday(backInDays) };
+}

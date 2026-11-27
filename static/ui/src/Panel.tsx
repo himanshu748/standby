@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 import type { IssueCover, Person } from '../../../src/core/model';
 import { api, fullDrillPath, type Receipt } from './api';
 import { Confirm } from './Confirm';
-import { Avatar, coverageText, fmtDate } from './ui';
+import { Avatar, coverageText, fmtDate, suggestedAbsenceWindow } from './ui';
 
-const iso = (d: Date) => d.toISOString().slice(0, 10);
-const plus = (days: number) => iso(new Date(Date.now() + days * 86_400_000));
 const GRAPH_TOUCH = 'per Teamwork Graph';
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 /** The Jira issue panel: the drill for the issue in view, if its assignee is out for the next two weeks. */
 export function Panel() {
-  const [win] = useState({ from: plus(1), to: plus(14) });
+  const [win] = useState(() => suggestedAbsenceWindow(14));
   const [data, setData] = useState<IssueCover | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
