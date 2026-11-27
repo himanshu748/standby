@@ -80,6 +80,13 @@ export function hasMoreJiraResults(page: Json): boolean {
   return page.isLast === false || Boolean(page.nextPageToken);
 }
 
+export function hasTruncatedIssueEvidence(issue: Json): boolean {
+  const history = issue.changelog;
+  const comments = issue.fields?.comment;
+  return (history?.total ?? 0) > (history?.histories?.length ?? 0)
+    || (comments?.total ?? 0) > (comments?.comments?.length ?? 0);
+}
+
 export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
   const jql = `assignee = "${outId.replace(/"/g, '')}" AND statusCategory != Done ORDER BY duedate ASC, priority DESC`;
   const [issuesJson, projectsJson] = await Promise.all([
@@ -93,6 +100,7 @@ export async function jiraSignals(rest: Rest, siteUrl: string, outId: string) {
     ? await getJson(rest, `/rest/api/3/search/jql?${q({ jql: peersJql, fields: 'assignee,project', maxResults: 100 })}`).catch(() => null)
     : { issues: [] };
   const warnings: string[] = [];
+  if ((issuesJson.issues ?? []).some(hasTruncatedIssueEvidence)) warnings.push('additional issue evidence was not read');
   if (hasMoreJiraResults(projectsJson)) warnings.push('additional projects were not read');
   if (peersJson === null) warnings.push('project colleague lookup unavailable');
   else if (hasMoreJiraResults(peersJson)) warnings.push('additional colleague results were not read');

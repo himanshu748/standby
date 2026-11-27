@@ -98,6 +98,7 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
     ...pages.map((p) => getJson(conf, `/wiki/api/v2/pages/${p.id}/versions?limit=25`)),
   ]);
   if (meta.status === 'rejected') warnings.push('page ownership lookup unavailable');
+  else if (meta.value._links?.next) warnings.push('additional page ownership was not read');
   const ownership = meta.status === 'fulfilled' ? meta.value.results ?? [] : [];
   const owners = new Map<string, string>(ownership.map((m: Json) => [String(m.id), m.ownerId]));
   for (const p of pages) {
@@ -112,6 +113,8 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
   });
   const failedHistories = versions.filter((version) => version.status === 'rejected').length;
   if (failedHistories) warnings.push(`version history unavailable for ${failedHistories} of ${pages.length} pages`);
+  if (versions.some((version) => version.status === 'fulfilled' && version.value._links?.next))
+    warnings.push('additional version history was not read');
   const ids = [...new Set(Object.values(authorsByPage).flat())];
   const people = await lookupPeople(jira, ids).catch(() => {
     warnings.push('author lookup unavailable');

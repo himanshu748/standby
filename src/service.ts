@@ -4,7 +4,7 @@ import type { Drill, IssueCover, Person, Signals, SourceStatus, WorkItem } from 
 import { confluenceSignals, createDraft, lookupPeople } from './adapters/confluence';
 import { graphCoverage, graphSignals } from './adapters/graph';
 import { getJson, q, type Graph, type Rest } from './adapters/http';
-import { FIELDS, hasMoreJiraResults, jiraSignals, parseIssues, parsePeers, reassign } from './adapters/jira';
+import { FIELDS, hasMoreJiraResults, hasTruncatedIssueEvidence, jiraSignals, parseIssues, parsePeers, reassign } from './adapters/jira';
 import { toPerson } from './adapters/people';
 
 export type Clients = { jira: Rest; conf: Rest; graph: Graph };
@@ -138,8 +138,12 @@ export async function issueCover(p: { issueKey: string; from: string; to: string
           g.value.teams.length ? `teams: ${g.value.teams.join(', ')}` : 'not on any team',
           ...g.value.errors,
         ].join('; ');
+  const partialEvidence = hasTruncatedIssueEvidence(issue);
+  const jiraNotes = [peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates` : fail(peersRes.reason)];
+  if (morePeers) jiraNotes.push('additional colleague results were not read');
+  if (partialEvidence) jiraNotes.push('additional issue evidence was not read');
   const sources: SourceStatus[] = [
-    { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled' && !morePeers, count: 1, note: peersRes.status === 'fulfilled' ? `history, comments and ${project} teammates${morePeers ? '; additional colleague results were not read' : ''}` : fail(peersRes.reason) },
+    { source: 'jira', label: 'Jira', ok: peersRes.status === 'fulfilled' && !morePeers && !partialEvidence, count: 1, note: jiraNotes.join('; ') },
     { source: 'graph', label: 'Teamwork Graph', ok: g.status === 'fulfilled' && g.value.errors.length === 0 && co?.checked === pool.length && co.partial === 0, count: co?.links ?? 0, note: graphNote },
   ];
   const d = runDrill({ person, items: co?.items ?? [item!], containerPeers, teammates, sources }, { from: p.from, to: p.to });

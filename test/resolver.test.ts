@@ -125,6 +125,18 @@ describe('drill sources', () => {
     expect(jira?.note).toContain('additional colleague results were not read');
   });
 
+  it.each(['changelog', 'comments'])('marks Jira coverage partial with truncated %s', async (kind) => {
+    const issue = fx('jira-assigned').issues[0];
+    if (kind === 'changelog') issue.changelog.total = issue.changelog.histories.length + 1;
+    else issue.fields.comment.total = issue.fields.comment.comments.length + 1;
+    route = (c) => c.path.startsWith('/rest/api/3/search/jql') && !c.path.includes('assignee%20is%20not%20EMPTY')
+      ? { status: 200, body: { issues: [issue], isLast: true } }
+      : jiraOnly(c);
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'jira:MS-1')).toBe(true);
+    expect(d.sources.find((s) => s.source === 'jira')).toMatchObject({ ok: false, note: expect.stringContaining('additional issue evidence was not read') });
+  });
+
   it('retains verified Confluence pages and marks a capped search as partial', async () => {
     route = (c) => {
       if (c.path.startsWith('/wiki/rest/api/search')) return { status: 200, body: { results: fx('cql').results.slice(0, 1), _links: { next: '/wiki/rest/api/search?cursor=more' } } };
@@ -136,6 +148,21 @@ describe('drill sources', () => {
     expect(d.sources.find((s) => s.source === 'confluence')).toMatchObject({
       ok: false,
       note: expect.stringContaining('additional matching pages were not read'),
+    });
+  });
+
+  it.each(['ownership', 'version history'])('marks Confluence coverage partial when page %s is truncated', async (kind) => {
+    route = (c) => {
+      if (c.path.startsWith('/wiki/rest/api/search')) return { status: 200, body: { results: fx('cql').results.slice(0, 1) } };
+      if (c.path.includes('/versions')) return { status: 200, body: { results: [], ...(kind === 'version history' ? { _links: { next: '/versions?cursor=more' } } : {}) } };
+      if (c.path.startsWith('/wiki/api/v2/pages')) return { status: 200, body: { results: [], ...(kind === 'ownership' ? { _links: { next: '/pages?cursor=more' } } : {}) } };
+      return jiraOnly(c);
+    };
+    const d = await drill(input);
+    expect(d.items.some((i) => i.id === 'conf:2293814')).toBe(true);
+    expect(d.sources.find((s) => s.source === 'confluence')).toMatchObject({
+      ok: false,
+      note: expect.stringContaining(kind === 'ownership' ? 'additional page ownership was not read' : 'additional version history was not read'),
     });
   });
 
@@ -241,6 +268,17 @@ describe('issue panel', () => {
     expect(['stalls', 'thin', 'covered']).toContain(out.item.coverage);
     expect(calls.some((c) => c.path.includes('EVIL-1'))).toBe(false);
     expect(calls.every((c) => c.method === 'GET')).toBe(true);
+  });
+
+  it('marks the issue panel partial when the issue comment expansion is truncated', async () => {
+    const issue = ms1();
+    issue.fields.assignee = assignee;
+    issue.fields.comment.total = issue.fields.comment.comments.length + 1;
+    const out = await panel(issue.key, issue);
+    expect(out).toMatchObject({
+      item: { key: issue.key },
+      sources: expect.arrayContaining([{ source: 'jira', label: 'Jira', count: 1, ok: false, note: expect.stringContaining('additional issue evidence was not read') }]),
+    });
   });
 
   it('still drills an issue whose assignee has been deactivated', async () => {
