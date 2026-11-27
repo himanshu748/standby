@@ -165,6 +165,32 @@ describe('teamwork graph', () => {
     expect(graph.errors).toEqual(['Teamwork Graph work pagination stopped: cursor expired']);
   });
 
+  it('marks capped Graph result lists as partial without discarding the returned data', async () => {
+    const edges = (count: number, node: (i: number) => object) => Array.from({ length: count }, (_, i) => ({ node: node(i) }));
+    const graph = await graphSignals(async (query, vars) => {
+      if (query.includes('standby_teams')) return { data: { atlassianUserInTeams: {
+        edges: [{ node: { id: 'team-1', displayName: 'Operations' } }],
+      } } };
+      if (query.includes('standby_members')) return { data: { atlassianTeamMembers: {
+        edges: edges(25, (i) => u(`${vars.t}-peer-${i}`, `Peer ${i}`)),
+      } } };
+      if (query.includes('standby_assigned')) return { data: { atlassianUserAssignedJiraWorkItems: {
+        edges: edges(25, (i) => ({ key: `OPS-${i + 1}` })),
+      } } };
+      if (query.includes('standby_owns')) return { data: { atlassianUserGoalsAndProjects: {
+        edges: edges(25, (i) => ({ __typename: 'AtlassianGoal', id: `goal-${i}`, name: `Goal ${i}` })),
+      } } };
+      return { data: {} };
+    }, ALANA);
+    expect(graph.errors).toEqual([
+      'Assigned Jira work: reached the 25-result limit. More results may be unread.',
+      'Owned goals and projects: reached the 25-result limit. More results may be unread.',
+      'Team members for Operations: reached the 25-result limit. More results may be unread.',
+    ]);
+    expect(graph.counts).toEqual({ work: 25, owned: 25, pages: 0 });
+    expect(graph.teammates).toHaveLength(25);
+  });
+
   it('reports a capped colleague search as partial while retaining overlap', async () => {
     const page = { id: 'conf:9', kind: 'page' as const, title: 'Runbook', url: 'w', roles: ['linked page'], sources: ['graph' as const], touchedBy: [] };
     const graph = await graphCoverage(async (_query, vars) => ({
