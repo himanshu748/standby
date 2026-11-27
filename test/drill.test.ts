@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { backupsFor, coverageOf, mergeItems, runDrill, urgencyOf } from '../src/core/drill';
-import { escapeXml, handoverStorage, handoverTitle } from '../src/core/handover';
+import { escapeXml, handoverBrief, handoverStorage, handoverTitle } from '../src/core/handover';
 import { nodeAngle, orbit, ringLabelAngle } from '../src/core/layout';
 import type { Person, Signals, Touch, WorkItem } from '../src/core/model';
 
@@ -106,6 +106,23 @@ describe('mergeItems', () => {
 });
 
 describe('handover', () => {
+  it('keeps partial coverage and the selected backup in the text brief', () => {
+    const d = runDrill(signals([
+      issue({ id: 'missing', container: { id: 'jira:OTHER', name: 'Other' }, dueAt: '2026-12-03' }),
+      issue({ id: 'picked', key: 'SALES-32', url: 'https://x/browse/SALES-32', touchedBy: [t(emma)] }),
+    ], {
+      teammates: [],
+      sources: [{ source: 'graph', label: 'Teamwork Graph', ok: false, count: 1, note: 'Some relationships were unavailable' }],
+    }), window);
+
+    const brief = handoverBrief(d, { picked: mitch.accountId });
+    expect(brief).toContain('Handover: Alana Grant, 2026-12-01 to 2026-12-12');
+    expect(brief).toContain('Teamwork Graph: partial (1 item found) (Some relationships were unavailable)');
+    expect(brief).toContain('SALES-27 Renewal quote | https://x/browse/SALES-27\n  Suggested backup: Nobody found in this drill');
+    expect(brief).toContain('SALES-32 Renewal quote | https://x/browse/SALES-32\n  Suggested backup: Mitch Davis (4 open in Sales)');
+    expect(handoverBrief(d, { picked: 'unavailable' })).toContain('Suggested backup: Emma Paris (edited it)');
+  });
+
   it('escapes user content and lists every section that has items', () => {
     const d = runDrill(signals([issue({ title: 'Quote <draft> & "v2"', dueAt: '2026-12-03' })]), window);
     const body = handoverStorage(d);

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { AssessedItem, Coverage, Drill, Person } from '../../../src/core/model';
 import { api, type Receipt, type Space, type Window } from './api';
 import { Confirm } from './Confirm';
+import { HandoverBrief } from './HandoverBrief';
 import { ItemCard, type Pick } from './Items';
 import { Orbit } from './Orbit';
 import { PersonPicker } from './PersonPicker';
@@ -190,6 +191,8 @@ export function App() {
                 </button>
               ))}
             </div>
+
+            {drill.items.length > 0 && <HandoverBrief drill={drill} picks={picks} />}
 
             {drill.bench.length > 0 && (
               <section className="bench" aria-labelledby="bench-title">
