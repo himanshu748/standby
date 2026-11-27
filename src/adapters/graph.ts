@@ -5,13 +5,15 @@ import { mergeItems as mergeLinked } from "../core/drill";
 
 const user = (accountId: string) => `ari:cloud:identity::user/${accountId}`;
 const U = "... on AtlassianUser { accountId name }";
+const TEAM_LIMIT = 5;
+const SINGLE_PAGE_LIMIT = 25;
 
 export const QUERIES = {
-  teams: `query standby_teams($u: ID!) { atlassianUserInTeams(userId: $u, first: 5) { edges { node { ... on AtlassianTeam { id displayName } } } } }`,
-  members: `query standby_members($t: ID!) { atlassianTeamMembers(teamAri: $t, first: 25) { edges { node { ${U} } } } }`,
-  assigned: `query standby_assigned($u: ID!) { atlassianUserAssignedJiraWorkItems(userId: $u, first: 25) { edges { node { ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } reporter { ${U} } } } } } }`,
+  teams: `query standby_teams($u: ID!) { atlassianUserInTeams(userId: $u, first: ${TEAM_LIMIT}) { edges { node { ... on AtlassianTeam { id displayName } } } } }`,
+  members: `query standby_members($t: ID!) { atlassianTeamMembers(teamAri: $t, first: ${SINGLE_PAGE_LIMIT}) { edges { node { ${U} } } } }`,
+  assigned: `query standby_assigned($u: ID!) { atlassianUserAssignedJiraWorkItems(userId: $u, first: ${SINGLE_PAGE_LIMIT}) { edges { node { ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } reporter { ${U} } } } } } }`,
   work: `query standby_work($u: ID!, $after: String) { atlassianUserWorkQuery(userId: $u, first: 25, after: $after) { pageInfo { hasNextPage endCursor } edges { node { __typename ... on ConfluencePage { pageId title webUrl lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } ... on ConfluenceBlogPost { id title lastUpdatedAt space { key name } owner { ${U} } lastEditor { ${U} } } ... on JiraWorkItem { key summary webUrl dueAt status { name statusCategory { key } } assignee { ${U} } reporter { ${U} } } } } } }`,
-  owns: `query standby_owns($u: ID!) { atlassianUserGoalsAndProjects(userId: $u, roles: [OWNS], first: 25) { edges { node { __typename ... on AtlassianProject { id key name url state dueDateEndedAt } ... on AtlassianGoal { id key name url dueDateEndedAt } } } } }`,
+  owns: `query standby_owns($u: ID!) { atlassianUserGoalsAndProjects(userId: $u, roles: [OWNS], first: ${SINGLE_PAGE_LIMIT}) { edges { node { __typename ... on AtlassianProject { id key name url state dueDateEndedAt } ... on AtlassianGoal { id key name url dueDateEndedAt } } } } }`,
 };
 
 const nodes = (data: Json, field: string): Json[] =>
@@ -259,6 +261,14 @@ export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
     settle(workOf(graph, u, 4, warnings)),
     settle(run(graph, QUERIES.owns, { u }, warnings)),
   ]);
+  const warnAtLimit = (connection: Json, label: string, limit: number) => {
+    if ((connection?.edges?.length ?? 0) >= limit) {
+      warnings.push(`${label}: reached the ${limit}-result limit. More results may be unread.`);
+    }
+  };
+  if (teams.ok) warnAtLimit(teams.v.atlassianUserInTeams, "Team lookup", TEAM_LIMIT);
+  if (assigned.ok) warnAtLimit(assigned.v.atlassianUserAssignedJiraWorkItems, "Assigned Jira work", SINGLE_PAGE_LIMIT);
+  if (owns.ok) warnAtLimit(owns.v.atlassianUserGoalsAndProjects, "Owned goals and projects", SINGLE_PAGE_LIMIT);
   const teamNodes = teams.ok ? nodes(teams.v, "atlassianUserInTeams") : [];
   const teamsToRead = teamNodes.slice(0, 3);
   if (teamsToRead.length < teamNodes.length) {
@@ -270,6 +280,7 @@ export async function graphSignals(graph: Graph, outId: string, siteUrl = "") {
   const teammates: { person: Person; team: string }[] = [];
   memberLists.forEach((m, i) => {
     if (!m.ok) return;
+    warnAtLimit(m.v.atlassianTeamMembers, `Team members for ${teamsToRead[i].displayName}`, SINGLE_PAGE_LIMIT);
     for (const n of nodes(m.v, "atlassianTeamMembers")) {
       const p = graphPerson(n);
       if (
