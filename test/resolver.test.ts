@@ -108,6 +108,23 @@ describe('drill sources', () => {
     });
   });
 
+  it.each(['ownership', 'history', 'author lookup'])('keeps confirmed Confluence pages when %s is unavailable', async (unavailable) => {
+    const search = { results: fx('cql').results.slice(0, 1) };
+    route = (c) => {
+      if (c.product === 'jira') {
+        if (unavailable === 'author lookup' && c.path.includes('accountId=other-author')) return { status: 503 };
+        return jiraOnly(c);
+      }
+      if (c.path.startsWith('/wiki/rest/api/search')) return { status: 200, body: search };
+      if (c.path.startsWith('/wiki/api/v2/pages?')) return { status: unavailable === 'ownership' ? 503 : 200, body: { results: [] } };
+      if (c.path.includes('/versions')) return { status: unavailable === 'history' ? 503 : 200, body: { results: [{ authorId: 'other-author' }] } };
+      return { status: 404 };
+    };
+    const d = await drill(input);
+    expect(d.items.find((i) => i.id === 'conf:2293814')).toMatchObject({ roles: ['page creator'] });
+    expect(d.sources.find((s) => s.source === 'confluence')).toMatchObject({ ok: false, count: 1, note: expect.stringContaining(unavailable) });
+  });
+
   it('reports incomplete colleague graph coverage even when the primary graph succeeds', async () => {
     const graph = vi.fn(async (query: string, vars: Record<string, unknown>) => {
       if (query.includes('standby_teams')) {
