@@ -123,6 +123,21 @@ describe('handover', () => {
     expect(handoverBrief(d, { picked: 'unavailable' })).toContain('Suggested backup: Emma Paris (edited it)');
   });
 
+  it('carries partial source coverage into the Confluence handover draft', () => {
+    const d = runDrill(signals([issue()], {
+      sources: [
+        { source: 'graph', label: 'Graph & relationships', ok: false, count: 0 },
+        { source: 'jira', label: 'Jira', ok: true, count: 1 },
+      ],
+    }), window);
+    const body = handoverStorage(d);
+    expect(body).toContain('1 item(s) with no other recorded contributor');
+    expect(body).toContain('<h2>Source coverage</h2>');
+    expect(body).toContain('Source coverage is incomplete.');
+    expect(body).toContain('<li>Graph &amp; relationships: partial (0 items found)</li>');
+    expect(body).toContain('<li>Jira: 1 item</li>');
+  });
+
   it('escapes user content and lists every section that has items', () => {
     const d = runDrill(signals([issue({ title: 'Quote <draft> & "v2"', dueAt: '2026-12-03' })]), window);
     const body = handoverStorage(d);

@@ -22,13 +22,16 @@ const label = {
 const chosen = (item: AssessedItem, picked?: string) =>
   item.backups.find((b) => b.person.accountId === picked) ?? item.backups[0];
 
+function sourceStatus(source: Drill["sources"][number]): string {
+  const count = `${source.count} ${source.count === 1 ? "item" : "items"}`;
+  return source.ok ? count : `partial (${count} found)`;
+}
+
 /** Plain text for sharing the completed drill. */
 export function handoverBrief(drill: Drill, picks: Record<string, string>): string {
   const parts = [handoverTitle(drill), "", "Source coverage"];
   for (const source of drill.sources) {
-    const count = `${source.count} ${source.count === 1 ? "item" : "items"}`;
-    const status = source.ok ? count : `partial (${count} found)`;
-    parts.push(`- ${source.label}: ${status}${source.note ? ` (${source.note})` : ""}`);
+    parts.push(`- ${source.label}: ${sourceStatus(source)}${source.note ? ` (${source.note})` : ""}`);
   }
   for (const coverage of ["stalls", "thin", "covered"] as const) {
     const items = drill.items.filter((item) => item.coverage === coverage);
@@ -67,8 +70,19 @@ export function handoverStorage(
   const parts: string[] = [];
   parts.push(
     `<p>${escapeXml(person.name)} is out from <strong>${escapeXml(drill.window.from)}</strong> to <strong>${escapeXml(drill.window.to)}</strong>. ` +
-      `Standby found ${counts.stalls} item(s) nobody else has touched, ${counts.thin} with one other person and ${counts.covered} already covered.</p>`,
+      `Standby found ${counts.stalls} item(s) with no other recorded contributor, ${counts.thin} with one and ${counts.covered} with more than one.</p>`,
   );
+  if (drill.sources.length) {
+    parts.push("<h2>Source coverage</h2>");
+    if (drill.sources.some((source) => !source.ok)) {
+      parts.push("<p>Source coverage is incomplete. Check the missing evidence before relying on these results.</p>");
+    }
+    parts.push("<ul>");
+    for (const source of drill.sources) {
+      parts.push(`<li>${escapeXml(source.label)}: ${sourceStatus(source)}</li>`);
+    }
+    parts.push("</ul>");
+  }
   const bench = new Map<string, { name: string; n: number }>();
   for (const i of drill.items) {
     if (i.coverage === "covered") continue;
