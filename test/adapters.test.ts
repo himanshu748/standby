@@ -70,6 +70,25 @@ describe('confluence', () => {
 
 describe('teamwork graph', () => {
   const u = (accountId: string, name: string) => ({ accountId, name });
+  it('reports partial teammate evidence when only the first three teams are read', async () => {
+    const teams = ['Sales', 'Support', 'Engineering', 'Finance'];
+    const memberReads: string[] = [];
+    const result = await graphSignals(async (query, variables) => {
+      if (query.includes('standby_teams')) {
+        return { data: { atlassianUserInTeams: { edges: teams.map((displayName, i) => ({ node: { id: `ari:team/${i}`, displayName } })) } } };
+      }
+      if (query.includes('standby_members')) {
+        memberReads.push(String(variables.t));
+        return { data: { atlassianTeamMembers: { edges: [{ node: u('m', 'Mitch Davis') }] } } };
+      }
+      return { data: {} };
+    }, ALANA);
+
+    expect(result.teams).toEqual(teams);
+    expect(memberReads).toEqual(['ari:team/0', 'ari:team/1', 'ari:team/2']);
+    expect(result.teammates).toEqual([{ person: { accountId: 'm', name: 'Mitch Davis' }, team: 'Sales' }]);
+    expect(result.errors).toContain('Teamwork Graph member lookups limited to 3 of 4 teams');
+  });
   it('parses curated query results', () => {
     const assigned = parseAssigned(
       { atlassianUserAssignedJiraWorkItems: { edges: [
