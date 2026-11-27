@@ -13,7 +13,9 @@ const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 export function Panel() {
   const [win] = useState({ from: plus(1), to: plus(14) });
   const [data, setData] = useState<IssueCover | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
   const [to, setTo] = useState<Person | null>(null);
   const [ask, setAsk] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -21,36 +23,50 @@ export function Panel() {
   const [drillPath, setDrillPath] = useState<string | null>(null);
 
   useEffect(() => {
-    api
+    let current = true;
+    void api
       .issue(win)
       .then((d) => {
+        if (!current) return;
         setData(d);
         setTo(d.item?.backups[0]?.person ?? null);
       })
-      .catch((e) => setError(errText(e)));
-    void fullDrillPath().then(setDrillPath);
-  }, [win]);
+      .catch((e) => {
+        if (current) setLoadError(errText(e));
+      });
+    return () => { current = false; };
+  }, [win, attempt]);
+
+  useEffect(() => {
+    void fullDrillPath().then(setDrillPath).catch(() => undefined);
+  }, [attempt]);
 
   const reassign = async () => {
     if (!data?.item?.key || !to) return;
+    setActionError(null);
+    setReceipt(null);
     setBusy(true);
     try {
       const [r] = await api.reassign([{ key: data.item.key, to }]);
       setReceipt(r ?? null);
     } catch (e) {
-      setError(errText(e));
+      setActionError(errText(e));
     } finally {
       setBusy(false);
       setAsk(false);
     }
   };
 
-  if (error)
+  if (loadError)
     return (
       <div className="ipanel">
         <p className="error" role="alert">
-          {error}
+          {loadError}
         </p>
+        <button type="button" className="btn ghost" onClick={() => {
+          setLoadError(null);
+          setAttempt((n) => n + 1);
+        }}>Retry issue check</button>
       </div>
     );
   if (!data)
@@ -158,6 +174,7 @@ export function Panel() {
           {receipt.ok ? `Reassigned ${receipt.key} to ${receipt.to.name}. Refresh the issue to see it.` : receipt.error}
         </p>
       )}
+      {actionError && <p className="error" role="alert">{actionError}</p>}
 
       <ul className="panel-sources" aria-label="Where this came from">
         {data.sources.map((s) => (
