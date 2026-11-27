@@ -230,7 +230,11 @@ export function App() {
             )}
 
             {drill.items.length === 0 ? (
-              <p className="empty">Standby found no open work, owned pages or projects for {drill.person.name} that you can see.</p>
+              <p className="empty">
+                {drill.sources.some((source) => !source.ok)
+                  ? 'Source coverage is incomplete. No work was found in the data this drill could read. Check the source details and rerun before relying on this result.'
+                  : `Standby found no open work, owned pages or projects for ${drill.person.name} that you can see.`}
+              </p>
             ) : (
               <>
                 <div className="cards-bar">

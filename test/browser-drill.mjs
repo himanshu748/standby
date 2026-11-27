@@ -70,6 +70,15 @@ try {
 
   await dialog.getByRole('button', { name: 'Create draft' }).click();
   await page.getByText('Handover draft created.').waitFor({ timeout: 10_000 });
+
+  await page.goto(new URL('?partialDrill', url).href);
+  await picker.fill('Alana');
+  await alana.click();
+  await page.getByRole('button', { name: 'Run the drill' }).click();
+  const partial = page.getByRole('main', { name: 'Drill for Alana Rivera' });
+  await partial.waitFor();
+  assert.match(await partial.locator('.empty').textContent(), /Source coverage is incomplete/);
+  assert.equal(await partial.getByText(/Standby found no open work/).count(), 0);
 } finally {
   await browser?.close();
   await server.close();
