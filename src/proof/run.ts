@@ -3,7 +3,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { escapeXml } from '../core/handover';
 import type { Drill } from '../core/model';
-import { createHandover } from '../index';
+import { createHandover } from '../service';
 import { clientsFromSeed, type Call, type Seed } from './world';
 
 export type Draft = { spaceId: string; status: string; title: string; storage: string };
@@ -37,7 +37,10 @@ export function proofReport(drill: Drill, page: { id: string; url: string }, dra
   return lines.join('\n');
 }
 
-export function proofHtml(draft: Draft, url: string): string {
+export function proofHtml(draft: Draft, url: string, walkthrough = false): string {
+  const context = walkthrough
+    ? 'Synthetic Confluence draft from the local walkthrough. Source links are examples.'
+    : `Draft page created by <code>npm run proof</code> for space ${escapeXml(draft.spaceId)}. Status: ${escapeXml(draft.status)}. ${escapeXml(url)}`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,11 +55,18 @@ export function proofHtml(draft: Draft, url: string): string {
 </style>
 </head>
 <body>
-<p class="banner">Draft page created by <code>npm run proof</code> for space ${escapeXml(draft.spaceId)}. Status: ${escapeXml(draft.status)}. ${escapeXml(url)}</p>
+${walkthrough ? `<h1>${escapeXml(draft.title)}</h1>\n` : ''}<p class="banner">${context}</p>
 ${draft.storage}
 </body>
 </html>
 `;
+}
+
+export function draftFromCalls(calls: Call[]): Draft {
+  const post = calls.find((c) => c.method === 'POST' && c.path === '/wiki/api/v2/pages');
+  if (!post?.body) throw new Error('handover draft was not created');
+  const body = JSON.parse(post.body) as { spaceId: string; status: string; title: string; body: { representation: string; value: string } };
+  return { spaceId: body.spaceId, status: body.status, title: body.title, storage: body.body.value };
 }
 
 /** Runs the real drill and draft-page path against the seed. Nothing is sent to Atlassian. */
@@ -66,10 +76,7 @@ export async function runProof(seed: Seed): Promise<Proof> {
     { accountId: seed.out, from: seed.window.from, to: seed.window.to, siteUrl: seed.site, spaceId: seed.handoverSpaceId, confirmed: true },
     { jira, conf, graph },
   );
-  const post = calls.find((c) => c.method === 'POST' && c.path === '/wiki/api/v2/pages');
-  if (!post?.body) throw new Error('handover draft was not created');
-  const body = JSON.parse(post.body) as { spaceId: string; status: string; title: string; body: { representation: string; value: string } };
-  const draft: Draft = { spaceId: body.spaceId, status: body.status, title: body.title, storage: body.body.value };
+  const draft = draftFromCalls(calls);
   return { drill, page, draft, calls, report: proofReport(drill, page, draft), html: proofHtml(draft, page.url) };
 }
 

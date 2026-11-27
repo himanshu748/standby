@@ -11,6 +11,8 @@ selected Jira issues after confirmation.
 Open **Handover brief** after a drill to copy the work at risk, backup choices and
 source coverage into a team update. The brief uses the drill already on screen.
 
+[Run the local judge walkthrough](#local-judge-walkthrough) to try it with sample data.
+
 ## Prerequisites
 
 Judges need an Atlassian Cloud site with all three:
@@ -55,6 +57,33 @@ Paste that URL in both of these places:
 - In the Devpost submission, paste it into the installation link field, and select the **Best apps with Teamwork Graph integration** bonus. Do not select Best Agents.
 
 Until the placeholder is replaced, judges cannot install Standby.
+
+## Local judge walkthrough
+
+Use the interactive walkthrough to evaluate the drill without a Forge install
+or an Atlassian account. From a fresh clone with Node 22 or newer, run:
+
+```sh
+npm ci
+npm run demo
+```
+
+Open [http://127.0.0.1:4175](http://127.0.0.1:4175) and follow the sample:
+
+1. Search for **Priya Shah** and set the dates to **December 8–19, 2026**. Run
+   the drill and check for five stalled, three thinly covered, and one covered
+   item.
+2. Find **MOBL-31**, Wallet token refresh. Teamwork Graph found the same issue
+   in a colleague's graph, so it lands in the thinly covered group. Open
+   **Handover brief** to copy the work and backup suggestions.
+3. Choose a different backup on a work card. Select **Draft handover page**,
+   confirm the **Mobile checkout** space, and open the draft from the receipt.
+   Find the chosen backup in the resulting table.
+
+The app runs the same drill and draft creation logic as Forge, using fixed,
+synthetic Jira, Confluence, and Teamwork Graph responses. Jira reassignment
+produces a simulated receipt, and each drill starts from the same fixture. The
+walkthrough makes no calls to Atlassian.
 
 ## How it uses Atlassian
 
