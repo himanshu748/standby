@@ -122,6 +122,13 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
     return changes.map((c) => ({ ...c, ok: true }));
   }
   if (name === 'issue') {
+    if (new URLSearchParams(window.location.search).has('partialPanel')) {
+      return {
+        person: alana,
+        item: { ...items[0], urgencyNotes: [] },
+        sources: drillData.sources.map((source) => source.source === 'graph' ? { ...source, ok: false, count: 0, note: 'Graph unavailable' } : source),
+      };
+    }
     // The initial dev render requests twice under StrictMode.
     if (new URLSearchParams(window.location.search).has('retryPanel') && ++panelReads <= 2) throw new Error('Could not read the issue');
     return { person: alana, item: items[1], sources: drillData.sources };
@@ -130,7 +137,7 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
 }
 
 export const view = {
-  getContext: async () => new URLSearchParams(window.location.search).has('retryPanel')
+  getContext: async () => ['retryPanel', 'partialPanel'].some((scenario) => new URLSearchParams(window.location.search).has(scenario))
     ? { moduleKey: 'standby-issue', extension: { type: 'jira:issuePanel' } }
     : { moduleKey: 'standby-global', extension: {} },
   theme: { enable: async () => undefined },
