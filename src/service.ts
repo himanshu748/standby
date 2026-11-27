@@ -172,7 +172,7 @@ export async function createHandover(
   if (p.confirmed !== true) throw new Error('Confirm before creating the page');
   if (!/^\d+$/.test(String(p.spaceId))) throw new Error('Pick a space');
   const d = await drill(p, clients);
-  const page = await createDraft(clients.conf, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
+  const page = await createDraft(clients.conf, p.siteUrl, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
   return { drill: d, page };
 }
 

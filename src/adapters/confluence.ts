@@ -129,12 +129,15 @@ export async function listSpaces(conf: Rest): Promise<{ id: string; key: string;
 }
 
 /** Creates the handover as a draft page, so nothing is published until someone reviews it in Confluence. */
-export async function createDraft(conf: Rest, spaceId: string, title: string, storage: string): Promise<{ id: string; url: string }> {
+export async function createDraft(conf: Rest, siteUrl: string, spaceId: string, title: string, storage: string): Promise<{ id: string; url: string }> {
   const res = await conf('/wiki/api/v2/pages', {
     method: 'POST',
     body: JSON.stringify({ spaceId, status: 'draft', title, body: { representation: 'storage', value: storage } }),
   });
   if (!res.ok) throw new Error(`Confluence refused the draft (${res.status})`);
   const json = await res.json();
-  return { id: String(json.id), url: json._links?.base ? `${json._links.base}${json._links.editui ?? json._links.webui}` : '' };
+  const id = String(json.id);
+  const base = json._links?.base || `${siteUrl}/wiki`;
+  const path = json._links?.editui || json._links?.webui || `/pages/resumedraft.action?draftId=${encodeURIComponent(id)}`;
+  return { id, url: `${base}${path}` };
 }
