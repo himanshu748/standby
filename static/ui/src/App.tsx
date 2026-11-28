@@ -103,10 +103,15 @@ export function App() {
 
   const doHandover = async () => {
     if (!drill) return;
+    const backups: Record<string, string> = {};
+    for (const item of drill.items) {
+      const backup = picks[item.id]?.to ?? item.backups[0]?.person;
+      if (backup) backups[item.id] = backup.accountId;
+    }
     const request = attempt.current;
     setBusy(true);
     try {
-      const r = await api.handover(drill.person.accountId, drill.window, spaceId, Object.fromEntries(Object.entries(picks).map(([id, v]) => [id, v.to.accountId])));
+      const r = await api.handover(drill.person.accountId, drill.window, spaceId, backups);
       if (request === attempt.current) setPage(r.url);
     } catch (e) {
       if (request === attempt.current) setError(errText(e));
