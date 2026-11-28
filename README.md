@@ -11,7 +11,7 @@ selected Jira issues after confirmation.
 Open **Handover brief** after a drill to copy the work at risk, backup choices and
 source coverage into a team update. The brief uses the drill already on screen.
 
-[Run the local judge walkthrough](#local-judge-walkthrough) to try it with sample data.
+[Install on a Jira and Confluence test site](#installation-link) · [Teamwork Graph check](#teamwork-graph-check) · [Run the local fixture](#local-judge-walkthrough) · [Watch the demo](https://youtu.be/7HAcyNG6KVs)
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Judges need an Atlassian Cloud site with all three:
 
 1. **Jira.** Standby reads issues assigned to the person, project leads, and who else has open work in those projects. After a second confirmation it can reassign the issues you tick.
 2. **Confluence.** Standby reads pages they own or edited, and creates the handover as a draft in a space you choose.
-3. **Teamwork Graph API.** Coverage uses `requestTeamworkGraph` and the `read:graph:*` scopes in `manifest.yml`. Codegeist judge sites include this API. If a site does not, the drill still runs and marks Teamwork Graph as partial. It does not treat that silence as "nothing stalls".
+3. **Teamwork Graph API.** Native shared-work verification needs a site and test accounts with access to the API and shared data. Coverage uses `requestTeamworkGraph` and the `read:graph:*` scopes in `manifest.yml`. If Graph is unavailable or incomplete, the drill still runs with the other available sources and marks Teamwork Graph as partial.
 
 Install the app on **both** Jira and Confluence. The global page is on both products, the issue panel is on Jira issues, and the handover draft is a Confluence page. A site admin opens the installation link. No Forge CLI and no clone are required for that.
 
@@ -34,7 +34,15 @@ There is no Rovo module in `manifest.yml`. Standby is not a Rovo agent and is no
 3. Open a Jira issue assigned to that teammate and select the **Standby** issue panel to check coverage for that issue.
 4. In the drill, select **Draft handover page**, choose a Confluence space where you can create pages, and confirm. Open the resulting private draft to inspect the handover.
 
-[Read the native judge test results](docs/evidence/forge-judge-run.md).
+[Read the native judge test results](docs/evidence/forge-judge-run.md). The recorded run confirmed the two-product installation, the absence drill, the Jira panel and a private handover draft. It found no backup candidates in that test data.
+
+## Teamwork Graph check
+
+1. On a test site, pick a teammate with open work and a colleague whose Graph work also includes a test item. Run the drill as a user who can see that work.
+2. In **Where this came from**, check the **Teamwork Graph** row for shared objects in colleagues' graphs. On the affected card, look for the backup reason “works on it too, per Teamwork Graph.” Record the item and source detail if it appears.
+3. If Graph is partial, read the source detail for missing or capped results. Jira and Confluence can still contribute. A zero count on incomplete Graph data does not establish that nobody can cover the work.
+
+Standby consumes Teamwork Graph through signed-in-user GraphQL queries. That is the integration for the [Codegeist Teamwork Graph bonus](https://codegeist2026.devpost.com/rules). The [development evidence](docs/development.md#demo-evidence) records shared work in an earlier native drill. For a predictable offline comparison, the synthetic walkthrough below shows the same backup reason on **MOBL-31** without calling Graph.
 
 ## Local judge walkthrough
 
