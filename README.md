@@ -2,6 +2,8 @@
 
 **When a teammate takes leave, nobody knows which work will stall.**
 
+[Try the coverage drill](https://standby-walkthrough.vercel.app/) with Priya Shah and the sample team. The walkthrough simulates Jira and Confluence actions in your browser.
+
 <img src="docs/screenshots/02-drill.png" width="640" alt="Standby drill showing stalled, thinly covered, and covered work">
 
 Pick a teammate and their dates away. Standby shows who can cover each item,
