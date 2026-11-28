@@ -27,36 +27,14 @@ There is no Rovo module in `manifest.yml`. Standby is not a Rovo agent and is no
 
 ## Installation link
 
-Judges install from the link below. The line in the box is a placeholder, not a working link.
+[Install Standby for Jira and Confluence](https://developer.atlassian.com/console/install/689d38fb-0df1-46ef-8f81-be74c1ad79c2?signature=AYABeODMtVXMyXPlF3vNvnFaXA0AAAADAAdhd3Mta21zAEthcm46YXdzOmttczp1cy13ZXN0LTI6NzA5NTg3ODM1MjQzOmtleS83MDVlZDY3MC1mNTdjLTQxYjUtOWY5Yi1lM2YyZGNjMTQ2ZTcAuAECAQB4CxqLTo9l4lqXuFjNim1xJM%2Bp%2F3TVP9xHS2BrU5DRRucBJc43aUe2NCFJUvwM7VQ9NAAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDPCaQneI%2BRnxw12ozwIBEIA7wIvHGKlUh9yrpyEKa4Q0CExBlkilbNeQTInIOAT8sE6VVnPN3rKq2XqVMnB1VmhyT7ijCZHMMT0W3Q8AB2F3cy1rbXMAS2Fybjphd3M6a21zOmV1LXdlc3QtMTo3MDk1ODc4MzUyNDM6a2V5LzQ2MzBjZTZiLTAwYzMtNGRlMi04NzdiLTYyN2UyMDYwZTVjYwC4AQICAHi9bVMAkme4qVQX1fQHo6ePw3H40A7cGfz7yrmSfBWMXgGXZd9RFwVr8e3MGdJ9W7FqAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMY5fOfPvDHeQ2TgWAAgEQgDs5%2FcOiEC4ywYKaNrSZ45p7DiHSmdu97PzStDkTc11RRHVadMgLeFphB2VSvAjAD%2BdzlYFqAp4Vdlu3ngAHYXdzLWttcwBLYXJuOmF3czprbXM6dXMtZWFzdC0xOjcwOTU4NzgzNTI0MzprZXkvNmMxMjBiYTAtNGNkNS00OTg1LWI4MmUtNDBhMDQ5NTJjYzU3ALgBAgIAeDYASx0XCjkny4iLV6vz%2BKtEGSGT6kdt0QRpkn6D%2FlVEARPEWXVVpaF%2BXwjsmLHLJ1AAAAB%2BMHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAyBXPFlCna8kwRaWiICARCAO6oAWWUqYS1MYBO3SZSL25tK%2FnRuSWCXH8Mfnu0ic%2FsQpQadZHuyVQETQ%2Ftpdlp3EKga2JMq0pUO%2FiqeAgAAAAAMAAAQAAAAAAAAAAAAAAAAAJiSs1HQp1%2BY4fFIxJs6Mzr%2F%2F%2F%2F%2FAAAAAQAAAAAAAAAAAAAAAQAAADJSeh94sXy8pEzJaw0cGoQ6riQ9qADcYrOnZmnWVHAmxyInnLX8MupLJCIn9UZ5Mkd%2FlNRW05fxNtqsdaGZGMg87UM%3D&product=confluence&product=jira)
 
-```
-PASTE_THE_SIGNED_INSTALL_LINK_HERE
-```
+1. Sign in as a site admin and choose an Atlassian Cloud test site that has Jira and Confluence. Complete installation for both products and check that Standby appears under **Connected apps**.
+2. Open **Standby** from the apps menu. Choose a teammate who owns test work, enter the dates they are away, and select **Run the drill**. Review the coverage groups and source status.
+3. Open a Jira issue assigned to that teammate and select the **Standby** issue panel to check coverage for that issue.
+4. In the drill, select **Draft handover page**, choose a Confluence space where you can create pages, and confirm. Open the resulting private draft to inspect the handover.
 
-Replace that placeholder with the installation link from the Forge developer console. A `forge install` command is not a substitute: it only works for contributors of the app.
-
-### How the owner creates the link
-
-This repository cannot mint the link. The app owner does it once, in the Forge developer console, after a production deploy. Atlassian documents the same flow as [Start sharing your app](https://developer.atlassian.com/platform/forge/distribute-your-apps/).
-
-1. From a checkout of this repo, signed in to the Forge CLI as the app owner, deploy production. The development environment has no judge link.
-
-   ```bash
-   npx @forge/cli deploy -e production
-   ```
-
-2. Open [developer.atlassian.com/console/myapps](https://developer.atlassian.com/console/myapps/) and select this app. The id in `manifest.yml` is `ari:cloud:ecosystem::app/689d38fb-0df1-46ef-8f81-be74c1ad79c2`.
-3. In the left menu, select **Distribution**. Under **Distribution controls**, select **Edit**. This is **Start sharing your app**.
-4. Select **Sharing**. Do not select **Sharing within organization**. That option only works for people in the app owner's organizations, and judges are outside them. Fill in the listing. The privacy policy text is [PRIVACY.md](PRIVACY.md). If the form asks for a URL, use the public URL of that file. Save changes.
-5. Select **Jira** and **Confluence**. The console then requires a site that runs both. The installing admin opens the same link twice: once to install on Jira, once to install on Confluence.
-6. Copy the installation link shown on the Distribution page.
-
-Paste that URL in both of these places:
-
-- In this README, replace the single line `PASTE_THE_SIGNED_INSTALL_LINK_HERE`.
-- In the Devpost submission, paste it into the installation link field, and select the **Best apps with Teamwork Graph integration** bonus. Do not select Best Agents.
-
-Until the placeholder is replaced, judges cannot install Standby.
+[Read the native judge test results](docs/evidence/forge-judge-run.md).
 
 ## Local judge walkthrough
 
@@ -109,8 +87,8 @@ This builds the UI and runs the checks. `npm run proof` replays a six-person
 drill and writes the handover draft to [proof/handover-page.html](proof/handover-page.html)
 without contacting a site.
 
-A live drill needs a Forge development install on Jira or Confluence. That path
-is for contributors, not judges. See [development and setup](docs/development.md).
+For a native judge run, use the [installation link](#installation-link).
+Contributors can use the Forge CLI via the [development guide](docs/development.md).
 
 [Video](https://youtu.be/7HAcyNG6KVs) · [Devpost](https://devpost.com/software/standby-ng4uxi) ·
 [Privacy](PRIVACY.md) · [License](LICENSE)
