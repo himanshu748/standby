@@ -1,6 +1,6 @@
 import { listSpaces } from '../adapters/confluence';
 import { createHandover, drill, reassignIssues } from '../service';
-import { draftFromCalls, proofHtml } from './run';
+import { draftFromCalls, proofHtml } from './draft';
 import { clientsFromSeed, type Seed } from './world';
 
 /** Every request uses fresh fixture clients. The walkthrough always starts with the same sample data. */

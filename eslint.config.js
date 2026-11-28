@@ -3,7 +3,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['node_modules/**', 'static/ui/dist/**', 'site/dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**', '.forge/**', 'video/**'] },
+  { ignores: ['node_modules/**', 'static/ui/dist/**', 'site/dist/**', 'dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**', '.forge/**', 'video/**'] },
   js.configs.recommended,
   ...tseslint.configs.strict,
   {
