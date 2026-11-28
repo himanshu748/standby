@@ -40,7 +40,7 @@ resolver.define('issue', async ({ payload, context }) =>
 resolver.define('spaces', async () => listSpaces(conf));
 
 resolver.define('handover', async ({ payload }) => {
-  const { page } = await createHandover(payload as DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> });
+  const { page } = await createHandover(payload as Parameters<typeof createDraft>[0]);
   return page;
 });
 
