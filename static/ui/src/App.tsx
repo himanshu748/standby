@@ -103,10 +103,10 @@ export function App() {
 
   const doHandover = async () => {
     if (!drill) return;
-    const backups: Record<string, string> = {};
+    const backups: Record<string, string | null> = {};
     for (const item of drill.items) {
       const backup = picks[item.id]?.to ?? item.backups[0]?.person;
-      if (backup) backups[item.id] = backup.accountId;
+      backups[item.id] = backup?.accountId ?? null;
     }
     const request = attempt.current;
     setBusy(true);

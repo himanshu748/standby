@@ -335,6 +335,32 @@ describe('writes', () => {
     expect(post?.body).toContain('Other backup');
   });
 
+  it.each(['item', 'backup'])('does not create a draft after an unreviewed %s appears', async (change) => {
+    let refreshed = false;
+    route = (c) => {
+      if (c.product === 'confluence' && c.method === 'POST') return { status: 200, body: { id: '42' } };
+      if (c.path.startsWith('/rest/api/3/project/search')) return { status: 200, body: { values: [] } };
+      if (c.path.includes('fields=summary')) {
+        const reporter = refreshed && change === 'backup' ? { accountId: 'new-backup', displayName: 'New backup' } : undefined;
+        const issues = [{ key: 'MS-1', fields: { summary: 'Vendor agreement', reporter } }];
+        if (refreshed && change === 'item') issues.push({ key: 'MS-2', fields: { summary: 'New work', reporter: undefined } });
+        return { status: 200, body: { issues } };
+      }
+      return jiraOnly(c);
+    };
+    const shown = await drill(input);
+    expect(shown.items.map(({ id, backups }) => [id, backups.length])).toEqual([['jira:MS-1', 0]]);
+    const payload = { ...input, spaceId: '98', confirmed: true, reviewedBackups: { 'jira:MS-1': null } };
+
+    refreshed = true;
+    await expect(handlers['handover']!({ payload })).rejects.toThrow('Run the drill again');
+    expect(calls.some((c) => c.product === 'confluence' && c.method === 'POST')).toBe(false);
+
+    refreshed = false;
+    await expect(handlers['handover']!({ payload })).resolves.toMatchObject({ id: '42' });
+    expect(calls.filter((c) => c.product === 'confluence' && c.method === 'POST')).toHaveLength(1);
+  });
+
   it.each([
     [undefined, '/pages/resumedraft.action?draftId=42'],
     [{ editui: '/pages/resumedraft.action?draftId=42&src=handover' }, '/pages/resumedraft.action?draftId=42&src=handover'],

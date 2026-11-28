@@ -172,16 +172,24 @@ function candidatePool(outId: string, items: WorkItem[], peers: Signals['contain
 }
 
 export async function createHandover(
-  p: DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string> },
+  p: DrillInput & { spaceId: string; confirmed: boolean; picks?: Record<string, string>; reviewedBackups?: Record<string, string | null> },
   clients: Clients,
 ): Promise<{ drill: Drill; page: { id: string; url: string } }> {
   if (p.confirmed !== true) throw new Error('Confirm before creating the page');
   if (!/^\d+$/.test(String(p.spaceId))) throw new Error('Pick a space');
   const d = await drill(p, clients);
-  const picks = p.picks ?? {};
   const items = new Map(d.items.map((item) => [item.id, item]));
-  if (Object.entries(picks).some(([id, accountId]) => !items.get(id)?.backups.some((backup) => backup.person.accountId === accountId))) {
-    throw new Error('A selected backup could not be verified against the current results. Run the drill again before creating a handover draft.');
+  const selections = Object.entries(p.reviewedBackups ?? p.picks ?? {});
+  if (p.reviewedBackups && selections.length !== items.size) {
+    throw new Error('The handover items changed. Run the drill again before creating a handover draft.');
+  }
+  const picks: Record<string, string> = {};
+  for (const [id, accountId] of selections) {
+    const item = items.get(id);
+    if (!item || (accountId === null ? item.backups.length > 0 : !item.backups.some((backup) => backup.person.accountId === accountId))) {
+      throw new Error('The displayed backup could not be verified against the current results. Run the drill again before creating a handover draft.');
+    }
+    if (accountId !== null) picks[id] = accountId;
   }
   const page = await createDraft(clients.conf, p.siteUrl, String(p.spaceId), handoverTitle(d), handoverStorage(d, picks));
   return { drill: d, page };

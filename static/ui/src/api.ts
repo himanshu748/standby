@@ -28,8 +28,8 @@ export const api = {
   drill: async (accountId: string, w: Window) => invoke<Drill>('drill', { accountId, ...w, siteUrl: await siteUrl() }),
   issue: async (w: Window) => invoke<IssueCover>('issue', { ...w, siteUrl: await siteUrl() }),
   spaces: () => invoke<Space[]>('spaces'),
-  handover: async (accountId: string, w: Window, spaceId: string, picks: Record<string, string>) =>
-    invoke<{ id: string; url: string }>('handover', { accountId, ...w, siteUrl: await siteUrl(), spaceId, picks, confirmed: true }),
+  handover: async (accountId: string, w: Window, spaceId: string, reviewedBackups: Record<string, string | null>) =>
+    invoke<{ id: string; url: string }>('handover', { accountId, ...w, siteUrl: await siteUrl(), spaceId, reviewedBackups, confirmed: true }),
   reassign: (changes: { key: string; to: Person }[]) => invoke<Receipt[]>('reassign', { changes, confirmed: true }),
   open: (url: string) => router.open(url),
   go: (path: string) => router.navigate(path),

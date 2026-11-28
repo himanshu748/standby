@@ -110,9 +110,9 @@ export async function invoke(name: string, payload?: Record<string, unknown>): P
   }
   if (name === 'handover') {
     if (new URLSearchParams(window.location.search).has('pinHandover')) {
-      const picks = payload?.['picks'] as Record<string, string> | undefined;
-      if (picks?.['i2'] !== bench2.accountId || picks?.['i3'] !== bench3.accountId) {
-        throw new Error('The draft must preserve the displayed default and the selected backup');
+      const picks = payload?.['reviewedBackups'] as Record<string, string | null> | undefined;
+      if (picks?.['i1'] !== null || picks['i2'] !== bench2.accountId || picks['i3'] !== bench3.accountId) {
+        throw new Error('The draft must preserve displayed items with and without backups');
       }
     }
     await new Promise((r) => setTimeout(r, 1200));
