@@ -76,7 +76,7 @@ describe('jira', () => {
 describe('confluence', () => {
   it('keeps verified page contributors when a later author batch fails', async () => {
     const response = (body: object, status = 200) => ({ ok: status === 200, status, json: async () => body });
-    const pages = ['1', '2', '3'].map((id) => ({ content: {
+    const pages = ['1', '2', '3', '4', '5'].map((id) => ({ content: {
       id, type: 'page', title: `Page ${id}`, space: { key: 'OPS' },
       history: { createdBy: { accountId: ALANA } },
     }, url: `/pages/${id}` }));
@@ -84,7 +84,7 @@ describe('confluence', () => {
       if (path.startsWith('/wiki/rest/api/search?')) return response({ results: pages });
       if (path.startsWith('/wiki/api/v2/pages?')) return response({ results: [] });
       const page = path.split('/')[5];
-      const count = page === '3' ? 1 : 25;
+      const count = page === '5' ? 1 : 25;
       return response({ results: Array.from({ length: count }, (_, i) => ({ authorId: `author-${page}-${i}` })) });
     };
     const jira = vi.fn()

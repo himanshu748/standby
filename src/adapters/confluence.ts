@@ -76,12 +76,15 @@ export async function lookupPeople(jira: Rest, ids: string[], onBatchFailure?: (
   const out = new Map<string, Person>();
   for (let i = 0; i < ids.length; i += 50) {
     const batch = ids.slice(i, i + 50);
-    const json = await getJson(jira, `/rest/api/3/user/bulk?${q({ accountId: batch, maxResults: 50 })}`).catch((error: unknown) => {
+    let json: Json;
+    try {
+      json = await getJson(jira, `/rest/api/3/user/bulk?${q({ accountId: batch, maxResults: 50 })}`);
+    } catch (error) {
       if (!onBatchFailure) throw error;
       onBatchFailure();
-      return null;
-    });
-    for (const u of json?.values ?? []) {
+      break;
+    }
+    for (const u of json.values ?? []) {
       const p = toPerson(u);
       if (p) out.set(p.accountId, p);
     }
