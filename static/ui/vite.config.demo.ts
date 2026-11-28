@@ -9,8 +9,10 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 const seed = JSON.parse(readFileSync(new URL('../../test/fixtures/seed-team.json', import.meta.url), 'utf8')) as Seed;
 const { sample, invoke } = walkthrough(seed);
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root,
+  base: './',
+  build: { outDir: '../../dist/walkthrough', emptyOutDir: true },
   plugins: [react(), {
     name: 'standby-walkthrough',
     transformIndexHtml: () => [{
@@ -39,6 +41,11 @@ export default defineConfig({
       });
     },
   }],
-  resolve: { alias: { '@forge/bridge': fileURLToPath(new URL('./demo/bridge.ts', import.meta.url)) } },
+  resolve: {
+    alias: {
+      '@forge/bridge': fileURLToPath(new URL('./demo/bridge.ts', import.meta.url)),
+      ...(command === 'build' ? { './transport': fileURLToPath(new URL('./demo/static-transport.ts', import.meta.url)) } : {}),
+    },
+  },
   server: { host: '127.0.0.1', port: 4175, strictPort: true },
-});
+}));

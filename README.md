@@ -85,6 +85,12 @@ synthetic Jira, Confluence, and Teamwork Graph responses. Jira reassignment
 produces a simulated receipt, and each drill starts from the same fixture. The
 walkthrough makes no calls to Atlassian.
 
+Run `npm run build:demo` to package the same synthetic walkthrough in
+`dist/walkthrough`. Serve that directory over HTTP on a static host. The
+packaged walkthrough runs the fixture in each visitor's browser and needs no
+backend or credentials. The Forge installation link is still required to test
+real Jira, Confluence and Teamwork Graph behavior.
+
 ## How it uses Atlassian
 
 Forge hosts the Jira and Confluence app. Teamwork Graph finds the teammate's work
