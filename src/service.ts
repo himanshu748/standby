@@ -178,7 +178,12 @@ export async function createHandover(
   if (p.confirmed !== true) throw new Error('Confirm before creating the page');
   if (!/^\d+$/.test(String(p.spaceId))) throw new Error('Pick a space');
   const d = await drill(p, clients);
-  const page = await createDraft(clients.conf, p.siteUrl, String(p.spaceId), handoverTitle(d), handoverStorage(d, p.picks ?? {}));
+  const picks = p.picks ?? {};
+  const items = new Map(d.items.map((item) => [item.id, item]));
+  if (Object.entries(picks).some(([id, accountId]) => !items.get(id)?.backups.some((backup) => backup.person.accountId === accountId))) {
+    throw new Error('A selected backup could not be verified against the current results. Run the drill again before creating a handover draft.');
+  }
+  const page = await createDraft(clients.conf, p.siteUrl, String(p.spaceId), handoverTitle(d), handoverStorage(d, picks));
   return { drill: d, page };
 }
 

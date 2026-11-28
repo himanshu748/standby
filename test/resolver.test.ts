@@ -311,6 +311,30 @@ describe('writes', () => {
     expect(out).toEqual({ id: '42', url: 'https://x/wiki/e/42' });
   });
 
+  it('does not create a draft with a substitute for a selected backup that disappeared', async () => {
+    let author = { accountId: 'first-backup', displayName: 'First backup' };
+    route = (c) => {
+      if (c.product === 'confluence' && c.method === 'POST') return { status: 200, body: { id: '42' } };
+      if (c.path.includes('fields=summary')) {
+        return { status: 200, body: { issues: [{ key: 'MS-1', fields: { summary: 'Vendor agreement', reporter: author } }] } };
+      }
+      return jiraOnly(c);
+    };
+    const [item] = (await drill(input)).items.filter((entry) => entry.id === 'jira:MS-1');
+    const picked = item!.backups[0]!.person.accountId;
+    author = { accountId: 'other-backup', displayName: 'Other backup' };
+    await expect(handlers['handover']!({ payload: {
+      ...input, spaceId: '98', confirmed: true, picks: { [item!.id]: picked },
+    } })).rejects.toThrow('Run the drill again');
+    expect(calls.some((c) => c.product === 'confluence' && c.method === 'POST')).toBe(false);
+
+    await handlers['handover']!({ payload: {
+      ...input, spaceId: '98', confirmed: true, picks: { [item!.id]: author.accountId },
+    } });
+    const post = calls.find((c) => c.product === 'confluence' && c.method === 'POST');
+    expect(post?.body).toContain('Other backup');
+  });
+
   it.each([
     [undefined, '/pages/resumedraft.action?draftId=42'],
     [{ editui: '/pages/resumedraft.action?draftId=42&src=handover' }, '/pages/resumedraft.action?draftId=42&src=handover'],
