@@ -72,11 +72,18 @@ export function buildPages(
   return { items, peers };
 }
 
-export async function lookupPeople(jira: Rest, ids: string[]): Promise<Map<string, Person>> {
+export async function lookupPeople(jira: Rest, ids: string[], onBatchFailure?: () => void): Promise<Map<string, Person>> {
   const out = new Map<string, Person>();
   for (let i = 0; i < ids.length; i += 50) {
     const batch = ids.slice(i, i + 50);
-    const json = await getJson(jira, `/rest/api/3/user/bulk?${q({ accountId: batch, maxResults: 50 })}`);
+    let json: Json;
+    try {
+      json = await getJson(jira, `/rest/api/3/user/bulk?${q({ accountId: batch, maxResults: 50 })}`);
+    } catch (error) {
+      if (!onBatchFailure) throw error;
+      onBatchFailure();
+      break;
+    }
     for (const u of json.values ?? []) {
       const p = toPerson(u);
       if (p) out.set(p.accountId, p);
@@ -116,10 +123,9 @@ export async function confluenceSignals(conf: Rest, jira: Rest, siteUrl: string,
   if (versions.some((version) => version.status === 'fulfilled' && version.value._links?.next))
     warnings.push('additional version history was not read');
   const ids = [...new Set(Object.values(authorsByPage).flat())];
-  const people = await lookupPeople(jira, ids).catch(() => {
-    warnings.push('author lookup unavailable');
-    return new Map<string, Person>();
-  });
+  let partialAuthors = false;
+  const people = await lookupPeople(jira, ids, () => { partialAuthors = true; });
+  if (partialAuthors) warnings.push(people.size ? 'author lookup unavailable for some contributors' : 'author lookup unavailable');
   return { ...buildPages(pages, authorsByPage, people, outId), pageCount: pages.length, warnings };
 }
 

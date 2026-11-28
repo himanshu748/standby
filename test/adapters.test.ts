@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { buildPages, listSpaces, parseSearch } from '../src/adapters/confluence';
+import { buildPages, confluenceSignals, listSpaces, parseSearch } from '../src/adapters/confluence';
 import { coLinks, graphCoverage, graphSignals, parseAssigned, parseOwns, parseWork } from '../src/adapters/graph';
 import { parseIssues, parseLeads, parsePeers } from '../src/adapters/jira';
 import { toPerson } from '../src/adapters/people';
@@ -74,6 +74,31 @@ describe('jira', () => {
 });
 
 describe('confluence', () => {
+  it('keeps verified page contributors when a later author batch fails', async () => {
+    const response = (body: object, status = 200) => ({ ok: status === 200, status, json: async () => body });
+    const pages = ['1', '2', '3', '4', '5'].map((id) => ({ content: {
+      id, type: 'page', title: `Page ${id}`, space: { key: 'OPS' },
+      history: { createdBy: { accountId: ALANA } },
+    }, url: `/pages/${id}` }));
+    const conf = async (path: string) => {
+      if (path.startsWith('/wiki/rest/api/search?')) return response({ results: pages });
+      if (path.startsWith('/wiki/api/v2/pages?')) return response({ results: [] });
+      const page = path.split('/')[5];
+      const count = page === '5' ? 1 : 25;
+      return response({ results: Array.from({ length: count }, (_, i) => ({ authorId: `author-${page}-${i}` })) });
+    };
+    const jira = vi.fn()
+      .mockResolvedValueOnce(response({ values: [{ accountId: 'author-1-0', displayName: 'Verified editor' }] }))
+      .mockResolvedValueOnce(response({}, 429));
+
+    const result = await confluenceSignals(conf, jira, SITE, ALANA);
+
+    expect(jira).toHaveBeenCalledTimes(2);
+    expect(result.items[0]?.touchedBy).toEqual([{ accountId: 'author-1-0', name: 'Verified editor', how: 'edited "Page 1"' }]);
+    expect(result.peers['conf:OPS']).toEqual([{ person: { accountId: 'author-1-0', name: 'Verified editor' }, note: 'edited 1 page in OPS' }]);
+    expect(result.warnings).toContain('author lookup unavailable for some contributors');
+  });
+
   it('counts distinct pages when explaining a backup’s space experience', () => {
     const pages = [
       { id: '1', title: 'Runbook', url: 'https://example.com/1', space: { id: 'conf:OPS', name: 'Operations' }, ownerId: ALANA },
