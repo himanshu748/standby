@@ -24,7 +24,7 @@ try {
   // Late Saturday in Los Angeles, just before the spring clock change.
   await page.clock.setFixedTime(new Date('2026-03-08T07:30:00Z'));
 
-  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.goto(new URL('?pinHandover', url).href, { waitUntil: 'networkidle' });
   assert.equal(await page.getByLabel('Out from').inputValue(), '2026-03-08');
   assert.equal(await page.getByLabel('Back on').inputValue(), '2026-03-19');
   const picker = page.getByRole('combobox', { name: 'Who is out?' });
