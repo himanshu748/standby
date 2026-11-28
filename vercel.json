@@ -1,5 +1,6 @@
 {
   "framework": null,
-  "outputDirectory": "dist/walkthrough",
-  "installCommand": "npm ci"
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:demo",
+  "outputDirectory": "dist/walkthrough"
 }
