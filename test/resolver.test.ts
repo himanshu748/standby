@@ -6,6 +6,7 @@ type Reply = { status: number; body?: unknown };
 const calls: Call[] = [];
 let route: (c: Call) => Reply;
 let graphFails = false;
+let graphStatus = 200;
 
 const res = ({ status, body }: Reply) => ({ ok: status < 300, status, json: async () => body ?? {} });
 
@@ -24,7 +25,7 @@ vi.mock('@forge/api', () => ({
       },
       requestTeamworkGraph: async () => {
         if (graphFails) throw new Error('Teamwork Graph unavailable');
-        return { json: async () => ({ data: {} }) };
+        return res({ status: graphStatus, body: graphStatus === 200 ? { data: {} } : { message: 'Graph gateway rejected the request' } });
       },
     }),
   },
@@ -63,6 +64,7 @@ beforeEach(() => {
   calls.length = 0;
   route = jiraOnly;
   graphFails = false;
+  graphStatus = 200;
 });
 
 describe('drill input', () => {
@@ -96,6 +98,19 @@ describe('drill sources', () => {
     expect(d.items.length).toBeGreaterThan(0);
     expect(d.items.every((i) => !i.sources.includes('confluence'))).toBe(true);
     expect(calls.every((c) => c.method === 'GET')).toBe(true);
+  });
+
+  it.each([403, 429])('keeps Jira results when the Teamwork Graph gateway returns HTTP %s', async (status) => {
+    graphStatus = status;
+    const result = await drill(input);
+
+    expect(result.items.some((item) => item.id === 'jira:MS-1')).toBe(true);
+    expect(result.sources.find((source) => source.source === 'jira')).toMatchObject({ ok: true });
+    expect(result.sources.find((source) => source.source === 'graph')).toMatchObject({
+      ok: false,
+      count: 0,
+      note: expect.stringContaining(`Teamwork Graph returned HTTP ${status}`),
+    });
   });
 
   it('keeps confirmed Jira work when the project colleague lookup fails', async () => {
