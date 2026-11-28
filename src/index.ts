@@ -11,7 +11,11 @@ const init = (i?: { method?: string; body?: string }) =>
   i ? { method: i.method ?? 'GET', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, ...(i.body ? { body: i.body } : {}) } : { headers: { Accept: 'application/json' } };
 const jira: Rest = (path, i) => api.asUser().requestJira(assumeTrustedRoute(path), init(i));
 const conf: Rest = (path, i) => api.asUser().requestConfluence(assumeTrustedRoute(path), init(i));
-const graph: Graph = async (query, variables) => (await api.asUser().requestTeamworkGraph(query, variables)).json();
+const graph: Graph = async (query, variables) => {
+  const response = await api.asUser().requestTeamworkGraph(query, variables);
+  if (!response.ok) throw new Error(`Teamwork Graph returned HTTP ${response.status}`);
+  return response.json();
+};
 
 const clients = { jira, conf, graph };
 
